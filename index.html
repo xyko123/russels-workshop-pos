@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RUSELL'S Glass, Woods & Metals | Workshop & POS System</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .forgot-link {
+        font-size: 0.8rem;
+        color: #38bdf8;
+        text-decoration: none;
+        font-weight: 600;
+        transition: var(--transition);
+      }
+      .forgot-link:hover {
+        color: #7dd3fc;
+        text-decoration: underline;
+      }
+      .field-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.4rem;
+      }
+      .field-header label {
+        margin-bottom: 0;
+      }
+      .signboard-tagline {
+        color: #ef4444;
+        font-weight: 900;
+        font-style: italic;
+        letter-spacing: 0.04em;
+        font-size: 1.15rem;
+        text-shadow: 0 2px 10px rgba(239, 68, 68, 0.4);
+        margin: 0.35rem 0 0.85rem 0;
+      }
+      .featured-banner {
+        background: linear-gradient(135deg, rgba(21, 128, 61, 0.25), rgba(220, 38, 38, 0.2));
+        border: 1px solid rgba(34, 197, 94, 0.4);
+        border-radius: var(--radius-sm);
+        padding: 0.65rem 0.85rem;
+        margin: 0.85rem 0 1.25rem;
+      }
+      .featured-banner-title {
+        font-size: 0.75rem;
+        font-weight: 800;
+        color: #4ade80;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .featured-banner-desc {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #f8fafc;
+      }
+      .contact-strip {
+        margin-top: 1.25rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        font-size: 0.75rem;
+        color: var(--text-white-dim);
+      }
+      .contact-strip div {
+        margin-bottom: 0.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .contact-strip strong {
+        color: #ffffff;
+      }
+      .toast-notification {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: #0f172a;
+        border: 1px solid #22c55e;
+        border-left: 5px solid #22c55e;
+        color: #ffffff;
+        padding: 1rem 1.25rem;
+        border-radius: var(--radius-md);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+        max-width: 380px;
+        z-index: 2000;
+        display: none;
+        animation: slideUp 0.3s ease;
+      }
+      @keyframes slideUp {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+    </style>
+</head>
+<body class="auth-page">
+    <main class="auth-shell">
+        <!-- LEFT BRAND PANEL: Official Signboard Branding -->
+        <section class="auth-panel auth-panel--left">
+            <div class="brand-block">
+                <div class="brand-badge-container">
+                    <img src="assets/logo.jpg" alt="RUSELL'S Glass, Woods & Metals" class="brand-logo-img" />
+                    <span class="college-badge">UM Digos College • BSIT MINI-CAPSTONE SYSTEM - SYSTEM INTEGRATION &amp; ARCHITECTURE</span>
+                </div>
+
+                <!-- STUDENT PROPONENT BANNER -->
+                <div class="proponent-badge-card">
+                    <span class="proponent-tag">🎓 SYSTEM DEVELOPER &amp; ARCHITECT</span>
+                    <h3 class="proponent-name">PROPOSED BY: ALVARADO, JETHRO OLIVER A.</h3>
+                    <span class="proponent-meta">Bachelor of Science in Information Technology • UMDC</span>
+                </div>
+
+                <p class="eyebrow">Workshop & Point of Sale Management</p>
+                <h1>RUSELL'S GLASS, WOODS & METALS</h1>
+                <p class="signboard-tagline">"You NAME it, we BUILD it"</p>
+
+                <!-- Featured Specialization from Billboard -->
+                <div class="featured-banner">
+                    <span class="featured-banner-title">Featured Specialty</span>
+                    <p class="featured-banner-desc">🚪 ROLL-UP SHUTTER DOOR (Supplies, Installation & Repair)</p>
+                </div>
+
+                <p class="brand-text">
+                    Complete workshop automation for custom fabrication, inventory tracking, quotes, job orders, and point of sale in Digos City.
+                </p>
+
+                <!-- 4 Core Pillars from Billboard -->
+                <div class="workshop-pillars">
+                    <div class="pillar-item">
+                        <span class="pillar-icon">🪟</span>
+                        <span class="pillar-title">Glass & Auto Tint</span>
+                        <span class="pillar-desc">Aluminum 798/900, 3M Auto Glass Tint, Tempered Panels</span>
+                    </div>
+                    <div class="pillar-item">
+                        <span class="pillar-icon">🪵</span>
+                        <span class="pillar-title">Woods & Moldings</span>
+                        <span class="pillar-desc">Panel doors, jambs, wooden moldings, PVC wall/ceiling</span>
+                    </div>
+                    <div class="pillar-item">
+                        <span class="pillar-icon">🔩</span>
+                        <span class="pillar-title">Stainless & Metal</span>
+                        <span class="pillar-desc">Gates & fences with stone works, trusses, stair railings</span>
+                    </div>
+                    <div class="pillar-item">
+                        <span class="pillar-icon">🏢</span>
+                        <span class="pillar-title">Partitions & Blinds</span>
+                        <span class="pillar-desc">Office workstations, toilet partitions, combi blinds, carpets</span>
+                    </div>
+                </div>
+
+                <!-- WORKSHOP LOCATION MAP CARD -->
+                <div class="auth-map-card">
+                    <div class="auth-map-header">
+                        <div class="auth-map-title">
+                            <span>📍 <strong>WORKSHOP LOCATION MAP (Digos City)</strong></span>
+                        </div>
+                        <span class="auth-map-coords">6.7578° N, 125.3572° E</span>
+                    </div>
+                    <div class="auth-map-canvas">
+                        <div class="map-grid-mesh"></div>
+                        <div class="map-road-highway"></div>
+                        <div class="map-road-roxas"></div>
+                        <div class="map-pin-target">
+                            <div class="radar-ripple"></div>
+                            <span class="map-pin-ico">🏭</span>
+                            <span class="map-pin-tag">Tabor Lumber Cmpd</span>
+                        </div>
+                        <div class="map-labels-strip">
+                            <span>Roxas Ext.</span>
+                            <span>Davao-Cotabato Hwy</span>
+                            <span>Brgy. Zone III</span>
+                        </div>
+                    </div>
+                    <div class="auth-map-footer">
+                        <small>Tabor Lumber Compound, Roxas Ext., Brgy. Zone III, Digos City</small>
+                        <a href="https://maps.google.com/?q=Tabor+Lumber+Compound+Roxas+Ext+Digos+City" target="_blank" class="map-glink">Open in Maps ↗</a>
+                    </div>
+                </div>
+
+                <!-- DATABASE & ARCHITECTURE INTEGRATION CARD -->
+                <div class="auth-db-card">
+                    <div class="auth-db-header">
+                        <div class="auth-db-title">
+                            <span class="pulse-dot green"></span>
+                            <strong>XAMPP MySQL DATABASE INTEGRATION</strong>
+                        </div>
+                        <span class="auth-db-badge">ACTIVE &amp; SYNCED</span>
+                    </div>
+                    <div class="auth-db-metrics">
+                        <div class="db-metric-item">
+                            <span>RDBMS:</span>
+                            <strong>MySQL 8.0 (InnoDB)</strong>
+                        </div>
+                        <div class="db-metric-item">
+                            <span>Database:</span>
+                            <code>russels_workshop</code>
+                        </div>
+                        <div class="db-metric-item">
+                            <span>Host:</span>
+                            <code>localhost:3306</code>
+                        </div>
+                        <div class="db-metric-item">
+                            <span>Tables:</span>
+                            <strong>10 Schemas Ready</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Authentic Contact & Location Strip from Signboard -->
+            <div class="contact-strip">
+                <div>📍 <strong>Address:</strong> Tabor Lumber Compound, Roxas Ext., Brgy. Zone III, Digos City</div>
+                <div>📱 <strong>Mobile:</strong> CP # 0921-371-0555 (RUSELL) • 0929-590-2201 (IRIS) • 09053602201 (OFFICE)</div>
+                <div>✉️ <strong>Email:</strong> irisjunetaborbajura@gmail.com | <strong>FB:</strong> rusell's glass woods metals</div>
+            </div>
+        </section>
+
+        <!-- RIGHT LOGIN PANEL -->
+        <section class="auth-panel auth-panel--right">
+            <div class="login-card">
+                <p class="auth-label">Authorized Sign-in</p>
+                <h2>System Access</h2>
+
+                <form id="loginForm" novalidate>
+                    <div class="field-group">
+                        <label for="username">Username</label>
+                        <input id="username" name="username" type="text" autocomplete="username" placeholder="e.g. owner or sales" required />
+                    </div>
+
+                    <div class="field-group">
+                        <div class="field-header">
+                            <label for="password">Password</label>
+                            <a href="javascript:void(0)" onclick="openForgotModal()" class="forgot-link">Forgot password?</a>
+                        </div>
+                        <div class="password-input-wrapper">
+                            <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required />
+                            <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('password', this)" title="Show / Hide Password" aria-label="Toggle password visibility">
+                                <span class="eye-icon">👁️</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="loginMessage" class="message" aria-live="polite"></div>
+
+                    <button type="submit" class="btn btn-dark" id="loginBtn">Login to Workshop</button>
+                </form>
+
+                <div class="demo-role-pills">
+                    <p>Quick Demo Credentials (Click to fill):</p>
+                    <div class="role-buttons">
+                        <button type="button" class="role-chip" style="background: rgba(34, 197, 94, 0.18); border-color: #22c55e; color: #86efac; font-weight: 800;" onclick="fillCredentials('jethro', 'Capstone2026!')">
+                            🎓 Proponent (Alvarado, Jethro)
+                        </button>
+                        <button type="button" class="role-chip" onclick="fillCredentials('owner', 'Admin123!')">
+                            👑 Owner (Rusell)
+                        </button>
+                        <button type="button" class="role-chip" onclick="fillCredentials('sales', 'Sales123!')">
+                            💼 Sales (Iris/Office)
+                        </button>
+                        <button type="button" class="role-chip" onclick="fillCredentials('workshop', 'Craft123!')">
+                            🛠️ Fabricator
+                        </button>
+                    </div>
+                </div>
+
+                <div class="login-footer">
+                    <small>Default Owner Account: <code>owner / Admin123!</code></small>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FORGOT PASSWORD & SMS/EMAIL OTP MODAL -->
+    <div id="forgotModal" class="otp-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="otpModalTitle">
+        <div class="otp-modal-card">
+            <div class="otp-modal-header">
+                <h3 id="otpModalTitle">🔐 Password Recovery</h3>
+                <button type="button" class="otp-close-btn" onclick="closeForgotModal()" aria-label="Close modal">✕</button>
+            </div>
+
+            <div class="otp-modal-body">
+                <!-- Step Indicator -->
+                <div class="otp-step-indicator">
+                    <div class="step-dot active" id="dot1">1</div>
+                    <div class="step-line" id="line1"></div>
+                    <div class="step-dot" id="dot2">2</div>
+                    <div class="step-line" id="line2"></div>
+                    <div class="step-dot" id="dot3">3</div>
+                </div>
+
+                <!-- STEP 1: Select Channel & Target Account -->
+                <div class="otp-step active" id="step1">
+                    <p style="font-size: 0.88rem; color: var(--text-white-dim); margin-bottom: 1rem;">
+                        Select your registered verification method to receive a 6-digit One-Time Password (OTP).
+                    </p>
+
+                    <div class="field-group">
+                        <label for="recoveryAccount">Target Account</label>
+                        <select id="recoveryAccount" onchange="updateRecoveryPreviews()" style="width: 100%; padding: 0.75rem; background: #1e293b; border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-sm); color: #fff;">
+                            <option value="jethro" selected>🎓 System Developer (Alvarado, Jethro Oliver A. - 0992 232 8650)</option>
+                            <option value="owner">👑 Owner / Proprietor (Russel - 0921-371-0555)</option>
+                            <option value="sales">💼 Sales &amp; Counter (Iris / Office - 0929-590-2201)</option>
+                            <option value="workshop">🛠️ Lead Fabricator (Arnel Mendoza - Workshop)</option>
+                        </select>
+                    </div>
+
+                    <label style="font-size: 0.82rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; display: block;">
+                        Choose OTP Delivery Method
+                    </label>
+
+                    <div class="channel-selector">
+                        <div class="channel-card active" id="channelSms" onclick="selectChannel('sms')">
+                            <div class="channel-icon">📱</div>
+                            <div class="channel-title">SMS to Mobile</div>
+                            <div class="channel-sub" id="smsPreviewText">+63 0992 232 8650</div>
+                        </div>
+                        <div class="channel-card" id="channelEmail" onclick="selectChannel('email')">
+                            <div class="channel-icon">✉️</div>
+                            <div class="channel-title">Email OTP</div>
+                            <div class="channel-sub">jethro.alvarado@umdc.edu.ph</div>
+                        </div>
+                    </div>
+
+                    <div id="step1Msg" class="message" style="display: none;"></div>
+
+                    <button type="button" class="btn btn-dark" style="width: 100%;" onclick="sendOTP()">
+                        Send 6-Digit Verification Code
+                    </button>
+                </div>
+
+                <!-- STEP 2: Enter 6-digit OTP -->
+                <div class="otp-step" id="step2">
+                    <p style="font-size: 0.88rem; color: var(--text-white-dim); margin-bottom: 0.75rem;">
+                        We sent a 6-digit OTP to <strong id="sentTargetDisplay" style="color: #4ade80;">+63 0992 232 8650</strong>. Enter the code below:
+                    </p>
+
+                    <!-- Real-time Gateway Simulation Banner -->
+                    <div class="otp-simulation-alert" id="simAlert">
+                        <span style="font-size: 1.1rem;">🔔</span>
+                        <div>
+                            <strong id="simSender">[SMS GATEWAY]</strong>
+                            <p id="simBody" style="margin-top: 0.2rem;">Rusell's Workshop Security: Your OTP code is <strong id="simCodeDisplay" style="color: #38bdf8; font-size: 1rem; letter-spacing: 0.1em;">123456</strong>. Valid for 5 minutes.</p>
+                        </div>
+                    </div>
+
+                    <!-- 6 Digit Inputs -->
+                    <div class="otp-digit-inputs">
+                        <input type="text" maxlength="1" class="otp-box" id="otp0" autofocus />
+                        <input type="text" maxlength="1" class="otp-box" id="otp1" />
+                        <input type="text" maxlength="1" class="otp-box" id="otp2" />
+                        <input type="text" maxlength="1" class="otp-box" id="otp3" />
+                        <input type="text" maxlength="1" class="otp-box" id="otp4" />
+                        <input type="text" maxlength="1" class="otp-box" id="otp5" />
+                    </div>
+
+                    <div style="text-align: center; margin-bottom: 1rem;">
+                        <button type="button" class="role-chip" style="font-size: 0.75rem; background: rgba(56, 189, 248, 0.15); border-color: #38bdf8; color: #bae6fd;" onclick="autoFillOTP()">
+                            ⚡ Autofill Received OTP
+                        </button>
+                    </div>
+
+                    <div id="step2Msg" class="message" style="display: none;"></div>
+
+                    <button type="button" class="btn btn-dark" style="width: 100%;" onclick="verifyOTP()">
+                        Verify Code & Proceed
+                    </button>
+
+                    <div class="otp-resend-timer">
+                        Didn't receive code? 
+                        <button type="button" class="otp-resend-btn" id="resendBtn" onclick="sendOTP()" disabled>
+                            Resend in <span id="timerCount">45</span>s
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Reset Password -->
+                <div class="otp-step" id="step3">
+                    <p style="font-size: 0.88rem; color: var(--text-white-dim); margin-bottom: 1rem;">
+                        Identity verified! Set a new secure password for your account.
+                    </p>
+
+                    <div class="field-group">
+                        <label for="newPassword">New Password</label>
+                        <div class="password-input-wrapper">
+                            <input id="newPassword" type="password" placeholder="At least 6 characters" oninput="checkStrength(this.value)" style="width: 100%; padding: 0.75rem; padding-right: 2.8rem; background: #1e293b; border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-sm); color: #fff;" />
+                            <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('newPassword', this)" title="Show / Hide Password" aria-label="Toggle password visibility">
+                                <span class="eye-icon">👁️</span>
+                            </button>
+                        </div>
+                        <div class="pw-strength-bar">
+                            <div class="pw-strength-fill" id="strengthBar"></div>
+                        </div>
+                        <small id="strengthText" style="font-size: 0.72rem; color: var(--text-white-dim); margin-top: 0.25rem; display: block;">Strength: Enter password</small>
+                    </div>
+
+                    <div class="field-group">
+                        <label for="confirmPassword">Confirm New Password</label>
+                        <div class="password-input-wrapper">
+                            <input id="confirmPassword" type="password" placeholder="Repeat new password" style="width: 100%; padding: 0.75rem; padding-right: 2.8rem; background: #1e293b; border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-sm); color: #fff;" />
+                            <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('confirmPassword', this)" title="Show / Hide Password" aria-label="Toggle password visibility">
+                                <span class="eye-icon">👁️</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="step3Msg" class="message" style="display: none;"></div>
+
+                    <button type="button" class="btn btn-dark" style="width: 100%;" onclick="resetPasswordAndLogin()">
+                        Update Password & Sign In
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="simToast" class="toast-notification">
+        <div style="display: flex; gap: 0.75rem; align-items: flex-start;">
+            <span style="font-size: 1.4rem;" id="toastIcon">📱</span>
+            <div>
+                <strong id="toastTitle" style="color: #4ade80;">SMS Notification</strong>
+                <p id="toastMessage" style="font-size: 0.8rem; color: #bae6fd; margin-top: 0.2rem;"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+</body>
+</html>

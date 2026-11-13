@@ -1,0 +1,13 @@
+{
+  "name": "russels-workshop-pos",
+  "version": "1.0.0",
+  "description": "BSIT Mini-Capstone System - System Integration & Architecture for RUSELL'S GLASS, WOODS & METALS",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "desktop": "electron electron-main.js"
+  },
+  "author": "Alvarado, Jethro Oliver A.",
+  "license": "ISC"
+}

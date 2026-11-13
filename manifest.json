@@ -1,0 +1,24 @@
+{
+  "name": "RUSELL'S Glass, Woods & Metals POS",
+  "short_name": "Rusell's POS",
+  "description": "BSIT Mini-Capstone System - System Integration & Architecture for RUSELL'S GLASS, WOODS & METALS (Digos City)",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "landscape-primary",
+  "background_color": "#0a140e",
+  "theme_color": "#15803d",
+  "icons": [
+    {
+      "src": "assets/logo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}
