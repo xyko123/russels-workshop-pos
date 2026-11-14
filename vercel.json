@@ -1,11 +1,8 @@
 {
-  "version": 2,
-  "name": "russels-workshop-pos",
   "cleanUrls": true,
-  "trailingSlash": false,
-  "routes": [
-    { "src": "/app", "dest": "/app.html" },
-    { "src": "/login", "dest": "/index.html" },
-    { "src": "/", "dest": "/index.html" }
+  "rewrites": [
+    { "source": "/app", "destination": "/app.html" },
+    { "source": "/login", "destination": "/index.html" },
+    { "source": "/", "destination": "/index.html" }
   ]
 }
