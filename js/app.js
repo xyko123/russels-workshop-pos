@@ -97,6 +97,10 @@ class WorkshopApp {
           roleLabel = 'Workshop & Site Installer';
           avatar = 'AM';
           fullName = 'Arnel Mendoza (Lead Fabricator)';
+        } else if (newRole === 'demo') {
+          roleLabel = 'Public Demo Evaluator';
+          avatar = 'GD';
+          fullName = 'Guest Evaluator (Demo Mode)';
         }
 
         this.currentUser = {

@@ -36,6 +36,16 @@ const DEFAULT_USERS = [
     role: 'fabricator',
     roleLabel: 'Workshop & Site Installer',
     avatar: 'AM'
+  },
+  {
+    username: 'demo',
+    password: 'DemoUser2026!',
+    fullName: 'Guest Evaluator (Live Demo Mode)',
+    phone: '0900-000-0000',
+    email: 'demo@russelsworkshop.ph',
+    role: 'demo',
+    roleLabel: 'Public Demo / Guest Evaluator',
+    avatar: 'GD'
   }
 ];
 
@@ -62,6 +72,11 @@ function getStoredUsers() {
       // Ensure primary owner exists
       if (!parsed.some(u => u.username === 'owner')) {
         parsed.unshift(DEFAULT_USERS[0]);
+      }
+
+      // Ensure demo account exists
+      if (!parsed.some(u => u.username === 'demo')) {
+        parsed.push(DEFAULT_USERS.find(u => u.username === 'demo'));
       }
 
       localStorage.setItem('russels_users', JSON.stringify(parsed));
