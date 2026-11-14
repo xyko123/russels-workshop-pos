@@ -3212,7 +3212,11 @@ class WorkshopApp {
       if (order) {
         order.signature = sigData;
         order.signedAt = new Date().toISOString();
-        db.updateOrder(orderId, order);
+        if (typeof db.saveOrder === 'function') {
+          db.saveOrder(order);
+        } else if (typeof db.updateOrder === 'function') {
+          db.updateOrder(orderId, order);
+        }
         this.showToast(`Customer E-Signature attached to ${order.jobOrderNo}!`, 'success');
       }
     } else {

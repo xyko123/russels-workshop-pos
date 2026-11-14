@@ -1228,6 +1228,11 @@ class WorkshopDB {
     return order;
   }
 
+  updateOrder(id, order) {
+    if (id && !order.id) order.id = id;
+    return this.saveOrder(order);
+  }
+
   updateJobStatus(orderId, newStatus, newPercent, note) {
     const orders = this.getOrders();
     const order = orders.find(o => o.id === orderId);
