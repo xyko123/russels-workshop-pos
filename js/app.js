@@ -24,13 +24,13 @@ class WorkshopApp {
     // Check or setup user session
     this.currentUser = AuthService.getCurrentUser();
     if (!this.currentUser) {
-      // Default to owner demo if opened directly
+      // Default to lead proponent demo if opened directly
       this.currentUser = {
-        username: 'owner',
-        fullName: 'Russel T. (Proprietor)',
+        username: 'jethro',
+        fullName: 'Alvarado, Jethro Oliver A.',
         role: 'owner',
-        roleLabel: 'Owner / Manager',
-        avatar: '👑'
+        roleLabel: 'Lead System Architect & Developer',
+        avatar: 'JA'
       };
       localStorage.setItem('russels_current_user', JSON.stringify(this.currentUser));
     }
@@ -48,7 +48,7 @@ class WorkshopApp {
     const roleEl = document.getElementById('sidebarUserRole');
     const roleSwitcher = document.getElementById('roleSwitcher');
 
-    if (avatarEl) avatarEl.textContent = this.currentUser.avatar || '👤';
+    if (avatarEl) avatarEl.textContent = this.currentUser.avatar || 'JA';
     if (nameEl) nameEl.textContent = this.currentUser.fullName || this.currentUser.username;
     if (roleEl) roleEl.textContent = this.currentUser.roleLabel || this.currentUser.role;
     if (roleSwitcher) roleSwitcher.value = this.currentUser.role;
@@ -85,22 +85,26 @@ class WorkshopApp {
     if (roleSwitcher) {
       roleSwitcher.addEventListener('change', (e) => {
         const newRole = e.target.value;
-        let roleLabel = 'Owner / Manager';
-        let avatar = '👑';
-        let fullName = 'Russel T. (Proprietor)';
+        let roleLabel = 'Lead System Architect & Developer';
+        let avatar = 'JA';
+        let fullName = 'Alvarado, Jethro Oliver A.';
 
         if (newRole === 'sales') {
-          roleLabel = 'Sales & Office Staff';
-          avatar = '💼';
-          fullName = 'Maria Santos (Front Desk)';
+          roleLabel = 'Sales & Front Office Staff';
+          avatar = 'IJ';
+          fullName = 'Iris June Tabor / Office Staff';
         } else if (newRole === 'fabricator') {
-          roleLabel = 'Fabrication & Installation Staff';
-          avatar = '🛠️';
+          roleLabel = 'Workshop & Site Installer';
+          avatar = 'AM';
           fullName = 'Arnel Mendoza (Lead Fabricator)';
+        } else if (newRole === 'owner') {
+          roleLabel = 'Proprietor & General Manager';
+          avatar = 'RT';
+          fullName = 'Russel T. (Proprietor)';
         }
 
         this.currentUser = {
-          username: newRole,
+          username: newRole === 'owner' ? 'jethro' : newRole,
           fullName,
           role: newRole,
           roleLabel,
@@ -415,7 +419,9 @@ class WorkshopApp {
     if (products.length === 0) {
       grid.innerHTML = `
         <div style="grid-column: 1/-1; text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
-          <span style="font-size: 2rem;">🔍</span>
+          <div style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: rgba(255,255,255,0.05); border-radius: 50%; color: var(--text-dim); margin-bottom: 0.5rem;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </div>
           <p style="margin-top: 0.5rem;">No materials or products match your search.</p>
         </div>
       `;
@@ -426,27 +432,22 @@ class WorkshopApp {
       const isLow = (product.stockQuantity || 0) <= (product.reorderLevel || 0);
       const isOut = (product.stockQuantity || 0) <= 0;
 
-      // Smart category chips & icons
+      // Smart category chips & labels
       let chipClass = 'cat-chip-glass';
-      let icon = '🪟';
-      let label = 'Glass';
+      let label = 'Glass & Aluminum';
 
       if (product.code && product.code.startsWith('SHT')) {
         chipClass = 'cat-chip-shutter';
-        icon = '🚪';
         label = 'Shutter Door';
       } else if (product.category === 'wood') {
         chipClass = 'cat-chip-wood';
-        icon = '🪵';
-        label = 'Woods';
+        label = 'Hardwood & Cabinet';
       } else if (product.category === 'metal') {
         chipClass = 'cat-chip-metal';
-        icon = '🔩';
         label = 'Stainless & Metal';
       } else if (product.category === 'hardware') {
         chipClass = 'cat-chip-hardware';
-        icon = '🔧';
-        label = 'Supplies';
+        label = 'Workshop Supplies';
       }
 
       // Stock Pill HTML
@@ -463,7 +464,7 @@ class WorkshopApp {
         <div class="product-card" onclick="App.addProductToCart('${product.id}')" title="Click to add to counter order">
           <div class="product-card-top">
             <span class="product-code-badge">${product.code}</span>
-            <span class="product-cat-chip ${chipClass}">${icon} ${label}</span>
+            <span class="product-cat-chip ${chipClass}">${label}</span>
           </div>
 
           <div>
@@ -483,7 +484,7 @@ class WorkshopApp {
 
           <div class="product-add-overlay">
             <button class="btn-quick-add" type="button">
-              <span>🛒</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
               <span>+ Add to Order</span>
             </button>
           </div>
@@ -551,7 +552,9 @@ class WorkshopApp {
     if (this.cart.length === 0) {
       listEl.innerHTML = `
         <div class="cart-empty-state">
-          <span>🛒</span>
+          <div style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: rgba(255,255,255,0.05); border-radius: 50%; color: var(--text-dim); margin-bottom: 0.5rem;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          </div>
           <p>Order is currently empty</p>
           <small>Select products or build a custom fabrication specification</small>
         </div>
@@ -581,7 +584,7 @@ class WorkshopApp {
         <!-- CASHIER DIRECT PRICE INPUT ROW -->
         <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 0.45rem; padding: 0.35rem 0.55rem; background: rgba(0,0,0,0.35); border-radius: 6px; border: 1px solid rgba(56, 189, 248, 0.35);">
           <span style="font-size: 0.72rem; color: #94a3b8; font-weight: 700; display: flex; align-items: center; gap: 0.25rem;">
-            <span>💵</span> Cashier Price:
+            <span>₱</span> Cashier Price:
           </span>
           <div style="display: flex; align-items: center; gap: 0.2rem;">
             <span style="font-weight: 800; color: #4ade80; font-size: 0.88rem;">₱</span>
@@ -1083,7 +1086,7 @@ class WorkshopApp {
           </div>
           <div>
             <h4 class="job-customer">${order.customerName}</h4>
-            <div class="job-address">📍 ${order.deliveryAddress.split(',')[0]}</div>
+            <div class="job-address">${order.deliveryAddress.split(',')[0]}</div>
           </div>
           <div class="job-items-summary">
             ${order.items.map(i => `• ${i.title} (x${i.quantity})`).slice(0, 2).join('<br>')}
@@ -1135,8 +1138,8 @@ class WorkshopApp {
     if (titleEl) titleEl.textContent = `Job Order: ${order.jobOrderNo} (${order.orderNo})`;
     if (subEl) subEl.textContent = `Target Delivery: ${new Date(order.targetDate).toLocaleDateString()} • Assigned: ${order.assignedStaff}`;
     if (custEl) custEl.textContent = order.customerName;
-    if (addrEl) addrEl.textContent = `📍 Installation Site: ${order.deliveryAddress}`;
-    if (phoneEl) phoneEl.textContent = `📞 Contact: ${order.customerPhone}`;
+    if (addrEl) addrEl.textContent = `Installation Site: ${order.deliveryAddress}`;
+    if (phoneEl) phoneEl.textContent = `Contact: ${order.customerPhone}`;
 
     if (itemsEl) {
       itemsEl.innerHTML = order.items.map(i => `
@@ -1477,7 +1480,7 @@ class WorkshopApp {
         <td><strong style="color: #34d399;">₱${(c.totalSpent || 0).toLocaleString()}</strong></td>
         <td>
           <button class="btn-primary" style="padding: 0.3rem 0.6rem; font-size: 0.72rem;" onclick="App.startOrderForCustomer('${c.id}')">
-            🛒 New Order
+            + New Order
           </button>
         </td>
       </tr>
@@ -1652,21 +1655,21 @@ class WorkshopApp {
       tradeBars.innerHTML = `
         <div>
           <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 2px;">
-            <span>🪟 Glass Works & Windows</span>
+            <span>Glass Works &amp; Windows</span>
             <strong>₱${(trades.glass || 0).toLocaleString()}</strong>
           </div>
           <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${(trades.glass / maxVal) * 100}%;"></div></div>
         </div>
         <div>
           <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 2px;">
-            <span>🪵 Woodwork & Custom Cabinets</span>
+            <span>Woodwork &amp; Custom Cabinets</span>
             <strong>₱${(trades.wood || 0).toLocaleString()}</strong>
           </div>
           <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${(trades.wood / maxVal) * 100}%; background: #d97706;"></div></div>
         </div>
         <div>
           <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 2px;">
-            <span>🔩 Metal Fabrication & Security Grills</span>
+            <span>Metal Fabrication &amp; Security Grills</span>
             <strong>₱${(trades.metal || 0).toLocaleString()}</strong>
           </div>
           <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${(trades.metal / maxVal) * 100}%; background: #64748b;"></div></div>
@@ -1684,19 +1687,19 @@ class WorkshopApp {
 
       jobBars.innerHTML = `
         <div style="display: flex; justify-content: space-between; padding: 0.5rem; background: rgba(0,0,0,0.2); border-radius: 6px;">
-          <span>⏳ Queued for Materials:</span>
+          <span>Queued for Materials:</span>
           <strong style="color: #fbbf24;">${counts.queued} projects</strong>
         </div>
         <div style="display: flex; justify-content: space-between; padding: 0.5rem; background: rgba(0,0,0,0.2); border-radius: 6px;">
-          <span>🛠️ Active Fabrication & Assembly:</span>
+          <span>Active Fabrication &amp; Assembly:</span>
           <strong style="color: #38bdf8;">${counts.in_fab} projects</strong>
         </div>
         <div style="display: flex; justify-content: space-between; padding: 0.5rem; background: rgba(0,0,0,0.2); border-radius: 6px;">
-          <span>🚚 Staged for Site Installation:</span>
+          <span>Staged for Site Installation:</span>
           <strong style="color: #c084fc;">${counts.dispatch} projects</strong>
         </div>
         <div style="display: flex; justify-content: space-between; padding: 0.5rem; background: rgba(0,0,0,0.2); border-radius: 6px;">
-          <span>✅ Completed & Installed:</span>
+          <span>Completed &amp; Installed:</span>
           <strong style="color: #34d399;">${counts.completed} projects</strong>
         </div>
       `;
@@ -1725,7 +1728,7 @@ class WorkshopApp {
     sql += `-- RUSELL'S GLASS, WOODS & METALS - DISASTER RECOVERY DATABASE BACKUP\n`;
     sql += `-- Location: Tabor Lumber Compound, Roxas Ext., Brgy. Zone III, Digos City\n`;
     sql += `-- University of Mindanao Digos College - BSIT Mini-Capstone System\n`;
-    sql += `-- Proponent: ALVARADO, JETHRO OLIVER A. (System Developer)\n`;
+    sql += `-- Proponent: ALVARADO, JETHRO OLIVER A. (Lead System Architect & Developer)\n`;
     sql += `-- Generated: ${new Date().toLocaleString()} (PHT)\n`;
     sql += `-- ============================================================================\n\n`;
     sql += `CREATE DATABASE IF NOT EXISTS \`russels_workshop\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\n`;
@@ -1734,10 +1737,10 @@ class WorkshopApp {
     const users = (typeof getStoredUsers === 'function') ? getStoredUsers() : [];
     sql += `-- 1. Table: users (${users.length} accounts)\n`;
     sql += `DROP TABLE IF EXISTS \`users\`;\n`;
-    sql += `CREATE TABLE \`users\` (\n  \`id\` INT AUTO_INCREMENT PRIMARY KEY,\n  \`username\` VARCHAR(50) NOT NULL UNIQUE,\n  \`password\` VARCHAR(255) NOT NULL,\n  \`full_name\` VARCHAR(100) NOT NULL,\n  \`phone\` VARCHAR(30) DEFAULT '0992 232 8650',\n  \`email\` VARCHAR(100) DEFAULT 'jethro.alvarado@umdc.edu.ph',\n  \`role\` ENUM('owner', 'sales', 'fabricator') NOT NULL DEFAULT 'owner',\n  \`role_label\` VARCHAR(80) NOT NULL,\n  \`avatar\` VARCHAR(10) DEFAULT '👤'\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n\n`;
+    sql += `CREATE TABLE \`users\` (\n  \`id\` INT AUTO_INCREMENT PRIMARY KEY,\n  \`username\` VARCHAR(50) NOT NULL UNIQUE,\n  \`password\` VARCHAR(255) NOT NULL,\n  \`full_name\` VARCHAR(100) NOT NULL,\n  \`phone\` VARCHAR(30) DEFAULT '0992 232 8650',\n  \`email\` VARCHAR(100) DEFAULT 'jethro.alvarado@umdc.edu.ph',\n  \`role\` ENUM('owner', 'sales', 'fabricator') NOT NULL DEFAULT 'owner',\n  \`role_label\` VARCHAR(80) NOT NULL,\n  \`avatar\` VARCHAR(10) DEFAULT 'JA'\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n\n`;
     if (users.length > 0) {
       sql += `INSERT INTO \`users\` (\`username\`, \`password\`, \`full_name\`, \`phone\`, \`email\`, \`role\`, \`role_label\`, \`avatar\`) VALUES\n`;
-      sql += users.map(u => `('${u.username}', '${u.password}', '${(u.fullName || '').replace(/'/g, "\\'")}', '${u.phone || ''}', '${u.email || ''}', '${u.role || 'owner'}', '${(u.roleLabel || '').replace(/'/g, "\\'")}', '${u.avatar || '👤'}')`).join(',\n') + ';\n\n';
+      sql += users.map(u => `('${u.username}', '${u.password}', '${(u.fullName || '').replace(/'/g, "\\'")}', '${u.phone || ''}', '${u.email || ''}', '${u.role || 'owner'}', '${(u.roleLabel || '').replace(/'/g, "\\'")}', '${u.avatar || 'JA'}')`).join(',\n') + ';\n\n';
     }
 
     const customers = db.getCustomers();
@@ -1878,7 +1881,9 @@ class WorkshopApp {
     const users = (typeof getStoredUsers === 'function') ? getStoredUsers() : (db.get('russels_users') || []);
     tbody.innerHTML = users.map(u => `
       <tr>
-        <td style="font-size: 1.6rem; text-align: center;">${u.avatar || '👤'}</td>
+        <td style="text-align: center;">
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #0284c7, #0369a1); color: #fff; font-weight: 800; font-size: 0.85rem; border: 1.5px solid #38bdf8; box-shadow: 0 2px 8px rgba(2,132,199,0.35);">${u.avatar || 'JA'}</span>
+        </td>
         <td>
           <div style="font-weight: 700; color: #ffffff;">${u.fullName}</div>
           <small style="color: ${u.username === 'jethro' ? '#4ade80' : 'var(--text-dim)'}; font-weight: ${u.username === 'jethro' ? '700' : 'normal'};">
@@ -1898,7 +1903,7 @@ class WorkshopApp {
         </td>
         <td>
           <button class="btn-primary" style="padding: 0.35rem 0.7rem; font-size: 0.72rem; display: inline-flex; align-items: center; gap: 0.3rem;" onclick="App.openEditUserModal('${u.username}')">
-            <span>✏️</span> Change Credentials
+            Change Credentials
           </button>
         </td>
       </tr>
@@ -1932,7 +1937,7 @@ class WorkshopApp {
     if (passInput) passInput.value = '';
 
     const titleEl = document.getElementById('modalUserTitle');
-    if (titleEl) titleEl.textContent = `👤 Edit Account & Security: ${user.fullName}`;
+    if (titleEl) titleEl.textContent = `Edit Account & Security: ${user.fullName}`;
 
     this.openModal('modalUserAccount');
   }
@@ -2234,7 +2239,7 @@ class WorkshopApp {
         <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin: 18px 0; padding: 10px 14px; background: #f8fafc; border-radius: 8px; border: 1px dashed #94a3b8;">
           <img src="${qrUrl}" alt="QR" style="width: 75px; height: 75px; border: 1px solid #cbd5e1; background: #fff; padding: 2px; border-radius: 4px;" />
           <div style="font-size: 11px; text-align: left; color: #334155;">
-            <strong style="color: #0f172a; font-size: 12px;">📱 Smart QR Fabrication Tracking Code</strong>
+            <strong style="color: #0f172a; font-size: 12px;">Smart QR Fabrication Tracking Code</strong>
             <p style="margin: 2px 0;">Job Order Ref: <strong>${order.jobOrderNo || order.orderNo}</strong></p>
             <p style="margin: 2px 0; color: #64748b;">Scan using any smartphone camera to check live workshop progress &amp; warranty.</p>
           </div>
@@ -2448,8 +2453,8 @@ class WorkshopApp {
     const titleEl = document.getElementById('modalCustomFabTitle');
     if (titleEl) {
       titleEl.textContent = isForQuote 
-        ? '📄 Prepare Project Quotation (Custom Measurement)' 
-        : '🛠️ Configure Custom Fabrication Job';
+        ? 'Prepare Project Quotation (Custom Measurement)' 
+        : 'Configure Custom Fabrication Job';
     }
 
     const customOverrideInput = document.getElementById('modalFabCustomOverride');
@@ -2812,7 +2817,9 @@ class WorkshopApp {
     if (totalMatches === 0) {
       listEl.innerHTML = `
         <div style="padding: 1.5rem; text-align: center; color: var(--text-dim); font-size: 0.85rem;">
-          <div style="font-size: 1.8rem; margin-bottom: 0.4rem;">🔍</div>
+          <div style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; color: var(--text-dim); margin-bottom: 0.4rem;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </div>
           <p>No records found for "<strong>${this.escapeHtml(query)}</strong>"</p>
           <small style="color: var(--text-muted); display: block; margin-top: 0.25rem;">Try searching for a customer name, JO-2026-..., or item like "Bronze Glass"</small>
         </div>
@@ -2825,7 +2832,7 @@ class WorkshopApp {
 
     // 1. Job Orders & Projects
     if (matchedJobs.length > 0) {
-      html += `<div class="spotlight-category-title">🔨 Job Orders &amp; Projects (${matchedJobs.length})</div>`;
+      html += `<div class="spotlight-category-title">Job Orders &amp; Projects (${matchedJobs.length})</div>`;
       matchedJobs.forEach(j => {
         const stageNames = {
           queued: '1. Queued',
@@ -2839,7 +2846,9 @@ class WorkshopApp {
         html += `
           <div class="spotlight-item-card" onclick="App.jumpToJob('${j.id}')">
             <div class="spotlight-item-left">
-              <span class="spotlight-item-icon">📋</span>
+              <span class="spotlight-item-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+              </span>
               <div>
                 <div class="spotlight-item-title">${j.jobOrderNo || j.orderNo} • ${j.customerName}</div>
                 <div class="spotlight-item-sub">Total: ₱${(j.totalAmount || 0).toLocaleString()} • Target: ${j.targetDate ? j.targetDate.split('T')[0] : 'N/A'}</div>
@@ -2855,15 +2864,17 @@ class WorkshopApp {
 
     // 2. Customers
     if (matchedCustomers.length > 0) {
-      html += `<div class="spotlight-category-title">👥 Customers &amp; Clients (${matchedCustomers.length})</div>`;
+      html += `<div class="spotlight-category-title">Customers &amp; Clients (${matchedCustomers.length})</div>`;
       matchedCustomers.forEach(c => {
         html += `
           <div class="spotlight-item-card" onclick="App.jumpToCustomer('${c.id}')">
             <div class="spotlight-item-left">
-              <span class="spotlight-item-icon">👤</span>
+              <span class="spotlight-item-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              </span>
               <div>
                 <div class="spotlight-item-title">${c.name}</div>
-                <div class="spotlight-item-sub">📞 ${c.phone} • 📍 ${c.address}</div>
+                <div class="spotlight-item-sub">${c.phone} • ${c.address}</div>
               </div>
             </div>
             <div class="spotlight-item-right">
@@ -2876,16 +2887,18 @@ class WorkshopApp {
 
     // 3. Products & Stock
     if (matchedProducts.length > 0) {
-      html += `<div class="spotlight-category-title">📦 Materials &amp; Products (${matchedProducts.length})</div>`;
+      html += `<div class="spotlight-category-title">Materials &amp; Products (${matchedProducts.length})</div>`;
       matchedProducts.forEach(p => {
         const isLow = (p.stockQuantity || 0) <= (p.reorderLevel || 10);
         const stockBadge = isLow 
-          ? `<span style="color: #f87171; font-size: 0.7rem; font-weight: 700;">⚠️ ${p.stockQuantity} ${p.unit}</span>`
+          ? `<span style="color: #f87171; font-size: 0.7rem; font-weight: 700;">Low: ${p.stockQuantity} ${p.unit}</span>`
           : `<span style="color: #4ade80; font-size: 0.7rem;">${p.stockQuantity} ${p.unit}</span>`;
         html += `
           <div class="spotlight-item-card" onclick="App.jumpToProduct('${p.id}')">
             <div class="spotlight-item-left">
-              <span class="spotlight-item-icon">🏷️</span>
+              <span class="spotlight-item-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+              </span>
               <div>
                 <div class="spotlight-item-title">${p.name} <span style="font-size: 0.72rem; color: #a7f3d0;">[${p.code}]</span></div>
                 <div class="spotlight-item-sub">₱${(p.sellingPrice || 0).toLocaleString()} / ${p.unit} • ${p.categoryLabel || p.category}</div>
@@ -2904,12 +2917,14 @@ class WorkshopApp {
 
     // 4. Quotations
     if (matchedQuotes.length > 0) {
-      html += `<div class="spotlight-category-title">📄 Project Quotations (${matchedQuotes.length})</div>`;
+      html += `<div class="spotlight-category-title">Project Quotations (${matchedQuotes.length})</div>`;
       matchedQuotes.forEach(qt => {
         html += `
           <div class="spotlight-item-card" onclick="App.jumpToQuotation('${qt.id}')">
             <div class="spotlight-item-left">
-              <span class="spotlight-item-icon">📝</span>
+              <span class="spotlight-item-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line></svg>
+              </span>
               <div>
                 <div class="spotlight-item-title">${qt.quoteNo} • ${qt.customerName}</div>
                 <div class="spotlight-item-sub">${qt.projectTitle || 'Quotation'} • Contract: ₱${(qt.totalAmount || 0).toLocaleString()}</div>
@@ -3040,12 +3055,12 @@ class WorkshopApp {
           video.setAttribute('playsinline', true);
           video.play();
         }
-        if (statusText) statusText.innerHTML = '<span>🟢 Camera Active - Point at Job Slip QR</span>';
+        if (statusText) statusText.innerHTML = '<span>Camera Active - Point at Job Slip QR</span>';
       } else {
-        if (statusText) statusText.innerHTML = '<span>⚠️ Camera API not supported. Use manual lookup below.</span>';
+        if (statusText) statusText.innerHTML = '<span>Camera API not supported. Use manual lookup below.</span>';
       }
     } catch (err) {
-      if (statusText) statusText.innerHTML = '<span>⚠️ Camera access restricted or unavailable. Use manual lookup.</span>';
+      if (statusText) statusText.innerHTML = '<span>Camera access restricted or unavailable. Use manual lookup.</span>';
     }
   }
 

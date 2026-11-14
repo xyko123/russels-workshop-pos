@@ -15,7 +15,7 @@ const DEFAULT_USERS = [
     email: 'jethro.alvarado@umdc.edu.ph',
     role: 'owner',
     roleLabel: 'System Developer & Architect',
-    avatar: '🎓'
+    avatar: 'JA'
   },
   {
     username: 'owner',
@@ -25,7 +25,7 @@ const DEFAULT_USERS = [
     email: 'irisjunetaborbajura@gmail.com',
     role: 'owner',
     roleLabel: 'Proprietor & General Manager',
-    avatar: '👑'
+    avatar: 'RT'
   },
   {
     username: 'sales',
@@ -35,7 +35,7 @@ const DEFAULT_USERS = [
     email: 'irisjunetaborbajura@gmail.com',
     role: 'sales',
     roleLabel: 'Sales & Front Office',
-    avatar: '💼'
+    avatar: 'IJ'
   },
   {
     username: 'workshop',
@@ -45,7 +45,7 @@ const DEFAULT_USERS = [
     email: 'fabrication@russelsworkshop.ph',
     role: 'fabricator',
     roleLabel: 'Workshop & Site Installer',
-    avatar: '🛠️'
+    avatar: 'AM'
   }
 ];
 
@@ -55,12 +55,23 @@ function getStoredUsers() {
   if (stored) {
     try {
       const parsed = JSON.parse(stored);
+      // Clean up legacy emoji avatars
+      parsed.forEach(u => {
+        if (u.avatar === '🎓') u.avatar = 'JA';
+        if (u.avatar === '👑') u.avatar = 'RT';
+        if (u.avatar === '💼') u.avatar = 'IJ';
+        if (u.avatar === '🛠️') u.avatar = 'AM';
+        if (!u.avatar || u.avatar.length > 3) {
+          u.avatar = (u.fullName || u.username || 'JA').substring(0, 2).toUpperCase();
+        }
+      });
       // Ensure jethro account exists and has the requested mobile number
       const jethroIdx = parsed.findIndex(u => u.username.toLowerCase() === 'jethro');
       if (jethroIdx !== -1) {
         parsed[jethroIdx].fullName = 'Alvarado, Jethro Oliver A.';
         parsed[jethroIdx].phone = '0992 232 8650';
         parsed[jethroIdx].roleLabel = 'System Developer & Architect';
+        parsed[jethroIdx].avatar = 'JA';
       } else {
         parsed.unshift(DEFAULT_USERS[0]);
       }
@@ -86,7 +97,11 @@ function togglePasswordVisibility(fieldId, btn) {
   input.type = isPassword ? 'text' : 'password';
   if (btn) {
     const icon = btn.querySelector('.eye-icon');
-    if (icon) icon.textContent = isPassword ? '🙈' : '👁️';
+    if (icon) {
+      icon.innerHTML = isPassword 
+        ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>'
+        : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+    }
     btn.setAttribute('aria-pressed', isPassword ? 'true' : 'false');
     btn.title = isPassword ? 'Hide Password' : 'Show Password';
   }
@@ -234,11 +249,11 @@ function sendOTP() {
   if (otpChannel === 'sms') {
     if (simSender) simSender.textContent = `[SMS GATEWAY to ${targetDisplay}]`;
     if (simBody) simBody.innerHTML = `Rusell's Workshop: Your One-Time Password is <strong id="simCodeDisplay" style="color: #38bdf8; font-size: 1.1rem; letter-spacing: 0.15em;">${currentOTP}</strong>. Valid for 5 minutes. Do not share.`;
-    showSimToast('📱 SMS Dispatch Simulated', `Sent OTP code [${currentOTP}] to mobile ${targetDisplay}`);
+    showSimToast('SMS Gateway Dispatch', `Sent OTP verification code [${currentOTP}] to mobile ${targetDisplay}`);
   } else {
     if (simSender) simSender.textContent = `[EMAIL SERVER to ${targetDisplay}]`;
     if (simBody) simBody.innerHTML = `Subject: Security Code for Rusell's Workshop Access. Your verification code is <strong id="simCodeDisplay" style="color: #38bdf8; font-size: 1.1rem; letter-spacing: 0.15em;">${currentOTP}</strong>.`;
-    showSimToast('✉️ Email Dispatch Simulated', `Sent OTP code [${currentOTP}] to ${targetDisplay}`);
+    showSimToast('Email Server Dispatch', `Sent OTP verification code [${currentOTP}] to ${targetDisplay}`);
   }
 
   // Clear previous OTP inputs

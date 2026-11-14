@@ -26,11 +26,12 @@
 
       <!-- BSIT MINI-CAPSTONE STUDENT PROPONENT BADGE -->
       <div class="sidebar-academic-block">
-        <div class="academic-badge-pill">BSIT MINI-CAPSTONE</div>
+        <div class="academic-badge-pill">BSIT CAPSTONE SYSTEM</div>
         <p class="academic-system-sub">System Integration &amp; Architecture</p>
         <div class="academic-proponent-tag">
-          <span>PROPOSED BY:</span>
+          <span>LEAD SYSTEM ARCHITECT:</span>
           <strong>ALVARADO, JETHRO OLIVER A.</strong>
+          <small style="display: block; font-size: 0.68rem; color: #94a3b8; margin-top: 3px;">University of Mindanao Digos College</small>
         </div>
       </div>
 
@@ -149,16 +150,18 @@
 
       <div class="sidebar-footer">
         <div class="user-status-card" onclick="App.openEditProfileModal()" title="Click to view profile &amp; change password" style="cursor: pointer;">
-          <div class="user-avatar" id="sidebarAvatar">🎓</div>
+          <div class="user-avatar" id="sidebarAvatar" style="font-size: 0.75rem; font-weight: 800; background: #15803d; color: #ffffff;">JA</div>
           <div class="user-info">
             <div class="user-name" id="sidebarUserName">Alvarado, Jethro</div>
             <div class="user-role-tag" id="sidebarUserRole">System Architect</div>
           </div>
-          <span style="font-size: 0.85rem; color: var(--text-dim); margin-left: auto;" title="Edit Profile &amp; Password">⚙️</span>
+          <span style="font-size: 0.85rem; color: var(--text-dim); margin-left: auto;" title="Edit Profile &amp; Password">
+            <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </span>
         </div>
-        <button class="btn-logout-prominent" onclick="AuthService.logout()" title="Log out of workshop system">
-          <span>🚪</span>
-          <span>Log Out</span>
+        <button class="btn-logout-prominent" onclick="AuthService.logout()" title="Sign out of workshop system">
+          <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>Sign Out</span>
         </button>
       </div>
     </aside>
@@ -179,7 +182,7 @@
           <div class="topbar-search-wrapper" style="position: relative; width: 100%; max-width: 480px;">
             <div class="topbar-search">
               <button class="search-btn-trigger" id="globalSearchBtn" onclick="App.triggerGlobalSearch()" title="Click to search or press Enter">
-                🔍
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
               </button>
               <input type="text" id="globalSearchInput" placeholder="Spotlight: Job #, Customer, Material, or Quote..." autocomplete="off" />
               <button class="search-clear-btn" id="globalSearchClear" onclick="App.clearGlobalSearch()" title="Clear search" style="display: none;">
@@ -202,32 +205,33 @@
         <div class="topbar-right">
           <!-- Workshop Live Camera QR Scanner -->
           <button class="topbar-util-btn" onclick="App.openQrScannerModal()" title="Scan Job Slip or Material QR Code with Camera">
-            <span>📷</span>
+            <svg style="width: 15px; height: 15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
             <span>Scan QR</span>
           </button>
 
           <!-- Workshop Quick Dimension & Area Calculator -->
           <button class="topbar-util-btn" onclick="App.openConverterModal()" title="Calculate Glass, Shutter, and Panel Dimensions">
-            <span>📐</span>
+            <svg style="width: 15px; height: 15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20M2 12l5-5M22 12l-5 5M12 2v20"/></svg>
             <span>Dimension Calc</span>
           </button>
 
           <!-- Role Switcher for instant capstone evaluation -->
           <select id="roleSwitcher" class="role-switcher-select" title="Switch Role for Evaluation">
-            <option value="owner">👑 Owner / Manager</option>
-            <option value="sales">💼 Sales &amp; Office Staff</option>
-            <option value="fabricator">🛠️ Fabrication Staff</option>
+            <option value="owner">Executive / General Manager</option>
+            <option value="sales">Counter Sales &amp; Front Desk</option>
+            <option value="fabricator">Technical Fabrication Staff</option>
           </select>
 
           <div class="time-pill">
-            <span>📍 Digos City:</span>
+            <svg style="width: 12px; height: 12px; stroke: #4ade80;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Digos City:</span>
             <strong id="liveTimeClock">12:00 PM</strong>
           </div>
 
           <!-- Prominent Logout Button -->
           <button class="topbar-logout-btn" onclick="AuthService.logout()" title="Sign out of system">
-            <span>🚪</span>
-            <span>Log Out</span>
+            <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span>Sign Out</span>
           </button>
         </div>
       </header>
@@ -235,15 +239,15 @@
       <!-- SIGNBOARD BRAND & HOTLINE BANNER -->
       <div class="workshop-brand-strip">
         <div class="brand-strip-item">
-          <span class="strip-icon">📍</span>
+          <svg style="width: 13px; height: 13px; stroke: #4ade80; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           <span><strong>Yard &amp; Workshop:</strong> Tabor Lumber Compound, Roxas Ext., Brgy. Zone III, Digos City</span>
         </div>
         <div class="brand-strip-item">
-          <span class="strip-icon">📱</span>
-          <span><strong>Direct Hotlines:</strong> 0921-371-0555 (RUSELL) • 0929-590-2201 (IRIS) • 09053602201 (OFFICE)</span>
+          <svg style="width: 13px; height: 13px; stroke: #38bdf8; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span><strong>Direct Hotlines:</strong> 0921-371-0555 (Rusell) • 0929-590-2201 (Iris) • 09053602201 (Office)</span>
         </div>
         <div class="brand-strip-item">
-          <span class="strip-icon">🚪</span>
+          <svg style="width: 13px; height: 13px; stroke: #fbbf24; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
           <span style="color: #4ade80; font-weight: 700;">"You NAME it, we BUILD it" • Roll-Up Shutter Doors • Glass &amp; Auto Tint • Stainless Gates</span>
         </div>
       </div>
@@ -257,16 +261,16 @@
               <div class="catalog-search-row">
                 <input type="text" id="productSearchInput" placeholder="Filter materials (e.g., Bronze Glass, Marine Plywood, 798 Analok)..." />
                 <button class="btn-primary" onclick="App.addOpenPriceItem()" style="background: #0284c7; border-color: #38bdf8; white-space: nowrap; font-size: 0.85rem;" title="Cashier enters custom item description and custom amount directly">
-                  💵 + Cashier Custom Amount
+                  + Cashier Custom Price
                 </button>
                 <button class="btn-amber" onclick="App.openCustomFabModal()">+ Custom Fabrication</button>
               </div>
               <div class="category-tabs">
-                <button class="cat-tab active" data-category="all">All Items</button>
-                <button class="cat-tab" data-category="glass">🪟 Glass Works</button>
-                <button class="cat-tab" data-category="wood">🪵 Wood &amp; Cabinets</button>
-                <button class="cat-tab" data-category="metal">🔩 Metal &amp; Steel</button>
-                <button class="cat-tab" data-category="hardware">🔧 Hardware &amp; Supplies</button>
+                <button class="cat-tab active" data-category="all">All Inventory</button>
+                <button class="cat-tab" data-category="glass">Glass &amp; Aluminum</button>
+                <button class="cat-tab" data-category="wood">Wood &amp; Cabinets</button>
+                <button class="cat-tab" data-category="metal">Stainless &amp; Metal</button>
+                <button class="cat-tab" data-category="hardware">Hardware Supplies</button>
               </div>
             </div>
 
@@ -287,17 +291,17 @@
               </div>
 
               <div class="order-type-tabs">
-                <button class="order-type-btn active" data-type="counter">🛒 Over-the-Counter</button>
-                <button class="order-type-btn" data-type="fabrication">🛠️ Custom Job &amp; Install</button>
+                <button class="order-type-btn active" data-type="counter">Over-the-Counter Sales</button>
+                <button class="order-type-btn" data-type="fabrication">Custom Job &amp; Installation</button>
               </div>
             </div>
 
             <!-- Cart Items Scroll -->
             <div class="cart-items-list" id="cartItemsList">
               <div class="cart-empty-state">
-                <span>🛒</span>
+                <svg style="width: 36px; height: 36px; stroke: #64748b; margin-bottom: 0.5rem;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
                 <p>Order is currently empty</p>
-                <small>Select products or build a custom fabrication specification</small>
+                <small>Select inventory products or build custom fabrication job</small>
               </div>
             </div>
 
@@ -325,18 +329,18 @@
                 <div class="payment-terms-grid">
                   <button type="button" class="pay-term-btn active" data-term="full">100% Full Payment</button>
                   <button type="button" class="pay-term-btn" data-term="deposit50">50% Initial Deposit</button>
-                  <button type="button" class="pay-term-btn" data-term="quote">📄 Quotation Only</button>
+                  <button type="button" class="pay-term-btn" data-term="quote">Quotation Proposal</button>
                 </div>
                 <div class="pay-methods-row">
-                  <button type="button" class="pay-method-btn active" data-method="Cash">💵 Cash</button>
-                  <button type="button" class="pay-method-btn" data-method="GCash">📱 GCash</button>
-                  <button type="button" class="pay-method-btn" data-method="Bank Transfer">🏦 Bank</button>
+                  <button type="button" class="pay-method-btn active" data-method="Cash">Cash</button>
+                  <button type="button" class="pay-method-btn" data-method="GCash">GCash / Maya (QR Ph)</button>
+                  <button type="button" class="pay-method-btn" data-method="Bank Transfer">Bank Transfer</button>
                 </div>
 
                 <!-- Dynamic QR Ph / GCash payment card -->
                 <div id="cartQrPhBox" class="qrph-payment-card" style="display: none;">
                   <div class="qrph-badge-strip">
-                    <span class="qrph-pill">🇵🇭 QR Ph Verified</span>
+                    <span class="qrph-pill">QR Ph Verified</span>
                     <span class="qrph-acc-label">RUSELL BAJURA • 0929 590 2201</span>
                   </div>
                   <div class="qrph-body">
@@ -369,8 +373,9 @@
             <p>Calculate material cost, glass area, frame cutting, and labor in Digos City</p>
           </div>
           <div style="margin-top: 1.5rem; text-align: center;">
-            <button class="btn-amber" style="font-size: 1.05rem; padding: 0.85rem 1.85rem;" onclick="App.openCustomFabModal()">
-              📐 Launch Full Dimension Estimator Modal
+            <button class="btn-amber" style="font-size: 1.05rem; padding: 0.85rem 1.85rem; display: inline-flex; align-items: center; gap: 0.5rem;" onclick="App.openCustomFabModal()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.3 8.7 8.7 21.3c-1 1-2.5 1-3.4 0l-2.6-2.6c-1-1-1-2.5 0-3.4L15.3 2.7c1-1 2.5-1 3.4 0l2.6 2.6c1 1 1 2.5 0 3.4Z"></path><path d="m14.5 3.5 2 2"></path><path d="m11.5 6.5 2 2"></path><path d="m8.5 9.5 2 2"></path><path d="m5.5 12.5 2 2"></path></svg>
+              Launch Full Dimension Estimator Modal
             </button>
           </div>
         </div>
@@ -388,9 +393,9 @@
           <div class="jo-filters">
             <select id="joCategoryFilter" class="role-switcher-select" onchange="App.renderKanbanBoard()">
               <option value="all">All Fabrication Trades</option>
-              <option value="glass">🪟 Glass Works</option>
-              <option value="wood">🪵 Wood &amp; Cabinets</option>
-              <option value="metal">🔩 Metal &amp; Steel</option>
+              <option value="glass">Glass &amp; Aluminum</option>
+              <option value="wood">Wood &amp; Cabinets</option>
+              <option value="metal">Stainless &amp; Metal</option>
             </select>
             <button class="btn-primary" onclick="App.openCustomFabModal()">+ New Job Order</button>
           </div>
@@ -399,42 +404,42 @@
         <div class="kanban-board-container" id="kanbanBoard">
           <div class="kanban-column" data-status="queued">
             <div class="kanban-column-header">
-              <span class="column-title">⏳ 1. Queued / Staged</span>
+              <span class="column-title">[1] Queued &amp; Staged</span>
               <span class="column-counter" id="count-queued">0</span>
             </div>
             <div class="kanban-cards-list" id="col-queued"></div>
           </div>
           <div class="kanban-column" data-status="materials_prepared">
             <div class="kanban-column-header">
-              <span class="column-title">📦 2. Material Cut &amp; Prep</span>
+              <span class="column-title">[2] Material Cutting &amp; Prep</span>
               <span class="column-counter" id="count-materials_prepared">0</span>
             </div>
             <div class="kanban-cards-list" id="col-materials_prepared"></div>
           </div>
           <div class="kanban-column" data-status="in_fabrication">
             <div class="kanban-column-header">
-              <span class="column-title">🛠️ 3. In Fabrication</span>
+              <span class="column-title">[3] Fabrication &amp; Assembly</span>
               <span class="column-counter" id="count-in_fabrication">0</span>
             </div>
             <div class="kanban-cards-list" id="col-in_fabrication"></div>
           </div>
           <div class="kanban-column" data-status="quality_check">
             <div class="kanban-column-header">
-              <span class="column-title">🔍 4. Quality &amp; Finishing</span>
+              <span class="column-title">[4] Quality Inspection</span>
               <span class="column-counter" id="count-quality_check">0</span>
             </div>
             <div class="kanban-cards-list" id="col-quality_check"></div>
           </div>
           <div class="kanban-column" data-status="ready_dispatch">
             <div class="kanban-column-header">
-              <span class="column-title">🚚 5. Ready for Dispatch</span>
+              <span class="column-title">[5] Ready for Dispatch</span>
               <span class="column-counter" id="count-ready_dispatch">0</span>
             </div>
             <div class="kanban-cards-list" id="col-ready_dispatch"></div>
           </div>
           <div class="kanban-column" data-status="installed_delivered">
             <div class="kanban-column-header">
-              <span class="column-title">✅ 6. Installed &amp; Delivered</span>
+              <span class="column-title">[6] Installed &amp; Delivered</span>
               <span class="column-counter" id="count-installed_delivered">0</span>
             </div>
             <div class="kanban-cards-list" id="col-installed_delivered"></div>
@@ -474,28 +479,36 @@
       <section id="view-inventory" class="view-container">
         <div class="inventory-metrics-grid">
           <div class="metric-card">
-            <div class="metric-icon-box blue">📦</div>
+            <div class="metric-icon-box blue">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            </div>
             <div class="metric-details">
               <p>Total Stock Items</p>
               <h3 id="invMetricTotalItems">24</h3>
             </div>
           </div>
           <div class="metric-card">
-            <div class="metric-icon-box red">⚠️</div>
+            <div class="metric-icon-box red">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            </div>
             <div class="metric-details">
               <p>Low Stock Alerts</p>
               <h3 id="invMetricLowStock">3</h3>
             </div>
           </div>
           <div class="metric-card">
-            <div class="metric-icon-box green">📈</div>
+            <div class="metric-icon-box green">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+            </div>
             <div class="metric-details">
               <p>Inventory Sales Recorded</p>
               <h3 id="invMetricTotalSales" style="color: #4ade80;">₱168,200</h3>
             </div>
           </div>
           <div class="metric-card">
-            <div class="metric-icon-box emerald">💰</div>
+            <div class="metric-icon-box emerald">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+            </div>
             <div class="metric-details">
               <p>Total Inventory Value</p>
               <h3 id="invMetricTotalValue">₱245,600</h3>
@@ -566,28 +579,36 @@
       <section id="view-suppliers" class="view-container">
         <div class="inventory-metrics-grid">
           <div class="metric-card">
-            <div class="metric-icon-box blue">🚚</div>
+            <div class="metric-icon-box blue">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+            </div>
             <div class="metric-details">
               <p>Active Verified Suppliers</p>
               <h3>7 Direct Vendors</h3>
             </div>
           </div>
           <div class="metric-card">
-            <div class="metric-icon-box emerald">⏱️</div>
+            <div class="metric-icon-box emerald">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            </div>
             <div class="metric-details">
               <p>Average Delivery Lead Time</p>
               <h3>1 - 2 Business Days</h3>
             </div>
           </div>
           <div class="metric-card">
-            <div class="metric-icon-box amber">📍</div>
+            <div class="metric-icon-box amber">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            </div>
             <div class="metric-details">
               <p>Primary Sourcing Hub</p>
               <h3>Davao &amp; Digos City</h3>
             </div>
           </div>
           <div class="metric-card">
-            <div class="metric-icon-box emerald">⭐</div>
+            <div class="metric-icon-box emerald">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            </div>
             <div class="metric-details">
               <p>Quality Rating</p>
               <h3>4.9 / 5.0 Average</h3>
@@ -635,8 +656,9 @@
               </p>
             </div>
             <div style="display: flex; gap: 0.5rem;">
-              <a href="https://maps.google.com/?q=Tabor+Lumber+Compound+Roxas+Ext+Digos+City" target="_blank" class="btn-primary" style="text-decoration: none;">
-                🗺️ Open in Google Maps ↗
+              <a href="https://maps.google.com/?q=Tabor+Lumber+Compound+Roxas+Ext+Digos+City" target="_blank" class="btn-primary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.45rem;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+                Open in Google Maps ↗
               </a>
             </div>
           </div>
@@ -648,29 +670,37 @@
             <div class="map-road-roxas" style="width: 24px; left: 45%;"></div>
             <div class="map-pin-target" style="top: 42%; left: 47%;">
               <div class="radar-ripple" style="width: 60px; height: 60px;"></div>
-              <span class="map-pin-ico" style="font-size: 2.2rem;">🏭</span>
+              <span class="map-pin-ico" style="font-size: 1.8rem; display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: #0284c7; border-radius: 50%; color: #fff; box-shadow: 0 4px 14px rgba(2,132,199,0.5);">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path><path d="M17 18h1"></path><path d="M12 18h1"></path><path d="M7 18h1"></path></svg>
+              </span>
               <span class="map-pin-tag" style="font-size: 0.82rem; padding: 0.3rem 0.85rem;">
                 RUSELL'S GLASS, WOODS &amp; METALS
               </span>
             </div>
             <div class="map-labels-strip" style="font-size: 0.78rem; bottom: 12px; padding: 0 1rem;">
-              <span>📍 Roxas Extension (Inside Tabor Lumber Compound)</span>
-              <span>🛣️ Davao-Cotabato National Highway (150m away)</span>
-              <span>🏢 Brgy. Zone III, Digos Commercial Zone</span>
+              <span>Roxas Extension (Inside Tabor Lumber Compound)</span>
+              <span>Davao-Cotabato National Highway (150m away)</span>
+              <span>Brgy. Zone III, Digos Commercial Zone</span>
             </div>
           </div>
 
           <!-- Facility Details Grid -->
           <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;">
             <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="font-size: 0.92rem; font-weight: 700; color: #4ade80; margin-bottom: 0.5rem;">📍 Facility Coordinates &amp; Landmarks</h4>
+              <h4 style="font-size: 0.92rem; font-weight: 700; color: #4ade80; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                Facility Coordinates &amp; Landmarks
+              </h4>
               <p style="font-size: 0.8rem; color: #cbd5e1; line-height: 1.5;">
                 <strong>GPS:</strong> 6.7578° N, 125.3572° E<br>
                 <strong>Landmark:</strong> Inside Tabor Lumber Compound, directly beside Roxas Extension fabrication yard. Easy access for 6-wheeler flatbed delivery trucks.
               </p>
             </div>
             <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="font-size: 0.92rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.5rem;">⏰ Operational Schedule</h4>
+              <h4 style="font-size: 0.92rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                Operational Schedule
+              </h4>
               <p style="font-size: 0.8rem; color: #cbd5e1; line-height: 1.5;">
                 <strong>Monday - Saturday:</strong> 7:30 AM - 5:30 PM<br>
                 <strong>Sunday:</strong> On-call Emergency Shutter Repair<br>
@@ -678,7 +708,10 @@
               </p>
             </div>
             <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-              <h4 style="font-size: 0.92rem; font-weight: 700; color: #fbbf24; margin-bottom: 0.5rem;">🚚 Delivery &amp; Installation Coverage</h4>
+              <h4 style="font-size: 0.92rem; font-weight: 700; color: #fbbf24; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                Delivery &amp; Installation Coverage
+              </h4>
               <p style="font-size: 0.8rem; color: #cbd5e1; line-height: 1.5;">
                 <strong>Local Zone:</strong> Digos City Proper, Tres de Mayo, Zone I-III<br>
                 <strong>Provincial Routes:</strong> Bansalan, Santa Cruz, Hagonoy, Padada, Malalag, and Davao del Sur municipalities.
@@ -692,28 +725,36 @@
       <section id="view-payments" class="view-container">
         <div class="inventory-metrics-grid">
           <div class="metric-card">
-            <div class="metric-icon-box emerald">💵</div>
+            <div class="metric-icon-box emerald">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+            </div>
             <div class="metric-details">
               <p>Total Revenue Recorded</p>
               <h3 id="payMetricTotalRevenue">₱78,600</h3>
             </div>
           </div>
           <div class="metric-card">
-            <div class="metric-icon-box amber">⏳</div>
+            <div class="metric-icon-box amber">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            </div>
             <div class="metric-details">
               <p>Accounts Receivable (Pending)</p>
               <h3 id="payMetricReceivables">₱24,500</h3>
             </div>
           </div>
           <div class="metric-card">
-            <div class="metric-icon-box blue">🧾</div>
+            <div class="metric-icon-box blue">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            </div>
             <div class="metric-details">
               <p>Active Contracts</p>
               <h3 id="payMetricActiveCount">3</h3>
             </div>
           </div>
           <div class="metric-card">
-            <div class="metric-icon-box emerald">✅</div>
+            <div class="metric-icon-box emerald">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
             <div class="metric-details">
               <p>Settled Contracts</p>
               <h3 id="payMetricSettledCount">2</h3>
@@ -762,35 +803,41 @@
               </p>
             </div>
             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-              <button class="btn-primary" style="background: #15803d; border-color: #22c55e;" onclick="App.testTursoCloudConnection()" title="Test Turso Cloud Database connection in Singapore">☁️ Turso Cloud Status</button>
-              <button class="btn-primary" style="background: #0284c7; border-color: #38bdf8;" onclick="App.backupDatabaseSQL()" title="Generate full SQL dump of all 11 tables for disaster recovery">💾 Backup Database (.sql)</button>
-              <button class="btn-secondary" onclick="App.exportAuditCSV()">📥 Export CSV Data</button>
-              <button class="btn-amber" onclick="App.resetDemoData()">🔄 Reset Demo Data</button>
+              <button class="btn-primary" style="background: #15803d; border-color: #22c55e;" onclick="App.testTursoCloudConnection()" title="Test Turso Cloud Database connection in Singapore">Turso Cloud Status</button>
+              <button class="btn-primary" style="background: #0284c7; border-color: #38bdf8;" onclick="App.backupDatabaseSQL()" title="Generate full SQL dump of all 11 tables for disaster recovery">Backup Database (.sql)</button>
+              <button class="btn-secondary" onclick="App.exportAuditCSV()">Export CSV Data</button>
+              <button class="btn-amber" onclick="App.resetDemoData()">Reset Demo Data</button>
             </div>
           </div>
 
           <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem;">
             <h3 style="font-size: 0.95rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.75rem;">
-              🎓 Specific Objectives Verification Status:
+              Specific Objectives Verification Status:
             </h3>
             <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; font-size: 0.82rem;">
               <div style="display: flex; align-items: center; gap: 0.5rem; color: #34d399;">
-                <span>✅</span> <strong>1. Customer info, quotations &amp; orders:</strong> Fully operational with POS and quotation converter.
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span><strong>1. Customer info, quotations &amp; orders:</strong> Fully operational with POS and quotation converter.</span>
               </div>
               <div style="display: flex; align-items: center; gap: 0.5rem; color: #34d399;">
-                <span>✅</span> <strong>2. Material inventory &amp; sales:</strong> Tracks stock levels and total sales generated per item.
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span><strong>2. Material inventory &amp; sales:</strong> Tracks stock levels and total sales generated per item.</span>
               </div>
               <div style="display: flex; align-items: center; gap: 0.5rem; color: #34d399;">
-                <span>✅</span> <strong>3. Project &amp; Job Order tracking:</strong> 6-stage Kanban board tracking fabrication &amp; delivery.
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span><strong>3. Project &amp; Job Order tracking:</strong> 6-stage Kanban board tracking fabrication &amp; delivery.</span>
               </div>
               <div style="display: flex; align-items: center; gap: 0.5rem; color: #34d399;">
-                <span>✅</span> <strong>4. Payments &amp; balance monitoring:</strong> Tracks downpayments, balance due, and official receipts.
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span><strong>4. Payments &amp; balance monitoring:</strong> Tracks downpayments, balance due, and official receipts.</span>
               </div>
               <div style="display: flex; align-items: center; gap: 0.5rem; color: #34d399;">
-                <span>✅</span> <strong>5. Suppliers &amp; network sourcing:</strong> 7 active verified vendors with delivery lead times.
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span><strong>5. Suppliers &amp; network sourcing:</strong> 7 active verified vendors with delivery lead times.</span>
               </div>
               <div style="display: flex; align-items: center; gap: 0.5rem; color: #34d399;">
-                <span>✅</span> <strong>6. System Integration &amp; Architecture:</strong> Multi-tier architecture powered by XAMPP MySQL.
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span><strong>6. System Integration &amp; Architecture:</strong> Multi-tier architecture powered by XAMPP MySQL.</span>
               </div>
             </div>
           </div>
@@ -799,11 +846,12 @@
           <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1.5rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
               <div>
-                <h4 style="font-size: 1.05rem; font-weight: 700; color: #ffffff;">📊 Monthly Revenue Trend Analysis (2026)</h4>
+                <h4 style="font-size: 1.05rem; font-weight: 700; color: #ffffff;">Monthly Revenue Trend Analysis (2026)</h4>
                 <p style="font-size: 0.75rem; color: var(--text-dim);">Historical revenue performance for Rusell's Glass, Woods &amp; Metals in Digos City</p>
               </div>
-              <span class="role-chip" style="background: rgba(34, 197, 94, 0.2); color: #4ade80; border-color: rgba(34, 197, 94, 0.3);">
-                📈 +18.4% MoM Growth
+              <span class="role-chip" style="background: rgba(34, 197, 94, 0.2); color: #4ade80; border-color: rgba(34, 197, 94, 0.3); display: inline-flex; align-items: center; gap: 0.35rem;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                +18.4% MoM Growth
               </span>
             </div>
 
@@ -918,7 +966,7 @@
   <div class="modal-backdrop" id="modalCustomFab">
     <div class="modal-card modal-lg">
       <div class="modal-header">
-        <h3 id="modalCustomFabTitle">🛠️ Configure Custom Fabrication Job</h3>
+        <h3 id="modalCustomFabTitle">Configure Custom Fabrication Job</h3>
         <button class="modal-close-btn" onclick="App.closeModal('modalCustomFab')">&times;</button>
       </div>
       <div class="modal-body">
@@ -931,9 +979,9 @@
             <div class="form-field" style="margin-bottom: 0.85rem;">
               <label>Trade Craft</label>
               <select id="modalFabTrade" onchange="App.handleModalFabTradeChange()">
-                <option value="glass">🪟 Glass &amp; Aluminum (Windows, Doors, Mirrors)</option>
-                <option value="wood">🪵 Wood &amp; Cabinetry (Kitchens, Wardrobes, Counters)</option>
-                <option value="metal">🔩 Metal Fabrication (Grills, Gates, Railings)</option>
+                <option value="glass">Glass &amp; Aluminum (Windows, Doors, Mirrors)</option>
+                <option value="wood">Wood &amp; Cabinetry (Kitchens, Wardrobes, Counters)</option>
+                <option value="metal">Metal Fabrication (Grills, Gates, Railings)</option>
               </select>
             </div>
             <div class="form-field" style="margin-bottom: 0.85rem;">
@@ -1055,12 +1103,12 @@
             <div class="form-field">
               <label>Workshop Stage Status</label>
               <select id="modalJoStatusSelect">
-                <option value="queued">⏳ 1. Queued / Staged</option>
-                <option value="materials_prepared">📦 2. Material Cut &amp; Prep</option>
-                <option value="in_fabrication">🛠️ 3. In Fabrication &amp; Assembly</option>
-                <option value="quality_check">🔍 4. Quality &amp; Finishing</option>
-                <option value="ready_dispatch">🚚 5. Ready for Dispatch</option>
-                <option value="installed_delivered">✅ 6. Installed &amp; Delivered</option>
+                <option value="queued">[1] Queued &amp; Staged</option>
+                <option value="materials_prepared">[2] Material Cut &amp; Prep</option>
+                <option value="in_fabrication">[3] In Fabrication &amp; Assembly</option>
+                <option value="quality_check">[4] Quality &amp; Finishing</option>
+                <option value="ready_dispatch">[5] Ready for Dispatch</option>
+                <option value="installed_delivered">[6] Installed &amp; Delivered</option>
               </select>
             </div>
             <div class="form-field">
@@ -1077,8 +1125,14 @@
             </div>
             <button class="btn-primary" onclick="App.saveJobStatusUpdate()">Save Progress Update</button>
             <div style="display: flex; gap: 0.5rem; margin-top: 0.25rem;">
-              <button class="btn-amber" style="flex: 1;" onclick="App.openSignaturePad(App.activeJobId)">✍️ E-Signature</button>
-              <button class="btn-secondary" style="flex: 1;" onclick="App.printJobRoutingSlip()">🖨️ Job Slip</button>
+              <button class="btn-amber" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;" onclick="App.openSignaturePad(App.activeJobId)">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path></svg>
+                E-Signature
+              </button>
+              <button class="btn-secondary" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;" onclick="App.printJobRoutingSlip()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                Job Slip
+              </button>
             </div>
           </div>
         </div>
@@ -1090,7 +1144,7 @@
   <div class="modal-backdrop" id="modalPayment">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 id="modalPayTitle">💰 Record Customer Payment</h3>
+        <h3 id="modalPayTitle">Record Customer Payment</h3>
         <button class="modal-close-btn" onclick="App.closeModal('modalPayment')">&times;</button>
       </div>
       <div class="modal-body">
@@ -1146,7 +1200,7 @@
   <div class="modal-backdrop" id="modalNewCustomer">
     <div class="modal-card">
       <div class="modal-header">
-        <h3>👥 Register New Customer</h3>
+        <h3>Register New Customer</h3>
         <button class="modal-close-btn" onclick="App.closeModal('modalNewCustomer')">&times;</button>
       </div>
       <div class="modal-body">
@@ -1189,7 +1243,7 @@
   <div class="modal-backdrop" id="modalNewProduct">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 id="modalProductTitle">📦 Add Workshop Material / Product</h3>
+        <h3 id="modalProductTitle">Add Workshop Material / Product</h3>
         <button class="modal-close-btn" onclick="App.closeModal('modalNewProduct')">&times;</button>
       </div>
       <div class="modal-body">
@@ -1201,10 +1255,10 @@
           <div class="form-field">
             <label>Category</label>
             <select id="newProdCategory">
-              <option value="glass">🪟 Glass Works</option>
-              <option value="wood">🪵 Wood &amp; Cabinets</option>
-              <option value="metal">🔩 Metal &amp; Steel</option>
-              <option value="hardware">🔧 Hardware &amp; Supplies</option>
+              <option value="glass">Glass Works</option>
+              <option value="wood">Wood &amp; Cabinets</option>
+              <option value="metal">Metal &amp; Steel</option>
+              <option value="hardware">Hardware &amp; Supplies</option>
             </select>
           </div>
         </div>
@@ -1254,7 +1308,7 @@
   <div class="modal-backdrop" id="modalDimensionCalc">
     <div class="modal-card" style="max-width: 500px;">
       <div class="modal-header">
-        <h3>📐 Workshop Dimension &amp; Cut Calculator</h3>
+        <h3>Workshop Dimension &amp; Cut Calculator</h3>
         <button class="modal-close-btn" onclick="App.closeModal('modalDimensionCalc')">&times;</button>
       </div>
       <div class="modal-body" style="padding: 1.5rem;">
@@ -1315,7 +1369,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn-secondary" onclick="App.closeModal('modalDimensionCalc')">Close</button>
-        <button class="btn-primary" onclick="App.copyDimensionResults()">📋 Copy Dimensions</button>
+        <button class="btn-primary" onclick="App.copyDimensionResults()">Copy Dimensions</button>
       </div>
     </div>
   </div>
@@ -1324,7 +1378,7 @@
   <div class="modal-backdrop" id="modalUserAccount">
     <div class="modal-card" style="max-width: 520px;">
       <div class="modal-header">
-        <h3 id="modalUserTitle">👤 Update User &amp; Security Credentials</h3>
+        <h3 id="modalUserTitle">Update User &amp; Security Credentials</h3>
         <button class="modal-close-btn" onclick="App.closeModal('modalUserAccount')">&times;</button>
       </div>
       <div class="modal-body">
@@ -1358,22 +1412,22 @@
         <div class="form-field" style="margin-top: 0.85rem;">
           <label>Assigned System Role</label>
           <select id="editUserRole" style="width: 100%; padding: 0.65rem; background: #1e293b; border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-sm); color: #fff;">
-            <option value="owner">👑 Owner / General Manager</option>
-            <option value="sales">💼 Sales &amp; Front Counter</option>
-            <option value="fabricator">🛠️ Fabrication &amp; Workshop Staff</option>
+            <option value="owner">Owner / General Manager</option>
+            <option value="sales">Sales &amp; Front Counter</option>
+            <option value="fabricator">Fabrication &amp; Workshop Staff</option>
           </select>
         </div>
 
         <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px dashed var(--border-color);">
           <label style="font-size: 0.85rem; font-weight: 700; color: #38bdf8; display: block; margin-bottom: 0.5rem;">
-            🔑 Change Account Password
+            Change Account Password
           </label>
           <div class="form-field">
             <label>New Password (Leave blank to keep current password)</label>
             <div class="password-input-wrapper">
               <input type="password" id="editUserNewPassword" placeholder="Enter new password" style="width: 100%; padding: 0.65rem; padding-right: 2.8rem; background: #1e293b; border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-sm); color: #fff;" />
               <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('editUserNewPassword', this)" title="Show / Hide Password">
-                <span class="eye-icon">👁️</span>
+                <span class="eye-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>
               </button>
             </div>
           </div>
@@ -1391,7 +1445,9 @@
     <div class="modal-card modal-md">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.5rem;">
-          <span style="font-size: 1.3rem;">📷</span>
+          <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: rgba(56, 189, 248, 0.15); border-radius: 6px; color: #38bdf8;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+          </span>
           <div>
             <h3>Job Slip &amp; Material QR Scanner</h3>
             <p style="font-size: 0.75rem; color: var(--text-dim); margin: 0;">Scan Job Order #, Routing Slip, or Raw Material barcode</p>
@@ -1421,9 +1477,9 @@
           
           <div style="display: flex; gap: 0.4rem; margin-top: 0.65rem; flex-wrap: wrap;">
             <span style="font-size: 0.72rem; color: var(--text-dim); line-height: 1.8;">Quick Demo:</span>
-            <button type="button" class="role-chip" onclick="App.processScannedCode('JO-2026-0041')">🎯 JO-2026-0041 (Glass)</button>
-            <button type="button" class="role-chip" onclick="App.processScannedCode('JO-2026-0042')">🪵 JO-2026-0042 (Wood)</button>
-            <button type="button" class="role-chip" onclick="App.processScannedCode('JO-2026-0043')">🔩 JO-2026-0043 (Metal)</button>
+            <button type="button" class="role-chip" onclick="App.processScannedCode('JO-2026-0041')">JO-2026-0041 (Glass)</button>
+            <button type="button" class="role-chip" onclick="App.processScannedCode('JO-2026-0042')">JO-2026-0042 (Wood)</button>
+            <button type="button" class="role-chip" onclick="App.processScannedCode('JO-2026-0043')">JO-2026-0043 (Metal)</button>
           </div>
         </div>
       </div>
@@ -1438,7 +1494,9 @@
     <div class="modal-card modal-md">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 0.5rem;">
-          <span style="font-size: 1.3rem;">✍️</span>
+          <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: rgba(245, 158, 11, 0.15); border-radius: 6px; color: #f59e0b;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path></svg>
+          </span>
           <div>
             <h3 id="signatureModalTitle">Customer Digital E-Signature Pad</h3>
             <p style="font-size: 0.75rem; color: var(--text-dim); margin: 0;">Sign to confirm quotation acceptance, job order routing, or work completion</p>
@@ -1452,13 +1510,13 @@
         </div>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; font-size: 0.75rem; color: var(--text-dim);">
           <span>Sign using finger on touchscreens or mouse pointer on desktop</span>
-          <button type="button" class="btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.75rem;" onclick="App.clearSignatureCanvas()">🗑️ Clear Pad</button>
+          <button type="button" class="btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.75rem;" onclick="App.clearSignatureCanvas()">Clear Pad</button>
         </div>
         <input type="hidden" id="signatureTargetOrderId" value="" />
       </div>
       <div class="modal-footer">
         <button class="btn-secondary" onclick="App.closeSignaturePad()">Cancel</button>
-        <button class="btn-primary" onclick="App.saveCustomerSignature()">💾 Save &amp; Attach Signature</button>
+        <button class="btn-primary" onclick="App.saveCustomerSignature()">Save &amp; Attach Signature</button>
       </div>
     </div>
   </div>
@@ -1471,9 +1529,9 @@
           <h3 id="modalPrintDocTitle">Official Document Preview</h3>
           <div style="display: flex; gap: 0.4rem; margin-top: 0.45rem; align-items: center; flex-wrap: wrap;" id="receiptFormatToolbar">
             <span style="font-size: 0.72rem; color: var(--text-dim); font-weight: 700;">Format:</span>
-            <button type="button" class="role-chip active" id="btnReceiptFmtA4" onclick="App.setReceiptFormat('a4')">📄 Standard A4 Job Slip</button>
-            <button type="button" class="role-chip" id="btnReceiptFmt80" onclick="App.setReceiptFormat('80mm')">🧾 80mm POS Thermal Roll</button>
-            <button type="button" class="role-chip" id="btnReceiptFmt58" onclick="App.setReceiptFormat('58mm')">🧾 58mm Mini Roll</button>
+            <button type="button" class="role-chip active" id="btnReceiptFmtA4" onclick="App.setReceiptFormat('a4')">Standard A4 Job Slip</button>
+            <button type="button" class="role-chip" id="btnReceiptFmt80" onclick="App.setReceiptFormat('80mm')">80mm POS Thermal Roll</button>
+            <button type="button" class="role-chip" id="btnReceiptFmt58" onclick="App.setReceiptFormat('58mm')">58mm Mini Roll</button>
           </div>
         </div>
         <button class="modal-close-btn" onclick="App.closeModal('modalPrintView')">&times;</button>
@@ -1483,7 +1541,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn-secondary" onclick="App.closeModal('modalPrintView')">Close</button>
-        <button class="btn-primary" onclick="window.print()">🖨️ Print Document</button>
+        <button class="btn-primary" onclick="window.print()">Print Document</button>
       </div>
     </div>
   </div>
