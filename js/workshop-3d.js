@@ -1,7 +1,7 @@
 /**
  * RUSELL'S GLASS, WOODS & METALS - 3D Interactive Material Matrix
  * Real-time hardware-accelerated 3D Canvas Perspective Engine
- * Lead Software Architect: ALVARADO, JETHRO OLIVER A. (UMDC)
+ * High-performance vanilla JavaScript 3D projection viewport
  */
 
 (function () {

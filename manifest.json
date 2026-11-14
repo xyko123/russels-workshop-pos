@@ -1,7 +1,7 @@
 {
   "name": "RUSELL'S Glass, Woods & Metals POS",
   "short_name": "Rusell's POS",
-  "description": "BSIT Mini-Capstone System - System Integration & Architecture for RUSELL'S GLASS, WOODS & METALS (Digos City)",
+  "description": "Workshop Point of Sale & Fabrication Operations for RUSELL'S GLASS, WOODS & METALS (Digos City)",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "landscape-primary",

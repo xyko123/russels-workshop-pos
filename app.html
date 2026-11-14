@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RUSELL'S Glass, Woods &amp; Metals | BSIT Mini-Capstone System</title>
+  <title>RUSELL'S Glass, Woods &amp; Metals | Workshop POS &amp; Fabrication System</title>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#15803d" />
   <link rel="apple-touch-icon" href="assets/logo.jpg" />
@@ -24,14 +24,14 @@
         </div>
       </div>
 
-      <!-- BSIT MINI-CAPSTONE STUDENT PROPONENT BADGE -->
-      <div class="sidebar-academic-block">
-        <div class="academic-badge-pill">BSIT CAPSTONE SYSTEM</div>
-        <p class="academic-system-sub">System Integration &amp; Architecture</p>
+      <!-- WORKSHOP OPERATIONS BADGE -->
+      <div class="sidebar-academic-block" style="background: rgba(2, 132, 199, 0.08); border-color: rgba(56, 189, 248, 0.2);">
+        <div class="academic-badge-pill" style="background: #0284c7; color: #ffffff;">ENTERPRISE WORKSHOP SUITE</div>
+        <p class="academic-system-sub" style="color: #38bdf8;">Fabrication &amp; Point of Sale</p>
         <div class="academic-proponent-tag">
-          <span>LEAD SYSTEM ARCHITECT:</span>
-          <strong>ALVARADO, JETHRO OLIVER A.</strong>
-          <small style="display: block; font-size: 0.68rem; color: #94a3b8; margin-top: 3px;">University of Mindanao Digos College</small>
+          <span style="color: #94a3b8;">PRIMARY FACILITY:</span>
+          <strong style="color: #f8fafc;">DIGOS CITY MAIN YARD</strong>
+          <small style="display: block; font-size: 0.68rem; color: #94a3b8; margin-top: 3px;">Tabor Lumber Compound, Roxas Ext.</small>
         </div>
       </div>
 
@@ -130,7 +130,7 @@
         </a>
 
         <!-- 11. REPORTS -->
-        <a class="nav-link" data-view="reports" title="Operational Reports, Capstone Validation &amp; Database Backup">
+        <a class="nav-link" data-view="reports" title="Operational Reports, Business Analytics &amp; Database Backup">
           <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
           <div class="nav-label-group">
             <span class="nav-primary-title">Reports</span>
@@ -150,10 +150,10 @@
 
       <div class="sidebar-footer">
         <div class="user-status-card" onclick="App.openEditProfileModal()" title="Click to view profile &amp; change password" style="cursor: pointer;">
-          <div class="user-avatar" id="sidebarAvatar" style="font-size: 0.75rem; font-weight: 800; background: #15803d; color: #ffffff;">JA</div>
+          <div class="user-avatar" id="sidebarAvatar" style="font-size: 0.75rem; font-weight: 800; background: #0284c7; color: #ffffff;">RT</div>
           <div class="user-info">
-            <div class="user-name" id="sidebarUserName">Alvarado, Jethro</div>
-            <div class="user-role-tag" id="sidebarUserRole">System Architect</div>
+            <div class="user-name" id="sidebarUserName">Russel T.</div>
+            <div class="user-role-tag" id="sidebarUserRole">Proprietor &amp; GM</div>
           </div>
           <span style="font-size: 0.85rem; color: var(--text-dim); margin-left: auto;" title="Edit Profile &amp; Password">
             <svg style="width: 14px; height: 14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -215,7 +215,7 @@
             <span>Dimension Calc</span>
           </button>
 
-          <!-- Role Switcher for instant capstone evaluation -->
+          <!-- Role Switcher for system evaluation -->
           <select id="roleSwitcher" class="role-switcher-select" title="Switch Role for Evaluation">
             <option value="owner">Executive / General Manager</option>
             <option value="sales">Counter Sales &amp; Front Desk</option>
@@ -786,17 +786,17 @@
         </div>
       </section>
 
-      <!-- VIEW 10: REPORTS & BSIT MINI-CAPSTONE -->
+      <!-- VIEW 10: REPORTS & WORKSHOP INTELLIGENCE -->
       <section id="view-reports" class="view-container">
         <div class="table-panel" style="padding: 1.75rem; margin-bottom: 1.5rem;">
           <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
             <div>
-              <span class="college-badge">University of Mindanao Digos College • BSIT MINI-CAPSTONE SYSTEM</span>
+              <span class="college-badge" style="background: rgba(2, 132, 199, 0.15); color: #38bdf8;">Enterprise Workshop Intelligence</span>
               <div style="font-size: 0.72rem; color: #4ade80; font-weight: 800; margin-top: 4px; letter-spacing: 0.05em;">
-                COURSE: SYSTEM INTEGRATION &amp; ARCHITECTURE • PROPOSED BY: ALVARADO, JETHRO OLIVER A.
+                OFFICIAL WORKSHOP OPERATIONS &amp; BUSINESS AUDIT · RUSELL'S GLASS, WOODS &amp; METALS
               </div>
               <h2 style="font-size: 1.4rem; font-weight: 800; margin-top: 0.5rem; color: #ffffff;">
-                System Operational Summary &amp; Research Evaluation
+                System Operational Summary &amp; Analytics
               </h2>
               <p style="color: var(--text-dim); font-size: 0.85rem;">
                 Web-Based Order, Fabrication Monitoring with Inventory Management System for RUSELL'S GLASS, WOODS &amp; METALS (Digos City)
@@ -812,7 +812,7 @@
 
           <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem;">
             <h3 style="font-size: 0.95rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.75rem;">
-              Specific Objectives Verification Status:
+              Workshop Operational Benchmarks:
             </h3>
             <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; font-size: 0.82rem;">
               <div style="display: flex; align-items: center; gap: 0.5rem; color: #34d399;">
@@ -837,7 +837,7 @@
               </div>
               <div style="display: flex; align-items: center; gap: 0.5rem; color: #34d399;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span><strong>6. System Integration &amp; Architecture:</strong> Multi-tier architecture powered by XAMPP MySQL.</span>
+                <span><strong>6. System Architecture:</strong> Multi-tier database engine powered by Cloud &amp; MySQL.</span>
               </div>
             </div>
           </div>
@@ -1390,18 +1390,18 @@
         <div class="form-grid-2">
           <div class="form-field">
             <label>Full Name</label>
-            <input type="text" id="editUserFullName" placeholder="e.g., Alvarado, Jethro Oliver A." />
+            <input type="text" id="editUserFullName" placeholder="e.g., Russel T." />
           </div>
           <div class="form-field">
             <label>Username (Login ID)</label>
-            <input type="text" id="editUserUsername" placeholder="e.g., jethro" />
+            <input type="text" id="editUserUsername" placeholder="e.g., owner" />
           </div>
         </div>
 
         <div class="form-grid-2" style="margin-top: 0.85rem;">
           <div class="form-field">
             <label>Contact Phone (SMS OTP)</label>
-            <input type="text" id="editUserPhone" placeholder="0992 232 8650" />
+            <input type="text" id="editUserPhone" placeholder="0921-371-0555" />
           </div>
           <div class="form-field">
             <label>Email Address</label>

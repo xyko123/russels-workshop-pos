@@ -1,8 +1,7 @@
 /**
  * RUSELL'S GLASS, WOODS & METALS - TURSO CLOUD DATABASE ADAPTER (libSQL over HTTP)
  * Location: Tabor Lumber Compound, Roxas Ext., Brgy. Zone III, Digos City
- * Proponent: ALVARADO, JETHRO OLIVER A.
- * BSIT MINI-CAPSTONE SYSTEM - SYSTEM INTEGRATION & ARCHITECTURE
+ * Multi-Tier Cloud Sync & Offline Database Engine
  */
 
 const TursoConfig = {

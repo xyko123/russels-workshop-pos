@@ -5,8 +5,8 @@ color 0A
 echo ============================================================================
 echo   RUSELL'S GLASS, WOODS & METALS - WORKSHOP POS SOFTWARE
 echo   "You NAME it, we BUILD it" - Tabor Lumber Compound, Digos City
-echo   BSIT Mini-Capstone System - System Integration & Architecture
-echo   Lead Proponent: ALVARADO, JETHRO OLIVER A.
+echo   Point of Sale, Custom Fabrication Estimator & Inventory Management
+echo   Tabor Lumber Compound, Roxas Ext., Digos City, Davao del Sur
 echo ============================================================================
 echo.
 

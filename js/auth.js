@@ -2,21 +2,11 @@
  * RUSELL'S GLASS, WOODS & METALS - Authentication & OTP Security
  * Tabor Lumber Compound, Roxas Ext., Barangay Zone III, Digos City
  * "You NAME it, we BUILD it"
- * University of Mindanao Digos College - BSIT Capstone System
+ * Workshop Point of Sale & Fabrication Management
  */
 
-// Default Authorized Accounts with authentic owner, student proponent, and office profiles
+// Default Authorized Accounts for Owner, Front Office, and Workshop Personnel
 const DEFAULT_USERS = [
-  {
-    username: 'jethro',
-    password: 'Capstone2026!',
-    fullName: 'Alvarado, Jethro Oliver A.',
-    phone: '0992 232 8650',
-    email: 'jethro.alvarado@umdc.edu.ph',
-    role: 'owner',
-    roleLabel: 'System Developer & Architect',
-    avatar: 'JA'
-  },
   {
     username: 'owner',
     password: 'Admin123!',
@@ -54,27 +44,26 @@ function getStoredUsers() {
   const stored = localStorage.getItem('russels_users');
   if (stored) {
     try {
-      const parsed = JSON.parse(stored);
+      let parsed = JSON.parse(stored);
+      // Remove any legacy student proponent account
+      parsed = parsed.filter(u => u.username.toLowerCase() !== 'jethro');
+      
       // Clean up legacy emoji avatars
       parsed.forEach(u => {
-        if (u.avatar === '🎓') u.avatar = 'JA';
+        if (u.avatar === '🎓') u.avatar = 'RT';
         if (u.avatar === '👑') u.avatar = 'RT';
         if (u.avatar === '💼') u.avatar = 'IJ';
         if (u.avatar === '🛠️') u.avatar = 'AM';
         if (!u.avatar || u.avatar.length > 3) {
-          u.avatar = (u.fullName || u.username || 'JA').substring(0, 2).toUpperCase();
+          u.avatar = (u.fullName || u.username || 'RT').substring(0, 2).toUpperCase();
         }
       });
-      // Ensure jethro account exists and has the requested mobile number
-      const jethroIdx = parsed.findIndex(u => u.username.toLowerCase() === 'jethro');
-      if (jethroIdx !== -1) {
-        parsed[jethroIdx].fullName = 'Alvarado, Jethro Oliver A.';
-        parsed[jethroIdx].phone = '0992 232 8650';
-        parsed[jethroIdx].roleLabel = 'System Developer & Architect';
-        parsed[jethroIdx].avatar = 'JA';
-      } else {
+
+      // Ensure primary owner exists
+      if (!parsed.some(u => u.username === 'owner')) {
         parsed.unshift(DEFAULT_USERS[0]);
       }
+
       localStorage.setItem('russels_users', JSON.stringify(parsed));
       return parsed;
     } catch (e) {
@@ -124,7 +113,7 @@ function fillCredentials(username, password) {
 // ==========================================
 let currentOTP = null;
 let otpChannel = 'sms';
-let selectedUsername = 'jethro';
+let selectedUsername = 'owner';
 let otpTimerInterval = null;
 let resendSeconds = 45;
 
@@ -134,7 +123,7 @@ function openForgotModal() {
   modal.classList.add('active');
   goToStep(1);
 
-  // Pre-select username if already typed on main form, otherwise default to jethro
+  // Pre-select username if already typed on main form, otherwise default to owner
   const inputUser = document.getElementById('username');
   const recSel = document.getElementById('recoveryAccount');
   if (recSel) {
@@ -142,7 +131,7 @@ function openForgotModal() {
       const match = Array.from(recSel.options).find(opt => opt.value.toLowerCase() === inputUser.value.trim().toLowerCase());
       if (match) recSel.value = match.value;
     } else {
-      recSel.value = 'jethro';
+      recSel.value = 'owner';
     }
   }
   updateRecoveryPreviews();
@@ -150,17 +139,17 @@ function openForgotModal() {
 
 function updateRecoveryPreviews() {
   const recSel = document.getElementById('recoveryAccount');
-  const uName = recSel ? recSel.value : 'jethro';
+  const uName = recSel ? recSel.value : 'owner';
   const users = getStoredUsers();
   const u = users.find(x => x.username.toLowerCase() === uName.toLowerCase()) || users[0];
   const smsPreview = document.getElementById('smsPreviewText');
   const emailSub = document.querySelector('#channelEmail .channel-sub');
   if (smsPreview && u) {
-    const rawPhone = u.phone || '0992 232 8650';
+    const rawPhone = u.phone || '0921-371-0555';
     smsPreview.textContent = rawPhone.startsWith('+63') ? rawPhone : `+63 ${rawPhone}`;
   }
   if (emailSub && u) {
-    emailSub.textContent = u.email || 'jethro.alvarado@umdc.edu.ph';
+    emailSub.textContent = u.email || 'irisjunetaborbajura@gmail.com';
   }
 }
 window.updateRecoveryPreviews = updateRecoveryPreviews;
@@ -224,7 +213,7 @@ function goToStep(stepNum) {
 
 function sendOTP() {
   const recSel = document.getElementById('recoveryAccount');
-  selectedUsername = recSel ? recSel.value : 'jethro';
+  selectedUsername = recSel ? recSel.value : 'owner';
 
   const users = getStoredUsers();
   const targetUser = users.find(u => u.username.toLowerCase() === selectedUsername.toLowerCase()) || users[0];
@@ -233,10 +222,10 @@ function sendOTP() {
   currentOTP = Math.floor(100000 + Math.random() * 900000).toString();
 
   // Determine destination
-  const rawPhone = targetUser.phone || '0992 232 8650';
+  const rawPhone = targetUser.phone || '0921-371-0555';
   const targetDisplay = otpChannel === 'sms' 
     ? (rawPhone.startsWith('+63') ? rawPhone : `+63 ${rawPhone}`)
-    : (targetUser.email || 'jethro.alvarado@umdc.edu.ph');
+    : (targetUser.email || 'irisjunetaborbajura@gmail.com');
 
   const sentDisplay = document.getElementById('sentTargetDisplay');
   if (sentDisplay) sentDisplay.textContent = targetDisplay;

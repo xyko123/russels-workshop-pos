@@ -1,6 +1,6 @@
 /**
  * Russel's Glass, Wood and Metals - Database & LocalStorage Engine
- * University of Mindanao Digos College - BSIT Capstone
+ * Official Workshop Operations & Point of Sale System
  * Roxas Extension, Digos City, Davao del Sur
  */
 
@@ -966,7 +966,7 @@ const INITIAL_QUOTATIONS = [
   }
 ];
 
-// Seed Settings & Academic Capstone Credentials
+// Seed Settings & Workshop Configuration
 const INITIAL_SETTINGS = {
   shopName: "RUSELL'S GLASS, WOODS & METALS",
   tagline: '"You NAME it, we BUILD it"',
@@ -975,10 +975,7 @@ const INITIAL_SETTINGS = {
   email: "irisjunetaborbajura@gmail.com",
   facebook: "rusell's glass woods metals",
   owner: "Russel T. (Proprietor)",
-  capstoneTitle: "BSIT MINI-CAPSTONE SYSTEM - SYSTEM INTEGRATION & ARCHITECTURE",
-  proponent: "ALVARADO, JETHRO OLIVER A.",
-  college: "University of Mindanao Digos College (UMDC)",
-  academicYear: "2026 - 2027",
+  systemTitle: "Workshop Point of Sale & Fabrication Management",
   taxRate: 0,
   currency: 'PHP',
   currencySymbol: '₱',

@@ -125,29 +125,7 @@
             <div class="brand-block">
                 <div class="brand-badge-container">
                     <img src="assets/logo.jpg" alt="RUSELL'S Glass, Woods &amp; Metals" class="brand-logo-img" />
-                    <span class="college-badge">UM Digos College • BSIT System Integration &amp; Architecture</span>
-                </div>
-
-                <!-- PROFESSIONAL STUDENT PROPONENT BANNER -->
-                <div class="proponent-badge-card professional">
-                    <div class="proponent-badge-header">
-                        <span class="proponent-pill">LEAD SYSTEM ARCHITECT</span>
-                        <span class="proponent-org">BSIT CAPSTONE DEFENSE</span>
-                    </div>
-                    <div class="proponent-name-block">
-                        <div class="proponent-crest">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                        </div>
-                        <div>
-                            <h3 class="proponent-name">ALVARADO, JETHRO OLIVER A.</h3>
-                            <p class="proponent-role">System Developer &amp; Software Architect</p>
-                        </div>
-                    </div>
-                    <div class="proponent-meta-row">
-                        <span>Department of Information Technology</span>
-                        <span class="meta-separator">•</span>
-                        <span>University of Mindanao Digos College</span>
-                    </div>
+                    <span class="college-badge" style="background: rgba(2, 132, 199, 0.15); color: #38bdf8;">Official Workshop Management System</span>
                 </div>
 
                 <p class="eyebrow">Enterprise Fabrication &amp; Point of Sale Management</p>
@@ -300,7 +278,7 @@
                 <form id="loginForm" novalidate>
                     <div class="field-group">
                         <label for="username">Username</label>
-                        <input id="username" name="username" type="text" autocomplete="username" placeholder="Enter username (e.g. jethro, owner)" required />
+                        <input id="username" name="username" type="text" autocomplete="username" placeholder="Enter username (e.g. owner, sales)" required />
                     </div>
 
                     <div class="field-group">
@@ -324,10 +302,7 @@
                 <div class="demo-role-pills">
                     <p>Quick Evaluation Profiles (Click to fill):</p>
                     <div class="role-buttons">
-                        <button type="button" class="role-chip" style="background: rgba(34, 197, 94, 0.18); border-color: #22c55e; color: #86efac; font-weight: 800;" onclick="fillCredentials('jethro', 'Capstone2026!')">
-                            Lead Architect (Alvarado, J.)
-                        </button>
-                        <button type="button" class="role-chip" onclick="fillCredentials('owner', 'Admin123!')">
+                        <button type="button" class="role-chip" style="background: rgba(34, 197, 94, 0.18); border-color: #22c55e; color: #86efac; font-weight: 800;" onclick="fillCredentials('owner', 'Admin123!')">
                             Executive Manager (Rusell)
                         </button>
                         <button type="button" class="role-chip" onclick="fillCredentials('sales', 'Sales123!')">
@@ -376,10 +351,9 @@
                     <div class="field-group">
                         <label for="recoveryAccount">Target Account</label>
                         <select id="recoveryAccount" onchange="updateRecoveryPreviews()" style="width: 100%; padding: 0.75rem; background: #1e293b; border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-sm); color: #fff;">
-                            <option value="jethro" selected>Lead System Architect (Alvarado, Jethro Oliver A. - 0992 232 8650)</option>
-                            <option value="owner">Executive Proprietor (Russel - 0921-371-0555)</option>
+                            <option value="owner" selected>Executive Proprietor (Russel T. - 0921-371-0555)</option>
                             <option value="sales">Counter Sales (Iris / Office - 0929-590-2201)</option>
-                            <option value="workshop">Fabrication Lead (Arnel Mendoza - Workshop)</option>
+                            <option value="workshop">Fabrication Lead (Arnel Mendoza - 09053602201)</option>
                         </select>
                     </div>
 
@@ -393,14 +367,14 @@
                                 <svg class="pro-svg-icon" style="stroke: #4ade80;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                             </div>
                             <div class="channel-title">SMS to Registered Mobile</div>
-                            <div class="channel-sub" id="smsPreviewText">+63 0992 232 8650</div>
+                            <div class="channel-sub" id="smsPreviewText">+63 0921-371-0555</div>
                         </div>
                         <div class="channel-card" id="channelEmail" onclick="selectChannel('email')">
                             <div class="channel-icon">
                                 <svg class="pro-svg-icon" style="stroke: #38bdf8;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                             </div>
-                            <div class="channel-title">Institutional Email OTP</div>
-                            <div class="channel-sub">jethro.alvarado@umdc.edu.ph</div>
+                            <div class="channel-title">Corporate Email OTP</div>
+                            <div class="channel-sub">irisjunetaborbajura@gmail.com</div>
                         </div>
                     </div>
 
@@ -414,7 +388,7 @@
                 <!-- STEP 2: Enter 6-digit OTP -->
                 <div class="otp-step" id="step2">
                     <p style="font-size: 0.88rem; color: var(--text-white-dim); margin-bottom: 0.75rem;">
-                        Verification code dispatched to <strong id="sentTargetDisplay" style="color: #4ade80;">+63 0992 232 8650</strong>. Enter code:
+                        Verification code dispatched to <strong id="sentTargetDisplay" style="color: #4ade80;">+63 0921-371-0555</strong>. Enter code:
                     </p>
 
                     <!-- Real-time Gateway Simulation Banner -->

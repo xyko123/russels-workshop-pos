@@ -4,11 +4,11 @@ color 0B
 
 echo ============================================================================
 echo   RUSELL'S WORKSHOP POS - 1-CLICK GITHUB PUSH FOR VERCEL
-echo   Lead Proponent: ALVARADO, JETHRO OLIVER A.
+echo   Tabor Lumber Compound, Roxas Ext., Digos City, Davao del Sur
 echo ============================================================================
 echo.
 
-set /p GITHUB_USER="Enter your GitHub username (e.g., jethroalvarado): "
+set /p GITHUB_USER="Enter your GitHub username: "
 if "%GITHUB_USER%"=="" (
     echo [ERROR] GitHub username cannot be empty!
     pause
@@ -19,14 +19,14 @@ set REPO_NAME=russels-workshop-pos
 echo.
 echo [1/4] Initializing Git repository & author info...
 git init
-git config user.name "Alvarado, Jethro Oliver A."
-git config user.email "jethroalvarado05@gmail.com"
+git config user.name "Rusell Workshop Admin"
+git config user.email "irisjunetaborbajura@gmail.com"
 
 echo [2/4] Staging all workshop system files, assets and configs...
 git add .
 
 echo [3/4] Creating commit...
-git commit -m "BSIT Mini-Capstone: Rusell's Glass, Woods & Metals POS - System Integration & Architecture"
+git commit -m "Deploy: Rusell's Glass, Woods & Metals POS & Workshop Operations"
 
 echo [4/4] Setting main branch & remote origin...
 git branch -M main

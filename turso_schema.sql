@@ -1,8 +1,7 @@
 -- ============================================================================
 -- RUSELL'S GLASS, WOODS & METALS - TURSO CLOUD DATABASE (SQLite / libSQL)
 -- "You NAME it, we BUILD it" - Tabor Lumber Compound, Roxas Ext., Digos City
--- BSIT MINI-CAPSTONE SYSTEM - SYSTEM INTEGRATION & ARCHITECTURE
--- Proponent: ALVARADO, JETHRO OLIVER A.
+-- Enterprise Cloud Database Schema & Initial Records
 -- ============================================================================
 
 -- 1. USERS & ACCESS ROLES
@@ -18,7 +17,6 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 INSERT OR IGNORE INTO users (id, username, password_hash, full_name, role, phone, email) VALUES
-('usr-001', 'alvarado.jethro', 'admin123', 'Alvarado, Jethro Oliver A.', 'System Developer & Architect', '0992 232 8650', 'alvarado.jethro@umindanao.edu.ph'),
 ('usr-002', 'rusell.owner', 'rusell2026', 'Rusell Bajura', 'Owner & General Manager', '0921-371-0555', 'rusellbajura@gmail.com'),
 ('usr-003', 'iris.finance', 'iris2026', 'Iris Bajura', 'Cashier & Finance Officer', '0929-590-2201', 'irisjuntaborbajura@gmail.com'),
 ('usr-004', 'arnel.leadfab', 'fab2026', 'Arnel Mendoza', 'Fabrication Lead Foreman', '0938-112-4455', 'arnel.fab@gmail.com');

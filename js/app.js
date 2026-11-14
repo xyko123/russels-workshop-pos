@@ -1,6 +1,6 @@
 /**
  * Russel's Glass, Wood and Metals - Core Application Controller
- * University of Mindanao Digos College - BSIT Capstone
+ * Official Workshop Operations & Point of Sale System
  * Roxas Extension, Digos City, Davao del Sur
  */
 
@@ -23,14 +23,14 @@ class WorkshopApp {
   init() {
     // Check or setup user session
     this.currentUser = AuthService.getCurrentUser();
-    if (!this.currentUser) {
-      // Default to lead proponent demo if opened directly
+    if (!this.currentUser || this.currentUser.username === 'jethro') {
+      // Default to proprietor profile if opened directly
       this.currentUser = {
-        username: 'jethro',
-        fullName: 'Alvarado, Jethro Oliver A.',
+        username: 'owner',
+        fullName: 'Russel T. (Proprietor)',
         role: 'owner',
-        roleLabel: 'Lead System Architect & Developer',
-        avatar: 'JA'
+        roleLabel: 'Proprietor & General Manager',
+        avatar: 'RT'
       };
       localStorage.setItem('russels_current_user', JSON.stringify(this.currentUser));
     }
@@ -48,7 +48,7 @@ class WorkshopApp {
     const roleEl = document.getElementById('sidebarUserRole');
     const roleSwitcher = document.getElementById('roleSwitcher');
 
-    if (avatarEl) avatarEl.textContent = this.currentUser.avatar || 'JA';
+    if (avatarEl) avatarEl.textContent = this.currentUser.avatar || 'RT';
     if (nameEl) nameEl.textContent = this.currentUser.fullName || this.currentUser.username;
     if (roleEl) roleEl.textContent = this.currentUser.roleLabel || this.currentUser.role;
     if (roleSwitcher) roleSwitcher.value = this.currentUser.role;
@@ -85,9 +85,9 @@ class WorkshopApp {
     if (roleSwitcher) {
       roleSwitcher.addEventListener('change', (e) => {
         const newRole = e.target.value;
-        let roleLabel = 'Lead System Architect & Developer';
-        let avatar = 'JA';
-        let fullName = 'Alvarado, Jethro Oliver A.';
+        let roleLabel = 'Proprietor & General Manager';
+        let avatar = 'RT';
+        let fullName = 'Russel T. (Proprietor)';
 
         if (newRole === 'sales') {
           roleLabel = 'Sales & Front Office Staff';
@@ -97,14 +97,10 @@ class WorkshopApp {
           roleLabel = 'Workshop & Site Installer';
           avatar = 'AM';
           fullName = 'Arnel Mendoza (Lead Fabricator)';
-        } else if (newRole === 'owner') {
-          roleLabel = 'Proprietor & General Manager';
-          avatar = 'RT';
-          fullName = 'Russel T. (Proprietor)';
         }
 
         this.currentUser = {
-          username: newRole === 'owner' ? 'jethro' : newRole,
+          username: newRole,
           fullName,
           role: newRole,
           roleLabel,
@@ -287,11 +283,11 @@ class WorkshopApp {
       },
       users: {
         title: 'User Management & Role Permissions',
-        sub: 'System access control, proponent credentials, and role-based permissions'
+        sub: 'System access control, personnel credentials, and role-based permissions'
       },
       reports: {
-        title: 'Reports & Capstone Summary',
-        sub: 'University of Mindanao Digos College - BSIT Research Evaluation Metrics'
+        title: 'Reports & Business Analytics',
+        sub: 'Official Workshop Performance Metrics & Financial Intelligence'
       }
     };
 
@@ -1727,8 +1723,7 @@ class WorkshopApp {
     let sql = `-- ============================================================================\n`;
     sql += `-- RUSELL'S GLASS, WOODS & METALS - DISASTER RECOVERY DATABASE BACKUP\n`;
     sql += `-- Location: Tabor Lumber Compound, Roxas Ext., Brgy. Zone III, Digos City\n`;
-    sql += `-- University of Mindanao Digos College - BSIT Mini-Capstone System\n`;
-    sql += `-- Proponent: ALVARADO, JETHRO OLIVER A. (Lead System Architect & Developer)\n`;
+    sql += `-- System: Official Workshop Point of Sale & Fabrication Operations\n`;
     sql += `-- Generated: ${new Date().toLocaleString()} (PHT)\n`;
     sql += `-- ============================================================================\n\n`;
     sql += `CREATE DATABASE IF NOT EXISTS \`russels_workshop\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\n`;
@@ -1737,10 +1732,10 @@ class WorkshopApp {
     const users = (typeof getStoredUsers === 'function') ? getStoredUsers() : [];
     sql += `-- 1. Table: users (${users.length} accounts)\n`;
     sql += `DROP TABLE IF EXISTS \`users\`;\n`;
-    sql += `CREATE TABLE \`users\` (\n  \`id\` INT AUTO_INCREMENT PRIMARY KEY,\n  \`username\` VARCHAR(50) NOT NULL UNIQUE,\n  \`password\` VARCHAR(255) NOT NULL,\n  \`full_name\` VARCHAR(100) NOT NULL,\n  \`phone\` VARCHAR(30) DEFAULT '0992 232 8650',\n  \`email\` VARCHAR(100) DEFAULT 'jethro.alvarado@umdc.edu.ph',\n  \`role\` ENUM('owner', 'sales', 'fabricator') NOT NULL DEFAULT 'owner',\n  \`role_label\` VARCHAR(80) NOT NULL,\n  \`avatar\` VARCHAR(10) DEFAULT 'JA'\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n\n`;
+    sql += `CREATE TABLE \`users\` (\n  \`id\` INT AUTO_INCREMENT PRIMARY KEY,\n  \`username\` VARCHAR(50) NOT NULL UNIQUE,\n  \`password\` VARCHAR(255) NOT NULL,\n  \`full_name\` VARCHAR(100) NOT NULL,\n  \`phone\` VARCHAR(30) DEFAULT '0921-371-0555',\n  \`email\` VARCHAR(100) DEFAULT 'irisjunetaborbajura@gmail.com',\n  \`role\` ENUM('owner', 'sales', 'fabricator') NOT NULL DEFAULT 'owner',\n  \`role_label\` VARCHAR(80) NOT NULL,\n  \`avatar\` VARCHAR(10) DEFAULT 'RT'\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n\n`;
     if (users.length > 0) {
       sql += `INSERT INTO \`users\` (\`username\`, \`password\`, \`full_name\`, \`phone\`, \`email\`, \`role\`, \`role_label\`, \`avatar\`) VALUES\n`;
-      sql += users.map(u => `('${u.username}', '${u.password}', '${(u.fullName || '').replace(/'/g, "\\'")}', '${u.phone || ''}', '${u.email || ''}', '${u.role || 'owner'}', '${(u.roleLabel || '').replace(/'/g, "\\'")}', '${u.avatar || 'JA'}')`).join(',\n') + ';\n\n';
+      sql += users.map(u => `('${u.username}', '${u.password}', '${(u.fullName || '').replace(/'/g, "\\'")}', '${u.phone || ''}', '${u.email || ''}', '${u.role || 'owner'}', '${(u.roleLabel || '').replace(/'/g, "\\'")}', '${u.avatar || 'RT'}')`).join(',\n') + ';\n\n';
     }
 
     const customers = db.getCustomers();
@@ -1830,7 +1825,7 @@ class WorkshopApp {
   }
 
   resetDemoData() {
-    if (confirm('Are you sure you want to reset all data back to original Capstone demo values? All test transactions will be re-seeded.')) {
+    if (confirm('Are you sure you want to reset all data back to initial workshop defaults? All test transactions will be re-seeded.')) {
       db.resetDatabase();
       this.loadView(this.currentView);
       this.showToast('Database reset to initial demo dataset!', 'info');
@@ -1882,11 +1877,11 @@ class WorkshopApp {
     tbody.innerHTML = users.map(u => `
       <tr>
         <td style="text-align: center;">
-          <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #0284c7, #0369a1); color: #fff; font-weight: 800; font-size: 0.85rem; border: 1.5px solid #38bdf8; box-shadow: 0 2px 8px rgba(2,132,199,0.35);">${u.avatar || 'JA'}</span>
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #0284c7, #0369a1); color: #fff; font-weight: 800; font-size: 0.85rem; border: 1.5px solid #38bdf8; box-shadow: 0 2px 8px rgba(2,132,199,0.35);">${u.avatar || 'RT'}</span>
         </td>
         <td>
           <div style="font-weight: 700; color: #ffffff;">${u.fullName}</div>
-          <small style="color: ${u.username === 'jethro' ? '#4ade80' : 'var(--text-dim)'}; font-weight: ${u.username === 'jethro' ? '700' : 'normal'};">
+          <small style="color: var(--text-dim);">
             ${u.roleLabel || u.role}
           </small>
         </td>
@@ -1912,7 +1907,7 @@ class WorkshopApp {
 
   openEditProfileModal() {
     const cur = (typeof AuthService !== 'undefined') ? AuthService.getCurrentUser() : null;
-    this.openEditUserModal(cur ? cur.username : 'jethro');
+    this.openEditUserModal(cur ? cur.username : 'owner');
   }
 
   openEditUserModal(username) {
@@ -2133,7 +2128,7 @@ class WorkshopApp {
             <img src="${qrUrl}" alt="QR" style="width: 75px; height: 75px; display: inline-block; margin: 0 auto; border: 1px solid #000; padding: 2px;" />
             <div style="font-size: 8px; margin-top: 3px;">SCAN TO TRACK JOB STATUS</div>
             <div style="font-size: 9px; margin-top: 6px; font-weight: bold;">*** THANK YOU! DAGHANG SALAMAT! ***</div>
-            <div style="font-size: 8px; color: #444;">BSIT Mini-Capstone • Alvarado, Jethro</div>
+            <div style="font-size: 8px; color: #444;">Official Thermal POS Receipt • Digos City</div>
           </div>
         </div>
       `;

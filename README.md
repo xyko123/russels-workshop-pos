@@ -1,16 +1,15 @@
 # Russel's Glass, Wood and Metals
 ## Web-Based Order and Project Monitoring with Inventory Management System (POS & Workshop Management)
 
-**University of Mindanao Digos College (UMDC)**  
-**Bachelor of Science in Information Technology (BSIT)**  
-**Location of Establishment:** Roxas Extension, Digos City, Davao del Sur  
+**Location of Establishment:** Tabor Lumber Compound, Roxas Extension, Digos City, Davao del Sur  
+**Contact:** CP # 0921-371-0555 • 0929-590-2201 • 09053602201
 
 ---
 
-### 📌 Overview & Capstone Alignment
+### Overview & Workflow
 This web application is a purpose-built Point of Sale (POS), Custom Fabrication Estimator, Project/Job Order Monitoring, Inventory Management, and Billing system tailored specifically to the operational workflow of **Russel's Glass, Wood and Metals** in Digos City.
 
-It directly implements and fulfills all specific objectives stated in the BSIT Capstone Thesis proposal:
+It directly implements and fulfills the core operational requirements:
 1. **Customer & Order Management:** Centralized recording of inquiries, walk-in counter sales, and custom made-to-order projects.
 2. **Measurement & Quotation Estimator:** Calculates surface area (sq ft / sq m), frame perimeter (linear ft), raw materials, cutting labor, hardware, and on-site installation costs for custom glass, wood, and metal fabrications.
 3. **Formal Quotation Generator:** Produces print-ready project quotations with 15-day validity and one-click conversion to active Job Orders upon downpayment.
@@ -37,11 +36,11 @@ It directly implements and fulfills all specific objectives stated in the BSIT C
 
 | Role | Username | Password | Access Capabilities |
 | :--- | :--- | :--- | :--- |
-| **Owner / Manager** | `owner` | `Admin123!` | Full unrestricted access to POS, Job Orders, Inventory, Financials, Capstone Reports, and Settings. |
+| **Owner / Manager** | `owner` | `Admin123!` | Full unrestricted access to POS, Job Orders, Inventory, Financials, Business Reports, and Settings. |
 | **Sales & Office Staff** | `sales` | `Sales123!` | Customer directory, POS Counter Checkout, Custom Job Estimator, Quotation preparation, and Receipt printing. |
 | **Fabrication Staff** | `workshop` | `Craft123!` | Shop floor Job Order Kanban board, Cutting specifications, Material pick lists, and Workshop Routing Slips. |
 
-*(Note: The login page includes one-click quick login buttons for each role to facilitate capstone defense demonstrations.)*
+*(Note: The login page includes one-click quick login buttons for each role to facilitate system demonstrations.)*
 
 ---
 
@@ -81,11 +80,10 @@ russels-workshop-pos/
 
 ---
 
-### 🎓 Defense Presentation Checklist for Panelists
-When presenting to the capstone committee at UM Digos College:
-- **Demonstrate Specific Objective 1 & 2:** Show how a walk-in client inquiry from Tres de Mayo is entered into the system, priced using the **Custom Job Estimator** (Width × Height), and saved as an Official Quotation.
-- **Demonstrate Quotation Conversion:** Convert the quotation into an active Job Order with an initial 50% downpayment and generate the Official Receipt.
-- **Demonstrate Specific Objective 3 & 4:** Switch to the **Job Orders & Projects** tab. Open the newly created job card, view the allocated materials (glass sheets, aluminum tracks), slide the progress to 50%, and print the **Workshop Routing Slip** for the craftsmen.
-- **Demonstrate Inventory Tracking:** Show how materials are tracked in the **Material Inventory** table with low-stock warnings highlighted in red.
-- **Demonstrate Balance Collection:** Go to **Billing & Receivables**, collect the remaining 50% balance upon installation, and print the finalized receipt.
-- **Demonstrate Reporting & Export:** Show the trade distribution charts and download the CSV audit log.
+### System Operations Workflow Checklist
+- **Customer Inquiry & Pricing:** Show how a walk-in client inquiry from Tres de Mayo is entered into the system, priced using the **Custom Job Estimator** (Width × Height), and saved as an Official Quotation.
+- **Quotation Conversion:** Convert the quotation into an active Job Order with an initial 50% downpayment and generate the Official Receipt.
+- **Workshop Fabrication Routing:** Switch to the **Job Orders & Projects** tab. Open the newly created job card, view the allocated materials (glass sheets, aluminum tracks), slide the progress to 50%, and print the **Workshop Routing Slip** for the craftsmen.
+- **Material Inventory Tracking:** Show how materials are tracked in the **Material Inventory** table with low-stock warnings highlighted in red.
+- **Balance Settlement & Delivery:** Go to **Billing & Receivables**, collect the remaining 50% balance upon installation, and print the finalized receipt.
+- **Financial Reporting & Export:** Show the trade distribution charts and download the CSV audit log.
