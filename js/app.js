@@ -205,6 +205,7 @@ class WorkshopApp {
         document.querySelectorAll('.pay-method-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         this.cartPaymentMethod = btn.getAttribute('data-method');
+        this.updateQrPhCard();
       });
     });
 
@@ -667,6 +668,8 @@ class WorkshopApp {
         btnCheckout.textContent = `Process Full Payment & JO (₱${payableNow.toLocaleString()})`;
       }
     }
+
+    this.updateQrPhCard(payableNow);
   }
 
   addOpenPriceItem() {
@@ -1154,6 +1157,17 @@ class WorkshopApp {
         `).join('');
       } else {
         bomEl.innerHTML = `<span style="font-size: 0.75rem; color: var(--text-dim);">Materials allocated from general inventory stock.</span>`;
+      }
+      if (order.signature) {
+        bomEl.innerHTML += `
+          <div style="margin-top: 0.75rem; padding: 0.5rem 0.75rem; background: rgba(34, 197, 94, 0.12); border-radius: 6px; border: 1px solid rgba(34, 197, 94, 0.35); display: flex; align-items: center; justify-content: space-between; width: 100%;">
+            <div>
+              <span style="font-size: 0.75rem; color: #4ade80; font-weight: 700; display: block;">✍️ Customer E-Signature Verified</span>
+              <small style="font-size: 0.65rem; color: var(--text-dim);">Signed on file</small>
+            </div>
+            <img src="${order.signature}" alt="Customer Signature" style="height: 32px; max-width: 130px; object-fit: contain; background: #fff; padding: 2px 4px; border-radius: 4px;" />
+          </div>
+        `;
       }
     }
 
@@ -2123,7 +2137,12 @@ class WorkshopApp {
 
     // Default A4 / Letter Job Routing Slip Format
     docContainer.innerHTML = `
-      <div style="font-family: Arial, sans-serif; max-width: 650px; margin: 0 auto; color: #111; line-height: 1.5;">
+      <div style="font-family: Arial, sans-serif; max-width: 650px; margin: 0 auto; color: #111; line-height: 1.5; position: relative;">
+        ${(order.balanceDue <= 0 || order.paymentStatus === 'paid') ? `
+          <div style="position: absolute; right: 15px; top: 15px; z-index: 10;">
+            <div class="official-paid-stamp">★ PAID &amp; CERTIFIED ★<br><span style="font-size: 8px; letter-spacing: 0.05em;">RUSELL'S WORKSHOP • DIGOS</span></div>
+          </div>
+        ` : ''}
         <!-- Header -->
         <div style="text-align: center; border-bottom: 2px solid #111; padding-bottom: 12px; margin-bottom: 15px;">
           <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 6px;">
@@ -2225,13 +2244,17 @@ class WorkshopApp {
         <div style="display: flex; justify-content: space-between; margin-top: 25px; padding-top: 15px; border-top: 1px dashed #aaa; font-size: 11px; text-align: center;">
           <div style="width: 200px;">
             <p>Prepared / Received By:</p>
-            <br><br>
-            <p style="border-top: 1px solid #333; font-weight: bold;">${order.assignedStaff || 'Authorized Staff'}</p>
+            <div style="height: 48px; display: flex; align-items: flex-end; justify-content: center;">
+              <span class="official-inspected-stamp" style="font-size: 10px; padding: 2px 8px;">✓ QC PASSED</span>
+            </div>
+            <p style="border-top: 1px solid #333; font-weight: bold; margin-top: 4px;">${order.assignedStaff || 'Authorized Staff'}</p>
           </div>
           <div style="width: 200px;">
             <p>Customer Conforme / Received By:</p>
-            <br><br>
-            <p style="border-top: 1px solid #333; font-weight: bold;">${order.customerName}</p>
+            <div style="height: 48px; display: flex; align-items: flex-end; justify-content: center;">
+              ${order.signature ? `<img src="${order.signature}" alt="Customer Signature" style="max-height: 44px; max-width: 170px; object-fit: contain;" />` : '<span style="color: #94a3b8; font-style: italic; font-size: 10px; margin-bottom: 4px;">(Signature Pending)</span>'}
+            </div>
+            <p style="border-top: 1px solid #333; font-weight: bold; margin-top: 4px;">${order.customerName}</p>
           </div>
         </div>
       </div>
@@ -2381,13 +2404,13 @@ class WorkshopApp {
             </tbody>
           </table>
 
-          <h4 style="margin: 10px 0 5px; font-size: 13px;">SHOP STAGE SIGN-OFF:</h4>
-          <table style="width: 100%; border-collapse: collapse; font-size: 11px; text-align: center;">
+          <h4 style="margin: 10px 0 5px; font-size: 13px;">SHOP STAGE SIGN-OFF &amp; CLIENT CONFORME:</h4>
+          <table style="width: 100%; border-collapse: collapse; font-size: 11px; text-align: center; margin-bottom: 15px;">
             <tr style="border: 1px solid #333; background: #fafafa;">
               <th style="padding: 8px;">1. Material Staged</th>
               <th style="padding: 8px;">2. Cutting Done</th>
               <th style="padding: 8px;">3. Assembly Done</th>
-              <th style="padding: 8px;">4. QC & Inspection</th>
+              <th style="padding: 8px;">4. QC &amp; Inspection</th>
               <th style="padding: 8px;">5. Site Handover</th>
             </tr>
             <tr style="border: 1px solid #333; height: 50px;">
@@ -2395,9 +2418,19 @@ class WorkshopApp {
               <td>[ &nbsp; ] Initial</td>
               <td>[ &nbsp; ] Initial</td>
               <td>[ &nbsp; ] Initial</td>
-              <td>[ &nbsp; ] Client Sign</td>
+              <td>${order.signature ? `<img src="${order.signature}" alt="Sig" style="max-height: 38px; display: block; margin: 0 auto;" />` : '[ &nbsp; ] Client Sign'}</td>
             </tr>
           </table>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding-top: 10px; border-top: 1px dashed #333;">
+            <div>
+              <div class="official-inspected-stamp">★ QUALITY INSPECTED &amp; PASSED ★<br><span style="font-size: 8px; letter-spacing: 0.05em;">RUSELL'S WORKSHOP • DIGOS CITY</span></div>
+            </div>
+            <div style="text-align: right; font-size: 11px;">
+              <p>Certified Lead Craftsman: <strong>${order.assignedStaff || 'Arnel Mendoza & Team'}</strong></p>
+              <p style="color: #64748b;">Roxas Ext., Digos City • (0921) 371-0555</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -2957,6 +2990,239 @@ class WorkshopApp {
       }
     } else {
       this.showToast('TursoDB adapter not loaded', 'warning');
+    }
+  }
+
+  // ==========================================================================
+  // DYNAMIC PHILIPPINE QR PH (GCASH / MAYA) CARD
+  // ==========================================================================
+  updateQrPhCard(payableAmount = null) {
+    const box = document.getElementById('cartQrPhBox');
+    const img = document.getElementById('cartQrPhImg');
+    const amtEl = document.getElementById('cartQrPhAmount');
+    if (!box) return;
+
+    if (this.cartPaymentMethod === 'GCash' || this.cartPaymentMethod === 'Bank Transfer') {
+      const subtotal = this.cart.reduce((sum, item) => sum + item.subtotal, 0);
+      const hasFabrication = this.cartOrderType === 'fabrication' || this.cart.some(item => item.isCustomFab);
+      const total = subtotal + (hasFabrication ? 2000 : 0);
+      let payableNow = payableAmount !== null ? payableAmount : total;
+      if (payableAmount === null) {
+        if (this.cartPaymentTerm === 'deposit50') payableNow = Math.round(total / 2);
+        else if (this.cartPaymentTerm === 'quote') payableNow = 0;
+      }
+
+      box.style.display = 'block';
+      if (amtEl) amtEl.textContent = `₱${payableNow.toLocaleString()}`;
+      if (img) {
+        img.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=00020101021226580016ph.ppmi.qrph011109295902201520460165303608540${payableNow}5802PH5913RUSELL_BAJURA6010DIGOS_CITY6304`;
+      }
+    } else {
+      box.style.display = 'none';
+    }
+  }
+
+  // ==========================================================================
+  // QR & BARCODE CAMERA SCANNER
+  // ==========================================================================
+  async openQrScannerModal() {
+    this.openModal('modalQrScanner');
+    const video = document.getElementById('qrScannerVideo');
+    const statusText = document.getElementById('scannerStatusText');
+
+    try {
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        this.qrStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: 'environment' }
+        });
+        if (video) {
+          video.srcObject = this.qrStream;
+          video.setAttribute('playsinline', true);
+          video.play();
+        }
+        if (statusText) statusText.innerHTML = '<span>🟢 Camera Active - Point at Job Slip QR</span>';
+      } else {
+        if (statusText) statusText.innerHTML = '<span>⚠️ Camera API not supported. Use manual lookup below.</span>';
+      }
+    } catch (err) {
+      if (statusText) statusText.innerHTML = '<span>⚠️ Camera access restricted or unavailable. Use manual lookup.</span>';
+    }
+  }
+
+  closeQrScannerModal() {
+    if (this.qrStream) {
+      this.qrStream.getTracks().forEach(track => track.stop());
+      this.qrStream = null;
+    }
+    const video = document.getElementById('qrScannerVideo');
+    if (video) video.srcObject = null;
+    this.closeModal('modalQrScanner');
+  }
+
+  processManualScannedCode() {
+    const input = document.getElementById('manualQrInput');
+    const code = input ? input.value.trim() : '';
+    if (!code) {
+      this.showToast('Please enter a Job Order # or material SKU', 'warning');
+      return;
+    }
+    this.processScannedCode(code);
+  }
+
+  processScannedCode(code) {
+    this.closeQrScannerModal();
+    const cleanCode = code.trim().toUpperCase();
+
+    // Check if it's an order / job order
+    const orders = db.getOrders();
+    const order = orders.find(o => 
+      (o.jobOrderNo && o.jobOrderNo.toUpperCase() === cleanCode) ||
+      (o.orderNo && o.orderNo.toUpperCase() === cleanCode) ||
+      o.id === code
+    );
+
+    if (order) {
+      this.showToast(`Job Slip Identified: ${order.jobOrderNo}`, 'success');
+      this.loadView('projects');
+      setTimeout(() => {
+        this.openJobDetailsModal(order.id);
+      }, 300);
+      return;
+    }
+
+    // Check if it's a product SKU
+    const products = db.getProducts();
+    const product = products.find(p => (p.code && p.code.toUpperCase() === cleanCode) || p.id === code);
+    if (product) {
+      this.showToast(`Scanned Material: ${product.name}`, 'success');
+      this.loadView('pos');
+      this.addProductToCart(product.id);
+      return;
+    }
+
+    this.showToast(`Code "${code}" processed. Searching system records...`, 'info');
+    this.performLiveSearch(code);
+  }
+
+  // ==========================================================================
+  // DIGITAL CUSTOMER E-SIGNATURE PAD
+  // ==========================================================================
+  openSignaturePad(orderId = null) {
+    this.signatureTargetOrderId = orderId || this.activeJobId;
+    const targetInput = document.getElementById('signatureTargetOrderId');
+    if (targetInput) targetInput.value = this.signatureTargetOrderId || '';
+
+    this.openModal('modalSignaturePad');
+    setTimeout(() => {
+      this.initSignaturePad();
+    }, 150);
+  }
+
+  closeSignaturePad() {
+    this.closeModal('modalSignaturePad');
+  }
+
+  initSignaturePad() {
+    const canvas = document.getElementById('signatureCanvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    ctx.strokeStyle = '#0f172a';
+    ctx.lineWidth = 2.5;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    let isDrawing = false;
+    let lastX = 0;
+    let lastY = 0;
+
+    const getPos = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+
+      if (e.touches && e.touches[0]) {
+        return {
+          x: (e.touches[0].clientX - rect.left) * scaleX,
+          y: (e.touches[0].clientY - rect.top) * scaleY
+        };
+      }
+      return {
+        x: (e.clientX - rect.left) * scaleX,
+        y: (e.clientY - rect.top) * scaleY
+      };
+    };
+
+    const startDraw = (e) => {
+      isDrawing = true;
+      const pos = getPos(e);
+      lastX = pos.x;
+      lastY = pos.y;
+      ctx.beginPath();
+      ctx.moveTo(lastX, lastY);
+      if (e.cancelable) e.preventDefault();
+    };
+
+    const draw = (e) => {
+      if (!isDrawing) return;
+      const pos = getPos(e);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+      lastX = pos.x;
+      lastY = pos.y;
+      if (e.cancelable) e.preventDefault();
+    };
+
+    const stopDraw = () => {
+      if (isDrawing) {
+        isDrawing = false;
+        ctx.closePath();
+      }
+    };
+
+    canvas.onmousedown = startDraw;
+    canvas.onmousemove = draw;
+    canvas.onmouseup = stopDraw;
+    canvas.onmouseleave = stopDraw;
+
+    canvas.ontouchstart = startDraw;
+    canvas.ontouchmove = draw;
+    canvas.ontouchend = stopDraw;
+
+    this.signatureCanvasCtx = ctx;
+  }
+
+  clearSignatureCanvas() {
+    const canvas = document.getElementById('signatureCanvas');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+
+  saveCustomerSignature() {
+    const canvas = document.getElementById('signatureCanvas');
+    if (!canvas) return;
+
+    const sigData = canvas.toDataURL('image/png');
+    const orderId = this.signatureTargetOrderId || this.activeJobId;
+
+    if (orderId) {
+      const order = db.getOrder(orderId);
+      if (order) {
+        order.signature = sigData;
+        order.signedAt = new Date().toISOString();
+        db.updateOrder(orderId, order);
+        this.showToast(`Customer E-Signature attached to ${order.jobOrderNo}!`, 'success');
+      }
+    } else {
+      this.lastSignatureData = sigData;
+      this.showToast('Customer signature captured for receipt!', 'success');
+    }
+
+    this.closeSignaturePad();
+    if (this.activeJobId) {
+      this.openJobDetailsModal(this.activeJobId);
     }
   }
 

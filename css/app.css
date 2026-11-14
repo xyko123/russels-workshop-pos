@@ -2073,3 +2073,211 @@ body.app-body {
 .calc-res-val.green {
   color: #4ade80;
 }
+
+
+/* ==========================================================================
+   FEATURE 1: LIVE QR & BARCODE SCANNER
+   ========================================================================== */
+.scanner-viewport-box {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  background: #000;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(56, 189, 248, 0.35);
+}
+
+.scanner-viewport-box video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scanner-reticle {
+  position: absolute;
+  width: 190px;
+  height: 190px;
+  border: 2px solid rgba(56, 189, 248, 0.85);
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.4), inset 0 0 15px rgba(56, 189, 248, 0.2);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.scanner-laser {
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #38bdf8, #22c55e, #38bdf8, transparent);
+  box-shadow: 0 0 12px #38bdf8;
+  animation: scanLaser 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes scanLaser {
+  0% { top: 5%; opacity: 0.8; }
+  50% { top: 92%; opacity: 1; }
+  100% { top: 5%; opacity: 0.8; }
+}
+
+.scanner-status-overlay {
+  position: absolute;
+  bottom: 10px;
+  background: rgba(15, 23, 42, 0.85);
+  color: #38bdf8;
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 700;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+/* ==========================================================================
+   FEATURE 2: DIGITAL CUSTOMER SIGNATURE PAD
+   ========================================================================== */
+.signature-pad-container {
+  display: inline-block;
+  background: #ffffff;
+  padding: 8px;
+  border-radius: var(--radius-md);
+  border: 2px solid #cbd5e1;
+}
+
+#signatureCanvas {
+  touch-action: none;
+  cursor: crosshair;
+  background: #ffffff;
+}
+
+.sig-receipt-stamp {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  border-top: 1px dashed #cbd5e1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.sig-receipt-preview {
+  max-width: 150px;
+  max-height: 55px;
+  border-bottom: 1px solid #1e293b;
+  display: block;
+}
+
+/* ==========================================================================
+   FEATURE 4: DYNAMIC PHILIPPINE QR PH CARD
+   ========================================================================== */
+.qrph-payment-card {
+  margin-top: 0.75rem;
+  background: linear-gradient(135deg, rgba(21, 128, 61, 0.25), rgba(15, 23, 42, 0.85));
+  border: 1.5px solid #22c55e;
+  border-radius: var(--radius-md);
+  padding: 0.85rem;
+  box-shadow: 0 4px 18px rgba(34, 197, 94, 0.15);
+  animation: fadeIn 0.3s ease;
+}
+
+.qrph-badge-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.65rem;
+  font-size: 0.72rem;
+}
+
+.qrph-pill {
+  background: #22c55e;
+  color: #052e16;
+  font-weight: 800;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.03em;
+}
+
+.qrph-acc-label {
+  color: #86efac;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+.qrph-body {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.qrph-code-img {
+  width: 88px;
+  height: 88px;
+  background: #ffffff;
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid #22c55e;
+  object-fit: contain;
+}
+
+.qrph-instructions {
+  flex: 1;
+}
+
+.qrph-instructions strong {
+  font-size: 0.85rem;
+  color: #ffffff;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.qrph-instructions p {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  margin-bottom: 0.25rem;
+}
+
+.qrph-instructions small {
+  font-size: 0.68rem;
+  color: #94a3b8;
+  display: block;
+  line-height: 1.3;
+}
+
+/* ==========================================================================
+   FEATURE 5: OFFICIAL DIGITAL WORKSHOP STAMPS
+   ========================================================================== */
+.official-paid-stamp {
+  display: inline-block;
+  padding: 0.35rem 0.85rem;
+  border: 3px double #ef4444;
+  color: #ef4444;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transform: rotate(-7deg);
+  border-radius: 6px;
+  background: rgba(239, 68, 68, 0.08);
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.15);
+  user-select: none;
+}
+
+.official-inspected-stamp {
+  display: inline-block;
+  padding: 0.35rem 0.85rem;
+  border: 3px double #15803d;
+  color: #15803d;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transform: rotate(-4deg);
+  border-radius: 6px;
+  background: rgba(21, 128, 61, 0.08);
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.15);
+  user-select: none;
+}
