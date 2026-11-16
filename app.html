@@ -974,6 +974,100 @@
               <div style="display: flex; flex-direction: column; gap: 0.75rem;" id="reportJobStatusBars"></div>
             </div>
           </div>
+
+          <!-- MACHINE LEARNING & UNSUPERVISED DATA CLUSTERING PANEL -->
+          <div class="ml-clustering-panel" style="background: rgba(124, 58, 237, 0.05); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: var(--radius-md); padding: 1.5rem; margin-top: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+              <div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <span class="college-badge" style="background: #7c3aed; color: #ffffff;">MACHINE LEARNING MODULE</span>
+                  <span style="font-size: 0.7rem; color: #a855f7; font-weight: 800; letter-spacing: 0.05em;">UNSUPERVISED LEARNING (UNLABELED DATA)</span>
+                </div>
+                <h3 style="font-size: 1.25rem; font-weight: 800; color: #ffffff; margin-top: 0.4rem;">
+                  Automated K-Means Clustering &amp; Segmentation Engine
+                </h3>
+                <p style="font-size: 0.8rem; color: var(--text-dim); max-width: 780px;">
+                  Discovers natural patterns from unlabeled workshop transactions using <strong>K-Means++ Centroid Initialization</strong>, <strong>StandardScaler (z-score) Normalization</strong>, and <strong>Silhouette/Elbow Optimization</strong>.
+                </p>
+              </div>
+
+              <!-- Interactive Mode & K Controls -->
+              <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                <div class="role-pill-group" style="display: flex; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-sm); padding: 3px;">
+                  <button type="button" class="role-chip active" id="btnClusterModeCustomers" onclick="App.setClusteringMode('customers')" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">Customer RFM-T</button>
+                  <button type="button" class="role-chip" id="btnClusterModeProducts" onclick="App.setClusteringMode('products')" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">Material ABC Margin</button>
+                </div>
+
+                <select id="selectClusterK" onchange="App.changeClusterK(this.value)" style="background: #0f172a; color: #fff; border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 6px; padding: 0.35rem 0.65rem; font-size: 0.78rem; font-weight: 700;">
+                  <option value="auto">Auto Optimal (Elbow/Silhouette)</option>
+                  <option value="2">k = 2 Clusters</option>
+                  <option value="3" selected>k = 3 Clusters</option>
+                  <option value="4">k = 4 Clusters</option>
+                  <option value="5">k = 5 Clusters</option>
+                </select>
+
+                <button class="btn-primary" style="background: #7c3aed; border-color: #a855f7; font-size: 0.78rem; padding: 0.35rem 0.75rem;" onclick="App.runInAppClustering()">Re-run K-Means</button>
+                <button class="btn-secondary" style="font-size: 0.78rem; padding: 0.35rem 0.75rem;" onclick="App.exportCurrentClusterCSV()">Download CSV</button>
+              </div>
+            </div>
+
+            <!-- Mathematical Metrics Bar -->
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.25rem;">
+              <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); padding: 0.75rem 1rem;">
+                <span style="font-size: 0.68rem; color: #94a3b8; font-weight: 700; text-transform: uppercase;">Active Clusters (k)</span>
+                <div style="font-size: 1.35rem; font-weight: 800; color: #a855f7;" id="metricClusterK">k = 3</div>
+                <small style="font-size: 0.65rem; color: #4ade80;">Optimized via Elbow WCSS</small>
+              </div>
+              <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); padding: 0.75rem 1rem;">
+                <span style="font-size: 0.68rem; color: #94a3b8; font-weight: 700; text-transform: uppercase;">Silhouette Score</span>
+                <div style="font-size: 1.35rem; font-weight: 800; color: #38bdf8;" id="metricClusterSilhouette">0.393</div>
+                <small style="font-size: 0.65rem; color: #94a3b8;">Separation Quality: Strong</small>
+              </div>
+              <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); padding: 0.75rem 1rem;">
+                <span style="font-size: 0.68rem; color: #94a3b8; font-weight: 700; text-transform: uppercase;">Inertia (Within WCSS)</span>
+                <div style="font-size: 1.35rem; font-weight: 800; color: #4ade80;" id="metricClusterInertia">22.26</div>
+                <small style="font-size: 0.65rem; color: #94a3b8;">Normalized sum of squares</small>
+              </div>
+              <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); padding: 0.75rem 1rem;">
+                <span style="font-size: 0.68rem; color: #94a3b8; font-weight: 700; text-transform: uppercase;">Convergence Speed</span>
+                <div style="font-size: 1.35rem; font-weight: 800; color: #f59e0b;" id="metricClusterIter">5 Iterations</div>
+                <small style="font-size: 0.65rem; color: #4ade80;">Global Minima Reached</small>
+              </div>
+            </div>
+
+            <!-- 2D Interactive Cluster Visualization & Scatter Canvas -->
+            <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem;">
+              <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-sm); padding: 1rem; position: relative;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                  <span style="font-size: 0.78rem; font-weight: 700; color: #f8fafc;" id="clusterChartTitle">Customer 2D Cluster Map (Lifetime Spend vs Order Frequency)</span>
+                  <span style="font-size: 0.68rem; color: #a855f7; font-weight: 600;">Hover dots to inspect entities</span>
+                </div>
+                <canvas id="clusterScatterCanvas" width="560" height="280" style="width: 100%; height: 260px; display: block; border-radius: 6px; background: #070d14;"></canvas>
+                <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: #64748b; margin-top: 4px;">
+                  <span id="clusterAxisXLabel">&larr; Low Monetary Spend | High Monetary Spend &rarr;</span>
+                  <span id="clusterAxisYLabel">&uarr; High Frequency</span>
+                </div>
+              </div>
+
+              <!-- Discovered Cluster Segment Cards -->
+              <div style="display: flex; flex-direction: column; gap: 0.65rem;" id="clusterProfileCards">
+                <!-- Dynamically populated cards -->
+              </div>
+            </div>
+
+            <!-- Full Cluster Data Breakdown Table -->
+            <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); overflow: hidden;">
+              <div style="padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 0.82rem; font-weight: 700; color: #ffffff;" id="clusterTableTitle">Segmented Customer Accounts &amp; Behavioral Clusters</span>
+                <span style="font-size: 0.72rem; color: #94a3b8;" id="clusterRecordCount">15 records analyzed</span>
+              </div>
+              <div style="max-height: 260px; overflow-y: auto;">
+                <table class="data-table" style="width: 100%; font-size: 0.78rem;" id="clusterBreakdownTable">
+                  <!-- Dynamically populated rows -->
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

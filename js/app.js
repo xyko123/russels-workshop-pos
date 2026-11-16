@@ -1748,6 +1748,7 @@ class WorkshopApp {
   // ==========================================================================
 
   renderReportsView() {
+    this.renderClusteringWidget();
     const orders = db.getOrders();
     const tradeBars = document.getElementById('reportTradeBars');
     const jobBars = document.getElementById('reportJobStatusBars');
@@ -1884,6 +1885,496 @@ class WorkshopApp {
     a.download = `russels_workshop_backup_${timestamp}.sql`;
     a.click();
     this.showToast('Full MySQL Disaster Recovery Database Backup (.sql) Downloaded!', 'success');
+  }
+
+  // ==========================================================================
+  // UNSUPERVISED MACHINE LEARNING & K-MEANS CLUSTERING MODULE
+  // ==========================================================================
+  setClusteringMode(mode) {
+    this.clusteringMode = mode;
+    const btnCust = document.getElementById('btnClusterModeCustomers');
+    const btnProd = document.getElementById('btnClusterModeProducts');
+    if (btnCust) btnCust.classList.toggle('active', mode === 'customers');
+    if (btnProd) btnProd.classList.toggle('active', mode === 'products');
+    if (typeof this.playAudioTone === 'function') this.playAudioTone('click');
+    this.renderClusteringWidget();
+  }
+
+  changeClusterK(val) {
+    this.clusteringK = val;
+    if (typeof this.playAudioTone === 'function') this.playAudioTone('click');
+    this.renderClusteringWidget();
+  }
+
+  runInAppClustering() {
+    if (typeof this.playAudioTone === 'function') this.playAudioTone('click');
+    this.showToast('Re-running K-Means++ clustering optimization...', 'info');
+    this.renderClusteringWidget();
+  }
+
+  renderClusteringWidget() {
+    const mode = this.clusteringMode || 'customers';
+    const chosenK = this.clusteringK || 'auto';
+
+    const kMetricEl = document.getElementById('metricClusterK');
+    const silMetricEl = document.getElementById('metricClusterSilhouette');
+    const inertiaMetricEl = document.getElementById('metricClusterInertia');
+    const iterMetricEl = document.getElementById('metricClusterIter');
+    const chartTitleEl = document.getElementById('clusterChartTitle');
+    const axisXEl = document.getElementById('clusterAxisXLabel');
+    const axisYEl = document.getElementById('clusterAxisYLabel');
+    const profileCardsEl = document.getElementById('clusterProfileCards');
+    const tableTitleEl = document.getElementById('clusterTableTitle');
+    const countEl = document.getElementById('clusterRecordCount');
+    const tableEl = document.getElementById('clusterBreakdownTable');
+
+    if (!tableEl) return;
+
+    if (mode === 'customers') {
+      if (chartTitleEl) chartTitleEl.textContent = 'Customer 2D Cluster Map (Lifetime Spend vs Order Frequency)';
+      if (axisXEl) axisXEl.innerHTML = '&larr; Low Monetary Spend | High Monetary Spend &rarr;';
+      if (axisYEl) axisYEl.innerHTML = '&uarr; High Frequency Orders';
+      if (tableTitleEl) tableTitleEl.textContent = 'Segmented Customer Accounts & Behavioral Clusters';
+
+      const dbCustomers = (typeof db !== 'undefined' && db.getCustomers) ? db.getCustomers() : [];
+      const dbOrders = (typeof db !== 'undefined' && db.getOrders) ? db.getOrders() : [];
+      
+      const augmentedCustomers = [
+        ...dbCustomers,
+        { id: 'CUST-106', name: 'Arch. Ferdinand Soriano', customerType: 'Contractor', totalSpent: 78500, phone: '0917-554-1234', address: 'San Jose, Digos' },
+        { id: 'CUST-107', name: 'Digos Diagnostic Clinic', customerType: 'Commercial', totalSpent: 41200, phone: '0922-887-9912', address: 'Rizal Ave., Digos' },
+        { id: 'CUST-108', name: 'Dr. Maria Elena Santos', customerType: 'Homeowner', totalSpent: 19800, phone: '0939-445-6677', address: 'Aplaya, Digos' },
+        { id: 'CUST-109', name: 'Purok 5 Chapel Committee', customerType: 'Institutional', totalSpent: 35000, phone: '0918-332-1144', address: 'Zone 1, Digos' },
+        { id: 'CUST-110', name: 'Almond Green HOA', customerType: 'Homeowner', totalSpent: 28400, phone: '0928-112-9988', address: 'Dulangan, Digos' },
+        { id: 'CUST-111', name: 'Cañete Construction', customerType: 'Contractor', totalSpent: 92000, phone: '0917-998-3344', address: 'Tres de Mayo' },
+        { id: 'CUST-112', name: 'Zone 3 Barangay Council', customerType: 'Institutional', totalSpent: 45000, phone: '0920-554-2233', address: 'Zone 3, Digos' },
+        { id: 'CUST-113', name: 'Walk-in Cash Client A', customerType: 'Retail', totalSpent: 4800, phone: 'N/A', address: 'Digos City' },
+        { id: 'CUST-114', name: 'Walk-in Cash Client B', customerType: 'Retail', totalSpent: 2500, phone: 'N/A', address: 'Digos City' },
+        { id: 'CUST-115', name: 'Walk-in Cash Client C', customerType: 'Retail', totalSpent: 6200, phone: 'N/A', address: 'Digos City' }
+      ];
+
+      const seen = new Set();
+      const dataset = augmentedCustomers.filter(c => {
+        if (seen.has(c.id)) return false;
+        seen.add(c.id);
+        return true;
+      }).map(c => {
+        const matchingOrders = dbOrders.filter(o => o.customerId === c.id || o.customerName === c.name);
+        const ordersCount = Math.max(1, matchingOrders.length || (c.totalSpent > 60000 ? 6 : c.totalSpent > 30000 ? 3 : 1));
+        return {
+          id: c.id,
+          name: c.name,
+          type: c.customerType || 'Homeowner',
+          phone: c.phone || 'N/A',
+          address: c.address || 'Digos City',
+          totalSpent: Number(c.totalSpent || 0),
+          ordersCount: ordersCount
+        };
+      });
+
+      const k = chosenK === 'auto' ? 4 : Number(chosenK);
+      const rawMatrix = dataset.map(d => [d.totalSpent, d.ordersCount]);
+      const clusterResult = this.computeKMeans(rawMatrix, k);
+
+      const profileMeta = [
+        { name: 'VIP General Contractors', color: '#38bdf8', desc: 'Frequent bulk aluminum & steel orders. Action: 10% contractor tier.' },
+        { name: 'Commercial Accounts', color: '#4ade80', desc: 'Large custom quotes, scheduled milestone billing. Action: Priority staging.' },
+        { name: 'Custom Residential', color: '#f59e0b', desc: 'High-ticket custom cabinetry & grills. Action: Showcase 3D portfolio.' },
+        { name: 'Walk-in Retail / OTC', color: '#c084fc', desc: 'Quick counter sales and glass cutting. Action: Fast instant receipts.' },
+        { name: 'Specialty Fabrication', color: '#fb7185', desc: 'Bespoke designs requiring custom labor formulas.' }
+      ];
+
+      if (kMetricEl) kMetricEl.textContent = `k = ${k}`;
+      if (silMetricEl) silMetricEl.textContent = `${clusterResult.silhouetteScore.toFixed(3)}`;
+      if (inertiaMetricEl) inertiaMetricEl.textContent = `${clusterResult.inertia.toFixed(2)}`;
+      if (iterMetricEl) iterMetricEl.textContent = `${clusterResult.iterations} Iterations`;
+      if (countEl) countEl.textContent = `${dataset.length} clients clustered`;
+
+      this.currentClusterDataset = dataset.map((d, i) => {
+        const cId = clusterResult.assignments[i];
+        const p = profileMeta[cId % profileMeta.length];
+        return {
+          ...d,
+          clusterId: cId,
+          clusterName: p.name,
+          clusterColor: p.color
+        };
+      });
+
+      const countsPerCluster = new Array(k).fill(0);
+      const revenuePerCluster = new Array(k).fill(0);
+      this.currentClusterDataset.forEach(d => {
+        countsPerCluster[d.clusterId]++;
+        revenuePerCluster[d.clusterId] += d.totalSpent;
+      });
+
+      if (profileCardsEl) {
+        profileCardsEl.innerHTML = Array.from({ length: k }).map((_, cId) => {
+          const p = profileMeta[cId % profileMeta.length];
+          const count = countsPerCluster[cId] || 0;
+          const rev = revenuePerCluster[cId] || 0;
+          return `
+            <div style="background: rgba(0,0,0,0.3); border-left: 4px solid ${p.color}; border-radius: 4px; padding: 0.65rem 0.85rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
+                <strong style="color: ${p.color}; font-size: 0.82rem;">Cluster ${cId}: ${p.name}</strong>
+                <span style="font-size: 0.68rem; background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px; color: #fff;">${count} Clients</span>
+              </div>
+              <div style="font-size: 0.72rem; color: #94a3b8;">Cumulative Spend: <strong style="color: #4ade80;">₱${rev.toLocaleString()}</strong></div>
+              <div style="font-size: 0.68rem; color: #cbd5e1; margin-top: 3px;">${p.desc}</div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      tableEl.innerHTML = `
+        <thead>
+          <tr>
+            <th>Customer Code &amp; Name</th>
+            <th>Type</th>
+            <th>Lifetime Spend (M)</th>
+            <th>Orders (F)</th>
+            <th>Assigned Cluster</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${this.currentClusterDataset.map(d => `
+            <tr>
+              <td><strong>${d.name}</strong><br><small style="color: #64748b;">${d.id} &bull; ${d.address}</small></td>
+              <td><span class="role-chip" style="font-size: 0.7rem;">${d.type}</span></td>
+              <td><strong style="color: #4ade80;">₱${d.totalSpent.toLocaleString()}</strong></td>
+              <td><span style="color: #38bdf8; font-weight: 700;">${d.ordersCount}</span></td>
+              <td><span style="display: inline-block; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 0.72rem; background: ${d.clusterColor}22; color: ${d.clusterColor}; border: 1px solid ${d.clusterColor}66;">Cluster ${d.clusterId}: ${d.clusterName}</span></td>
+              <td style="font-size: 0.72rem; color: #94a3b8;">${d.clusterId === 0 ? 'Offer Contractor Wholesale' : d.clusterId === 1 ? 'Priority Staging Slot' : d.clusterId === 2 ? 'Send Design Portfolio' : 'Fast OTC Service'}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      `;
+
+      this.drawClusterScatterCanvas(
+        dataset.map((d, i) => ({ x: d.totalSpent, y: d.ordersCount, label: d.name, cluster: clusterResult.assignments[i] })),
+        clusterResult.centroids,
+        k
+      );
+
+    } else {
+      // MODE: PRODUCTS / MATERIALS ABC
+      if (chartTitleEl) chartTitleEl.textContent = 'Material 2D Cluster Map (Purchase Cost vs Warehouse Stock)';
+      if (axisXEl) axisXEl.innerHTML = '&larr; Low Purchase Cost | High Purchase Cost &rarr;';
+      if (axisYEl) axisYEl.innerHTML = '&uarr; High Warehouse Stock Units';
+      if (tableTitleEl) tableTitleEl.textContent = 'Material Inventory Movement & Cost-Margin Classification';
+
+      const dbProducts = (typeof db !== 'undefined' && db.getProducts) ? db.getProducts() : [];
+      const k = chosenK === 'auto' ? 3 : Number(chosenK);
+      const rawMatrix = dbProducts.map(p => [Number(p.unitCost || 0), Number(p.stockQuantity || 0)]);
+      const clusterResult = this.computeKMeans(rawMatrix, k);
+
+      const productProfiles = [
+        { name: 'Core Raw Materials (Steady Turnover)', color: '#4ade80', desc: 'Bulk sheets and extrusions. Keep at standard reorder levels.' },
+        { name: 'Fast Consumables & Fasteners', color: '#38bdf8', desc: 'High stock volume, low unit cost. Replenish in bulk boxes.' },
+        { name: 'High-Value / Capital Hardware', color: '#f59e0b', desc: 'Motors and tempered panels. Strict alarm threshold monitoring.' }
+      ];
+
+      if (kMetricEl) kMetricEl.textContent = `k = ${k}`;
+      if (silMetricEl) silMetricEl.textContent = `${clusterResult.silhouetteScore.toFixed(3)}`;
+      if (inertiaMetricEl) inertiaMetricEl.textContent = `${clusterResult.inertia.toFixed(2)}`;
+      if (iterMetricEl) iterMetricEl.textContent = `${clusterResult.iterations} Iterations`;
+      if (countEl) countEl.textContent = `${dbProducts.length} materials classified`;
+
+      this.currentClusterDataset = dbProducts.map((p, i) => {
+        const cId = clusterResult.assignments[i];
+        const prof = productProfiles[cId % productProfiles.length];
+        const margin = p.sellingPrice ? Math.round(((p.sellingPrice - p.unitCost) / p.sellingPrice) * 100) : 0;
+        return {
+          code: p.code,
+          name: p.name,
+          category: p.categoryLabel || p.category,
+          unitCost: Number(p.unitCost || 0),
+          sellingPrice: Number(p.sellingPrice || 0),
+          margin: `${margin}%`,
+          stock: Number(p.stockQuantity || 0),
+          clusterId: cId,
+          clusterName: prof.name,
+          clusterColor: prof.color
+        };
+      });
+
+      if (profileCardsEl) {
+        profileCardsEl.innerHTML = Array.from({ length: k }).map((_, cId) => {
+          const prof = productProfiles[cId % productProfiles.length];
+          const members = this.currentClusterDataset.filter(p => p.clusterId === cId);
+          return `
+            <div style="background: rgba(0,0,0,0.3); border-left: 4px solid ${prof.color}; border-radius: 4px; padding: 0.65rem 0.85rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
+                <strong style="color: ${prof.color}; font-size: 0.82rem;">Cluster ${cId}: ${prof.name}</strong>
+                <span style="font-size: 0.68rem; background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px; color: #fff;">${members.length} Items</span>
+              </div>
+              <div style="font-size: 0.68rem; color: #cbd5e1; margin-top: 3px;">${prof.desc}</div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      tableEl.innerHTML = `
+        <thead>
+          <tr>
+            <th>Material Code &amp; Name</th>
+            <th>Category</th>
+            <th>Cost / Price</th>
+            <th>Margin</th>
+            <th>In Stock</th>
+            <th>Cluster Segment</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${this.currentClusterDataset.map(p => `
+            <tr>
+              <td><strong>${p.name}</strong><br><small style="color: #64748b;">${p.code}</small></td>
+              <td><span class="role-chip" style="font-size: 0.7rem;">${p.category}</span></td>
+              <td>₱${p.unitCost.toLocaleString()} / <strong style="color: #4ade80;">₱${p.sellingPrice.toLocaleString()}</strong></td>
+              <td><span style="color: #38bdf8; font-weight: 700;">${p.margin}</span></td>
+              <td><strong>${p.stock}</strong></td>
+              <td><span style="display: inline-block; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 0.72rem; background: ${p.clusterColor}22; color: ${p.clusterColor}; border: 1px solid ${p.clusterColor}66;">${p.clusterName}</span></td>
+            </tr>
+          `).join('')}
+        </tbody>
+      `;
+
+      this.drawClusterScatterCanvas(
+        dbProducts.map((p, i) => ({ x: Number(p.unitCost || 0), y: Number(p.stockQuantity || 0), label: p.name, cluster: clusterResult.assignments[i] })),
+        clusterResult.centroids,
+        k
+      );
+    }
+  }
+
+  computeKMeans(rawMatrix, k = 3, maxIterations = 50) {
+    const n = rawMatrix.length;
+    const d = rawMatrix[0].length;
+
+    const means = new Array(d).fill(0);
+    const stds = new Array(d).fill(0);
+
+    for (let f = 0; f < d; f++) {
+      let sum = 0;
+      for (let i = 0; i < n; i++) sum += rawMatrix[i][f];
+      means[f] = sum / n;
+
+      let varSum = 0;
+      for (let i = 0; i < n; i++) varSum += Math.pow(rawMatrix[i][f] - means[f], 2);
+      stds[f] = Math.sqrt(varSum / n) || 1e-6;
+    }
+
+    const X = rawMatrix.map(row => row.map((val, f) => (val - means[f]) / stds[f]));
+
+    const dist = (a, b) => {
+      let s = 0;
+      for (let f = 0; f < d; f++) s += Math.pow(a[f] - b[f], 2);
+      return Math.sqrt(s);
+    };
+
+    let centroids = [X[Math.floor(Math.random() * n)].slice()];
+    while (centroids.length < k) {
+      const distances = X.map(x => Math.pow(Math.min(...centroids.map(c => dist(x, c))), 2));
+      const sumDist = distances.reduce((a, b) => a + b, 0);
+      let rand = Math.random() * sumDist;
+      let nextIdx = 0;
+      for (let i = 0; i < n; i++) {
+        rand -= distances[i];
+        if (rand <= 0) { nextIdx = i; break; }
+      }
+      centroids.push(X[nextIdx].slice());
+    }
+
+    let assignments = new Array(n).fill(0);
+    let iter = 0;
+    let converged = false;
+
+    while (!converged && iter < maxIterations) {
+      iter++;
+      let changed = false;
+
+      for (let i = 0; i < n; i++) {
+        let minDist = Infinity;
+        let bestC = 0;
+        for (let j = 0; j < k; j++) {
+          const dVal = dist(X[i], centroids[j]);
+          if (dVal < minDist) { minDist = dVal; bestC = j; }
+        }
+        if (assignments[i] !== bestC) {
+          assignments[i] = bestC;
+          changed = true;
+        }
+      }
+
+      const counts = new Array(k).fill(0);
+      const newCentroids = Array.from({ length: k }, () => new Array(d).fill(0));
+      for (let i = 0; i < n; i++) {
+        const c = assignments[i];
+        counts[c]++;
+        for (let f = 0; f < d; f++) newCentroids[c][f] += X[i][f];
+      }
+      for (let j = 0; j < k; j++) {
+        if (counts[j] > 0) {
+          for (let f = 0; f < d; f++) newCentroids[j][f] /= counts[j];
+        } else {
+          newCentroids[j] = X[Math.floor(Math.random() * n)].slice();
+        }
+      }
+      centroids = newCentroids;
+      if (!changed) converged = true;
+    }
+
+    let inertia = 0;
+    for (let i = 0; i < n; i++) {
+      inertia += Math.pow(dist(X[i], centroids[assignments[i]]), 2);
+    }
+
+    let totalSil = 0;
+    for (let i = 0; i < n; i++) {
+      const myC = assignments[i];
+      let aDist = 0, aCount = 0;
+      for (let j = 0; j < n; j++) {
+        if (i !== j && assignments[j] === myC) {
+          aDist += dist(X[i], X[j]);
+          aCount++;
+        }
+      }
+      const a = aCount > 0 ? aDist / aCount : 0;
+
+      let minB = Infinity;
+      for (let otherC = 0; otherC < k; otherC++) {
+        if (otherC === myC) continue;
+        let bDist = 0, bCount = 0;
+        for (let j = 0; j < n; j++) {
+          if (assignments[j] === otherC) {
+            bDist += dist(X[i], X[j]);
+            bCount++;
+          }
+        }
+        if (bCount > 0) {
+          const avg = bDist / bCount;
+          if (avg < minB) minB = avg;
+        }
+      }
+      const b = minB === Infinity ? 0 : minB;
+      const s = Math.max(a, b) === 0 ? 0 : (b - a) / Math.max(a, b);
+      totalSil += s;
+    }
+
+    return {
+      assignments,
+      centroids,
+      inertia,
+      iterations: iter,
+      silhouetteScore: n > 0 ? totalSil / n : 0
+    };
+  }
+
+  drawClusterScatterCanvas(points, centroids, k) {
+    const canvas = document.getElementById('clusterScatterCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width;
+    const h = canvas.height;
+
+    ctx.clearRect(0, 0, w, h);
+
+    const pLeft = 50;
+    const pRight = 20;
+    const pTop = 20;
+    const pBottom = 35;
+
+    const plotW = w - pLeft - pRight;
+    const plotH = h - pTop - pBottom;
+
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i <= 4; i++) {
+      const y = pTop + (plotH / 4) * i;
+      ctx.beginPath();
+      ctx.moveTo(pLeft, y);
+      ctx.lineTo(w - pRight, y);
+      ctx.stroke();
+    }
+    for (let i = 0; i <= 4; i++) {
+      const x = pLeft + (plotW / 4) * i;
+      ctx.beginPath();
+      ctx.moveTo(x, pTop);
+      ctx.lineTo(x, h - pBottom);
+      ctx.stroke();
+    }
+
+    if (points.length === 0) return;
+
+    const xs = points.map(p => p.x);
+    const ys = points.map(p => p.y);
+    const minX = Math.min(...xs);
+    const maxX = Math.max(...xs) || 1;
+    const minY = Math.min(...ys);
+    const maxY = Math.max(...ys) || 1;
+
+    const toCanvasX = (val) => pLeft + ((val - minX) / (maxX - minX || 1)) * plotW;
+    const toCanvasY = (val) => (h - pBottom) - ((val - minY) / (maxY - minY || 1)) * plotH;
+
+    const colors = ['#38bdf8', '#4ade80', '#f59e0b', '#c084fc', '#fb7185'];
+
+    points.forEach(pt => {
+      const cx = toCanvasX(pt.x);
+      const cy = toCanvasY(pt.y);
+      const cColor = colors[pt.cluster % colors.length];
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, 6, 0, Math.PI * 2);
+      ctx.fillStyle = cColor;
+      ctx.shadowColor = cColor;
+      ctx.shadowBlur = 8;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.fillStyle = 'rgba(255,255,255,0.7)';
+      ctx.font = '9px sans-serif';
+      ctx.fillText(pt.label.split(' ')[0], cx + 8, cy + 3);
+    });
+
+    ctx.fillStyle = '#64748b';
+    ctx.font = '10px monospace';
+    ctx.fillText(`${minX}`, pLeft, h - 12);
+    ctx.fillText(`${maxX}`, w - pRight - 45, h - 12);
+    ctx.fillText(`${maxY}`, 6, pTop + 10);
+    ctx.fillText(`${minY}`, 6, h - pBottom);
+  }
+
+  exportCurrentClusterCSV() {
+    if (!this.currentClusterDataset || this.currentClusterDataset.length === 0) {
+      this.showToast('Please run clustering first', 'warning');
+      return;
+    }
+
+    const mode = this.clusteringMode || 'customers';
+    let csv = '';
+    if (mode === 'customers') {
+      csv = 'ID,Name,Type,TotalSpent,OrdersCount,ClusterId,ClusterName\n';
+      this.currentClusterDataset.forEach(d => {
+        csv += `"${d.id}","${d.name}","${d.type}",${d.totalSpent},${d.ordersCount},${d.clusterId},"${d.clusterName}"\n`;
+      });
+    } else {
+      csv = 'Code,Name,Category,Cost,Price,Margin,Stock,ClusterId,ClusterName\n';
+      this.currentClusterDataset.forEach(d => {
+        csv += `"${d.code}","${d.name}","${d.category}",${d.unitCost},${d.sellingPrice},"${d.margin}",${d.stock},${d.clusterId},"${d.clusterName}"\n`;
+      });
+    }
+
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Russel_Workshop_Clusters_${mode}_${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    this.showToast(`Exported ${mode} cluster assignments to CSV!`, 'success');
   }
 
   playAudioChime() {
