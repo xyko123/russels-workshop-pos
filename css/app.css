@@ -1180,9 +1180,9 @@ body.theme-dark .spotlight-filter-pill {
 }
 
 .btn-secondary {
-  background: #ffffff;
-  color: var(--text-dark);
-  border: 1px solid #e2e8f0;
+  background: #f1f5f9;
+  color: #1e293b;
+  border: 1px solid #cbd5e1;
   padding: 0.65rem 1.25rem;
   font-size: 0.88rem;
   font-weight: 600;
@@ -1190,14 +1190,41 @@ body.theme-dark .spotlight-filter-pill {
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   transition: all 0.2s;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .btn-secondary:hover {
-  background: #f8fafc;
-  border-color: #cbd5e1;
+  background: #e2e8f0;
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
+.btn-add-customer {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  padding: 0 !important;
+  border-radius: var(--radius-full);
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  background: #e0f2fe !important;
+  color: #0284c7 !important;
+  border: 1px solid #bae6fd !important;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-add-customer:hover {
+  background: #0284c7 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
+  transform: scale(1.05);
 }
 
 .btn-success {
@@ -3761,10 +3788,33 @@ body.theme-dark .orders-count-badge {
 }
 
 body.theme-dark .filter-chip-pill,
-body.theme-dark .btn-pill-outline {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.12);
-  color: #f8fafc;
+body.theme-dark .btn-pill-outline,
+body.theme-dark .btn-secondary,
+body.theme-dark .modal-footer .btn-secondary {
+  background: #1e293b !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  color: #f8fafc !important;
+}
+
+body.theme-dark .btn-secondary:hover,
+body.theme-dark .btn-pill-outline:hover,
+body.theme-dark .modal-footer .btn-secondary:hover {
+  background: #334155 !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  color: #ffffff !important;
+}
+
+body.theme-dark .btn-add-customer {
+  background: rgba(2, 132, 199, 0.2) !important;
+  color: #38bdf8 !important;
+  border: 1px solid rgba(56, 189, 248, 0.45) !important;
+}
+
+body.theme-dark .btn-add-customer:hover {
+  background: #0284c7 !important;
+  color: #ffffff !important;
+  border-color: #38bdf8 !important;
+  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.4);
 }
 
 body.theme-dark .clean-table-card,
@@ -3926,10 +3976,27 @@ body.theme-dark .modal-header h3 {
 
 body.theme-dark .form-field input,
 body.theme-dark .form-field select,
-body.theme-dark .form-field textarea {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.12);
-  color: #f8fafc;
+body.theme-dark .form-field textarea,
+body.theme-dark .modal-input,
+body.theme-dark .modal-select,
+body.theme-dark #editUserRole,
+body.theme-dark #editUserFullName,
+body.theme-dark #editUserUsername,
+body.theme-dark #editUserPhone,
+body.theme-dark #editUserEmail,
+body.theme-dark #editUserNewPassword {
+  background-color: #1e293b !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  color: #f8fafc !important;
+}
+
+body.theme-dark select,
+body.theme-dark select option,
+body.theme-dark .form-field select option,
+body.theme-dark .modal-select option,
+body.theme-dark #editUserRole option {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
 }
 
 body.theme-dark .form-field label {

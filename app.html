@@ -15,7 +15,7 @@
     
     <!-- SIDEBAR NAVIGATION -->
     <aside class="sidebar">
-      <div class="sidebar-header">
+      <div class="sidebar-header" onclick="App.loadView('pos')" style="cursor: pointer;" title="Russel's Workshop Home - Back to Dashboard">
         <img src="assets/logo.jpg" alt="RUSELL'S Logo" class="sidebar-logo-img" />
         <div class="sidebar-brand-info">
           <h2>RUSELL'S</h2>
@@ -23,7 +23,7 @@
           <span class="sidebar-tagline">"You NAME it, we BUILD it"</span>
         </div>
         <!-- Inner Sidebar Slide / Collapse Button -->
-        <button type="button" class="sidebar-inner-close-btn" id="sidebarInnerCloseBtn" onclick="App.toggleSidebar()" title="Slide sidebar inside (Collapse) [Ctrl+B]">
+        <button type="button" class="sidebar-inner-close-btn" id="sidebarInnerCloseBtn" onclick="event.stopPropagation(); App.toggleSidebar();" title="Slide sidebar inside (Collapse) [Ctrl+B]">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="15 18 9 12 15 6"></polyline>
           </svg>
@@ -33,7 +33,7 @@
       <!-- WORKSHOP OPERATIONS BADGE -->
       <div class="sidebar-academic-block" style="background: rgba(2, 132, 199, 0.08); border-color: rgba(56, 189, 248, 0.2);">
         <div class="academic-badge-pill" style="background: #0284c7; color: #ffffff;">ENTERPRISE WORKSHOP SUITE</div>
-        <p class="academic-system-sub" style="color: #38bdf8;">Fabrication &amp; Point of Sale</p>
+        <p class="academic-system-sub" style="color: #38bdf8;">Fabrication &amp; Point of Sales</p>
         <div class="academic-proponent-tag">
           <span style="color: #94a3b8;">PRIMARY FACILITY:</span>
           <strong style="color: #f8fafc;">DIGOS CITY MAIN YARD</strong>
@@ -42,12 +42,12 @@
       </div>
 
       <nav class="sidebar-nav">
-        <!-- 1. DASHBOARD / POINT OF SALE -->
-        <a class="nav-link active" data-view="pos" title="Dashboard &amp; Point of Sale Terminal">
+        <!-- 1. DASHBOARD / POINT OF SALES -->
+        <a class="nav-link active" data-view="pos" title="Dashboard &amp; Point of Sales Terminal">
           <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect></svg>
           <div class="nav-label-group">
             <span class="nav-primary-title">Dashboard</span>
-            <span class="nav-secondary-tag">Point of Sale</span>
+            <span class="nav-secondary-tag">Point of Sales</span>
           </div>
         </a>
 
@@ -61,7 +61,7 @@
         </a>
 
         <!-- 3. PRODUCTS & SERVICES -->
-        <a class="nav-link" data-view="products_services" title="Products &amp; Workshop Services Catalog">
+        <a class="nav-link" data-view="inventory" title="Products &amp; Workshop Services Catalog">
           <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
           <div class="nav-label-group">
             <span class="nav-primary-title">Products &amp; Services</span>
@@ -204,7 +204,7 @@
           </button>
 
           <div class="page-title-group">
-            <h1 id="topbarTitle">Point of Sale (POS)</h1>
+            <h1 id="topbarTitle">Point of Sales (POS)</h1>
             <p id="topbarSubtitle">Counter checkout, custom fabrication orders, and deposit processing</p>
           </div>
         </div>
@@ -332,7 +332,7 @@
         <!-- IMAGE 1: TOP 4 METRICS (HERO PURPLE REVENUE + WHITE CARDS) -->
         <div class="dash-metrics-grid">
           <!-- Hero Purple Card: Total Revenue -->
-          <div class="metric-card-hero">
+          <div class="metric-card-hero" onclick="App.loadView('payments')" style="cursor: pointer;" title="Click to view Billing &amp; Payments">
             <div class="metric-hero-top">
               <span class="metric-hero-title">Total revenue</span>
               <span class="metric-arrow-btn">↗</span>
@@ -347,7 +347,7 @@
           </div>
 
           <!-- Total Orders Card -->
-          <div class="metric-card-clean">
+          <div class="metric-card-clean" onclick="App.loadView('orders')" style="cursor: pointer;" title="Click to view Orders List">
             <div class="metric-clean-top">
               <span class="metric-clean-title">Total orders</span>
               <span class="metric-clean-arrow">↗</span>
@@ -362,7 +362,7 @@
           </div>
 
           <!-- Total Visitors / Inquiries Card -->
-          <div class="metric-card-clean">
+          <div class="metric-card-clean" onclick="App.loadView('customers')" style="cursor: pointer;" title="Click to view Customer Directory">
             <div class="metric-clean-top">
               <span class="metric-clean-title">Total inquiries</span>
               <span class="metric-clean-arrow">↗</span>
@@ -376,7 +376,7 @@
           </div>
 
           <!-- Net Profit Card -->
-          <div class="metric-card-clean">
+          <div class="metric-card-clean" onclick="App.loadView('reports')" style="cursor: pointer;" title="Click to view Reports &amp; Analytics">
             <div class="metric-clean-top">
               <span class="metric-clean-title">Net profit</span>
               <span class="metric-clean-arrow">↗</span>
@@ -425,7 +425,7 @@
                 <select id="cartCustomerSelect">
                   <option value="">-- Select Customer in Digos --</option>
                 </select>
-                <button class="btn-secondary" onclick="App.openNewCustomerModal()" title="Add Customer">+</button>
+                <button class="btn-secondary btn-add-customer" onclick="App.openNewCustomerModal()" title="Register New Customer in Digos City">+</button>
               </div>
 
               <div class="order-type-tabs">
@@ -1684,7 +1684,7 @@
 
         <div class="form-field" style="margin-top: 0.85rem;">
           <label>Assigned System Role</label>
-          <select id="editUserRole" style="width: 100%; padding: 0.65rem; background: #1e293b; border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-sm); color: #fff;">
+          <select id="editUserRole" class="modal-select">
             <option value="owner">Owner / General Manager</option>
             <option value="sales">Sales &amp; Front Counter</option>
             <option value="fabricator">Fabrication &amp; Workshop Staff</option>
@@ -1698,7 +1698,7 @@
           <div class="form-field">
             <label>New Password (Leave blank to keep current password)</label>
             <div class="password-input-wrapper">
-              <input type="password" id="editUserNewPassword" placeholder="Enter new password" style="width: 100%; padding: 0.65rem; padding-right: 2.8rem; background: #1e293b; border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-sm); color: #fff;" />
+              <input type="password" id="editUserNewPassword" class="modal-input" placeholder="Enter new password" style="padding-right: 2.8rem;" />
               <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('editUserNewPassword', this)" title="Show / Hide Password">
                 <span class="eye-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>
               </button>

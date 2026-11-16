@@ -196,6 +196,7 @@ class WorkshopApp {
     // Navigation Links
     document.querySelectorAll('.sidebar-nav .nav-link').forEach(link => {
       link.addEventListener('click', (e) => {
+        e.preventDefault();
         const view = link.getAttribute('data-view');
         if (view) this.loadView(view);
       });
@@ -359,11 +360,16 @@ class WorkshopApp {
   }
 
   loadView(viewName) {
+    if (viewName === 'products_services') viewName = 'inventory';
+    if (viewName === 'dashboard') viewName = 'pos';
+
     this.currentView = viewName;
 
     // Update active nav link
     document.querySelectorAll('.sidebar-nav .nav-link').forEach(link => {
-      link.classList.toggle('active', link.getAttribute('data-view') === viewName);
+      const dv = link.getAttribute('data-view');
+      const isActive = dv === viewName || (viewName === 'inventory' && dv === 'products_services');
+      link.classList.toggle('active', isActive);
     });
 
     // Show/hide view containers
@@ -373,13 +379,24 @@ class WorkshopApp {
     const targetView = document.getElementById(`view-${viewName}`);
     if (targetView) targetView.classList.add('active');
 
+    // Scroll to top of content view smoothly
+    const mainWrapper = document.querySelector('.main-wrapper');
+    if (mainWrapper) mainWrapper.scrollTop = 0;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Auto-close sidebar in mobile/compact view if open
+    const sidebar = document.querySelector('.sidebar');
+    if (sidebar && sidebar.classList.contains('mobile-open')) {
+      sidebar.classList.remove('mobile-open');
+    }
+
     // Update Topbar Titles
     const titleEl = document.getElementById('topbarTitle');
     const subtitleEl = document.getElementById('topbarSubtitle');
 
     const viewTitles = {
       pos: {
-        title: 'Point of Sale (POS)',
+        title: 'Point of Sales (POS)',
         sub: 'Counter checkout, custom fabrication orders, and deposit processing'
       },
       orders: {
