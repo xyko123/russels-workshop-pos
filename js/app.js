@@ -13,6 +13,13 @@ class WorkshopApp {
     this.cartOrderType = 'counter'; // 'counter' or 'fabrication'
     this.cartPaymentTerm = 'full';  // 'full', 'deposit50', 'quote'
     this.cartPaymentMethod = 'Cash'; // 'Cash', 'GCash', 'Bank Transfer'
+    this.cartDiscountType = 'none'; // 'none', 'senior', 'contractor'
+    this.cartCalculatedDiscount = 0;
+    this.soundMuted = false;
+    this.cutPieces = [
+      { w: 24, h: 36, qty: 2 },
+      { w: 18, h: 40, qty: 1 }
+    ];
     this.selectedCategory = 'all';
     this.activeJobId = null;
     this.activePaymentOrderId = null;
@@ -36,6 +43,7 @@ class WorkshopApp {
     }
 
     this.updateUserUI();
+    this.restoreSidebarState();
     this.setupClock();
     this.setupEventListeners();
     this.loadView(this.currentView);
@@ -52,6 +60,47 @@ class WorkshopApp {
     if (nameEl) nameEl.textContent = this.currentUser.fullName || this.currentUser.username;
     if (roleEl) roleEl.textContent = this.currentUser.roleLabel || this.currentUser.role;
     if (roleSwitcher) roleSwitcher.value = this.currentUser.role;
+  }
+
+  toggleSidebar(forceState = null) {
+    const container = document.querySelector('.app-container');
+    if (!container) return;
+
+    const shouldCollapse = forceState !== null ? forceState : !container.classList.contains('sidebar-collapsed');
+
+    if (shouldCollapse) {
+      container.classList.add('sidebar-collapsed');
+      localStorage.setItem('russels_sidebar_collapsed', '1');
+      const toggleBtn = document.getElementById('sidebarToggleBtn');
+      if (toggleBtn) {
+        toggleBtn.setAttribute('title', 'Slide left side out (Show Sidebar) [Ctrl+B]');
+      }
+    } else {
+      container.classList.remove('sidebar-collapsed');
+      localStorage.setItem('russels_sidebar_collapsed', '0');
+      const toggleBtn = document.getElementById('sidebarToggleBtn');
+      if (toggleBtn) {
+        toggleBtn.setAttribute('title', 'Slide left side inside (Hide Sidebar) [Ctrl+B]');
+      }
+    }
+
+    if (typeof this.playAudioTone === 'function') {
+      this.playAudioTone('click');
+    }
+  }
+
+  restoreSidebarState() {
+    const saved = localStorage.getItem('russels_sidebar_collapsed');
+    if (saved === '1') {
+      const container = document.querySelector('.app-container');
+      if (container) {
+        container.classList.add('sidebar-collapsed');
+      }
+      const toggleBtn = document.getElementById('sidebarToggleBtn');
+      if (toggleBtn) {
+        toggleBtn.setAttribute('title', 'Slide left side out (Show Sidebar) [Ctrl+B]');
+      }
+    }
   }
 
   setupClock() {
@@ -162,9 +211,12 @@ class WorkshopApp {
       });
     }
 
-    // Keyboard shortcut: '/' opens search, 'Escape' dismisses
+    // Keyboard shortcuts: '/' opens search, 'Escape' dismisses, 'Ctrl+B' toggles sidebar
     document.addEventListener('keydown', (e) => {
-      if (e.key === '/' && document.activeElement !== globalSearch && !['INPUT', 'TEXTAREA'].includes((document.activeElement && document.activeElement.tagName) || '')) {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'b' || e.key === 'B')) {
+        e.preventDefault();
+        this.toggleSidebar();
+      } else if (e.key === '/' && document.activeElement !== globalSearch && !['INPUT', 'TEXTAREA'].includes((document.activeElement && document.activeElement.tagName) || '')) {
         e.preventDefault();
         if (globalSearch) {
           globalSearch.focus();
@@ -629,6 +681,9 @@ class WorkshopApp {
     const deliveryRow = document.getElementById('deliveryFeeRow');
     const deliveryFeeEl = document.getElementById('cartDeliveryFee');
     const totalEl = document.getElementById('cartTotal');
+    const discountRow = document.getElementById('cartDiscountRow');
+    const discountAmountEl = document.getElementById('cartDiscountAmount');
+    const activeDiscountBadge = document.getElementById('activeDiscountBadge');
     const btnCheckout = document.getElementById('btnProcessCheckout') || document.getElementById('btnProcessOrder');
 
     // Calculations
@@ -650,21 +705,44 @@ class WorkshopApp {
       if (deliveryRow) deliveryRow.style.display = 'none';
     }
 
-    const total = subtotal + installFee + deliveryFee;
+    const grossTotal = subtotal + installFee + deliveryFee;
+
+    // Apply Philippine Discounts (Senior 20% on subtotal, Contractor 10%)
+    let discountAmount = 0;
+    if (this.cartDiscountType === 'senior') {
+      discountAmount = Math.round(subtotal * 0.20);
+      if (activeDiscountBadge) activeDiscountBadge.textContent = 'Senior/PWD (-20%)';
+    } else if (this.cartDiscountType === 'contractor') {
+      discountAmount = Math.round(subtotal * 0.10);
+      if (activeDiscountBadge) activeDiscountBadge.textContent = 'Contractor (-10%)';
+    } else {
+      if (activeDiscountBadge) activeDiscountBadge.textContent = 'None (0%)';
+    }
+
+    this.cartCalculatedDiscount = discountAmount;
+
+    if (discountAmount > 0) {
+      if (discountRow) discountRow.style.display = 'flex';
+      if (discountAmountEl) discountAmountEl.textContent = `-₱${discountAmount.toLocaleString()}`;
+    } else {
+      if (discountRow) discountRow.style.display = 'none';
+    }
+
+    const netTotal = Math.max(0, grossTotal - discountAmount);
 
     if (subtotalEl) subtotalEl.textContent = `₱${subtotal.toLocaleString()}`;
-    if (totalEl) totalEl.textContent = `₱${total.toLocaleString()}`;
+    if (totalEl) totalEl.textContent = `₱${netTotal.toLocaleString()}`;
 
-    let payableNow = total;
+    let payableNow = netTotal;
     if (this.cartPaymentTerm === 'deposit50') {
-      payableNow = Math.round(total / 2);
+      payableNow = Math.round(netTotal / 2);
     } else if (this.cartPaymentTerm === 'quote') {
       payableNow = 0;
     }
 
     if (btnCheckout) {
       if (this.cartPaymentTerm === 'quote') {
-        btnCheckout.textContent = `Save as Official Quotation (₱${total.toLocaleString()})`;
+        btnCheckout.textContent = `Save as Official Quotation (₱${netTotal.toLocaleString()})`;
       } else if (this.cartPaymentTerm === 'deposit50') {
         btnCheckout.textContent = `Process 50% Deposit & JO (₱${payableNow.toLocaleString()})`;
       } else {
@@ -673,6 +751,33 @@ class WorkshopApp {
     }
 
     this.updateQrPhCard(payableNow);
+  }
+
+  setCartDiscount(type) {
+    this.cartDiscountType = type;
+    ['btnDiscNone', 'btnDiscSenior', 'btnDiscContractor'].forEach(id => {
+      const b = document.getElementById(id);
+      if (b) b.classList.remove('active');
+    });
+
+    const seniorRow = document.getElementById('seniorIdInputRow');
+    if (type === 'senior') {
+      document.getElementById('btnDiscSenior')?.classList.add('active');
+      if (seniorRow) seniorRow.style.display = 'block';
+      this.playAudioTone('click');
+      this.showToast('Applied 20% Senior Citizen / PWD Discount (RA 9994)', 'info');
+    } else if (type === 'contractor') {
+      document.getElementById('btnDiscContractor')?.classList.add('active');
+      if (seniorRow) seniorRow.style.display = 'none';
+      this.playAudioTone('click');
+      this.showToast('Applied 10% Contractor Wholesale Tier', 'info');
+    } else {
+      document.getElementById('btnDiscNone')?.classList.add('active');
+      if (seniorRow) seniorRow.style.display = 'none';
+      this.playAudioTone('click');
+    }
+
+    this.recalculateCartTotals();
   }
 
   addOpenPriceItem() {
@@ -726,7 +831,10 @@ class WorkshopApp {
     const hasFabrication = this.cartOrderType === 'fabrication' || this.cart.some(item => item.isCustomFab);
     const installFee = hasFabrication ? 1500 : 0;
     const deliveryFee = hasFabrication ? 500 : 0;
-    const totalAmount = subtotal + installFee + deliveryFee;
+    const grossAmount = subtotal + installFee + deliveryFee;
+    const discount = this.cartCalculatedDiscount || 0;
+    const totalAmount = Math.max(0, grossAmount - discount);
+    const seniorPwdId = document.getElementById('cartSeniorPwdId')?.value || '';
 
     let downpayment = totalAmount;
     if (this.cartPaymentTerm === 'deposit50') {

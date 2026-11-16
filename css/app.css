@@ -85,7 +85,83 @@ body.app-body {
   flex-direction: column;
   flex-shrink: 0;
   z-index: 40;
-  transition: all 0.3s ease;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+  will-change: margin-left, transform;
+  position: relative;
+}
+
+/* Collapsed state (slides the left side inside / hidden) */
+.app-container.sidebar-collapsed .sidebar {
+  margin-left: -270px;
+}
+
+/* Sidebar Slide & Toggle Controls */
+.sidebar-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-color);
+  color: var(--text-white);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.sidebar-toggle-btn:hover {
+  background: rgba(52, 211, 153, 0.18);
+  border-color: #34d399;
+  color: #34d399;
+  transform: translateY(-1px);
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.25);
+}
+
+.sidebar-toggle-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  transition: transform 0.25s ease;
+}
+
+.app-container.sidebar-collapsed .sidebar-toggle-btn {
+  background: rgba(52, 211, 153, 0.2);
+  border-color: #34d399;
+  color: #34d399;
+}
+
+.app-container.sidebar-collapsed .sidebar-toggle-btn svg {
+  transform: rotate(90deg);
+}
+
+.sidebar-inner-close-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin-left: auto;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.sidebar-inner-close-btn:hover {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: #ef4444;
+  color: #ef4444;
+  transform: translateX(-2px);
+}
+
+.sidebar-inner-close-btn svg {
+  width: 16px;
+  height: 16px;
 }
 
 .sidebar-header {
