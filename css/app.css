@@ -5414,3 +5414,356 @@ body.theme-light .tool-dropdown-divider {
 .bluechip-metrics-row {
   margin-top: 0.5rem;
 }
+
+
+/* ==========================================================================
+   AUTHENTIC 1:1 BLUECHIP DESIGN OVERRIDES (HASSLE-FREE MINIMALIST)
+   ========================================================================== */
+body.app-body {
+  background-color: #070d18 !important;
+  color: #cbd5e1;
+}
+
+body.theme-light.app-body {
+  background-color: #f8fafc !important;
+  color: #1e293b;
+}
+
+.main-wrapper {
+  background-color: #070d18 !important;
+}
+
+body.theme-light .main-wrapper {
+  background-color: #f8fafc !important;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px !important;
+  background-color: #0b1320 !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+body.theme-light .sidebar {
+  background-color: #ffffff !important;
+  border-right: 1px solid #e2e8f0 !important;
+}
+
+.sidebar-header {
+  padding: 1.5rem 1.25rem 1rem !important;
+  border-bottom: none !important;
+}
+
+.sidebar-brand-info h2 {
+  font-size: 1.2rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.04em !important;
+  color: #38bdf8 !important;
+  margin: 0 !important;
+  line-height: 1.15 !important;
+}
+
+body.theme-light .sidebar-brand-info h2 {
+  color: #0284c7 !important;
+}
+
+.sidebar-brand-info .sidebar-brand-sub {
+  font-size: 0.74rem !important;
+  font-weight: 500 !important;
+  color: #8fa0b5 !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  margin-top: 3px !important;
+}
+
+body.theme-light .sidebar-brand-info .sidebar-brand-sub {
+  color: #64748b !important;
+}
+
+.sidebar-nav {
+  padding: 0.5rem 0.75rem !important;
+  gap: 0.15rem !important;
+}
+
+.sidebar-nav .nav-link {
+  display: block !important;
+  padding: 0.55rem 0.85rem !important;
+  border-radius: 6px !important;
+  font-size: 0.88rem !important;
+  font-weight: 500 !important;
+  color: #8fa0b5 !important;
+  text-decoration: none !important;
+  transition: all 0.15s ease !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.sidebar-nav .nav-link:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #f8fafc !important;
+}
+
+body.theme-light .sidebar-nav .nav-link {
+  color: #475569 !important;
+}
+
+body.theme-light .sidebar-nav .nav-link:hover {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+.sidebar-nav .nav-link.active {
+  background: #19273c !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+body.theme-light .sidebar-nav .nav-link.active {
+  background: #e0f2fe !important;
+  color: #0284c7 !important;
+}
+
+.sidebar-footer {
+  padding: 1.25rem 1rem !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+  background: transparent !important;
+}
+
+body.theme-light .sidebar-footer {
+  border-top-color: #e2e8f0 !important;
+}
+
+.sidebar-user-block .sidebar-user-name {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin-bottom: 2px;
+}
+
+body.theme-light .sidebar-user-block .sidebar-user-name {
+  color: #0f172a;
+}
+
+.sidebar-user-block .sidebar-user-role {
+  font-size: 0.76rem;
+  color: #64748b;
+  margin-bottom: 6px;
+}
+
+body.theme-light .sidebar-user-block .sidebar-user-role {
+  color: #94a3b8;
+}
+
+.sidebar-user-block .sidebar-signout-link {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #38bdf8;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.sidebar-user-block .sidebar-signout-link:hover {
+  text-decoration: underline;
+}
+
+body.theme-light .sidebar-user-block .sidebar-signout-link {
+  color: #0284c7;
+}
+
+/* Authentic Topbar */
+.topbar {
+  background-color: #0b1320 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  padding: 0.85rem 2rem !important;
+  min-height: 70px !important;
+}
+
+body.theme-light .topbar {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+.topbar-company-sub {
+  color: #64748b !important;
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  margin: 0 0 3px 0 !important;
+}
+
+.page-title-group h1 {
+  font-size: 1.55rem !important;
+  font-weight: 700 !important;
+  color: #f8fafc !important;
+  letter-spacing: -0.01em !important;
+  margin: 0 !important;
+}
+
+body.theme-light .page-title-group h1 {
+  color: #0f172a !important;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.topbar-theme-icon-btn {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 6px !important;
+  background: #132238 !important;
+  border: 1px solid #1e385c !important;
+  color: #94a3b8 !important;
+}
+
+.topbar-theme-icon-btn:hover {
+  background: #1e385c !important;
+  color: #ffffff !important;
+}
+
+body.theme-light .topbar-theme-icon-btn {
+  background: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+  color: #475569 !important;
+}
+
+.topbar-date-display {
+  color: #8fa0b5 !important;
+  font-size: 0.86rem !important;
+  font-weight: 500 !important;
+}
+
+body.theme-light .topbar-date-display {
+  color: #64748b !important;
+}
+
+/* Dashboard Metric Cards & Panels */
+.bluechip-metrics-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 1024px) {
+  .bluechip-metrics-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .bluechip-metrics-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bluechip-metric-card {
+  background: #132238 !important;
+  border: 1px solid #1e385c !important;
+  border-radius: 8px !important;
+  padding: 1.25rem 1.4rem !important;
+  box-sizing: border-box !important;
+}
+
+body.theme-light .bluechip-metric-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+.bluechip-card-label {
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  color: #8fa0b5 !important;
+  margin: 0 0 0.5rem 0 !important;
+}
+
+body.theme-light .bluechip-card-label {
+  color: #64748b !important;
+}
+
+.bluechip-card-val {
+  font-size: 1.85rem !important;
+  font-weight: 700 !important;
+  color: #f8fafc !important;
+  margin: 0 !important;
+  line-height: 1.15 !important;
+}
+
+body.theme-light .bluechip-card-val {
+  color: #0f172a !important;
+}
+
+.bluechip-card-sub {
+  font-size: 0.75rem !important;
+  color: #64748b !important;
+  margin-top: 0.35rem !important;
+}
+
+body.theme-light .bluechip-card-sub {
+  color: #94a3b8 !important;
+}
+
+.bluechip-middle-row {
+  display: grid;
+  grid-template-columns: 1.8fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 900px) {
+  .bluechip-middle-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bluechip-panel-card {
+  background: #132238 !important;
+  border: 1px solid #1e385c !important;
+  border-radius: 8px !important;
+  padding: 1.25rem 1.4rem !important;
+  box-sizing: border-box !important;
+}
+
+body.theme-light .bluechip-panel-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+.bluechip-panel-title {
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  color: #f8fafc !important;
+  margin: 0 0 0.2rem 0 !important;
+}
+
+body.theme-light .bluechip-panel-title {
+  color: #0f172a !important;
+}
+
+.bluechip-panel-sub {
+  font-size: 0.78rem !important;
+  color: #8fa0b5 !important;
+  margin: 0 !important;
+}
+
+body.theme-light .bluechip-panel-sub {
+  color: #64748b !important;
+}
+
+.bluechip-link {
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  color: #38bdf8 !important;
+  text-decoration: none !important;
+}
+
+.bluechip-link:hover {
+  text-decoration: underline !important;
+}
+
+body.theme-light .bluechip-link {
+  color: #0284c7 !important;
+}

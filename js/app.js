@@ -59,8 +59,8 @@ class WorkshopApp {
     const roleSwitcher = document.getElementById('roleSwitcher');
 
     if (avatarEl) avatarEl.textContent = this.currentUser.avatar || 'RT';
-    if (nameEl) nameEl.textContent = this.currentUser.fullName || this.currentUser.username;
-    if (roleEl) roleEl.textContent = this.currentUser.roleLabel || this.currentUser.role;
+    if (nameEl) nameEl.textContent = 'General Manager';
+    if (roleEl) roleEl.textContent = 'Admin';
     if (roleSwitcher) roleSwitcher.value = this.currentUser.role;
   }
 
@@ -407,51 +407,55 @@ class WorkshopApp {
     const viewTitles = {
       pos: {
         title: 'Dashboard',
-        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
+        sub: 'BLUE CHIP COMPUTER TRADING'
+      },
+      pos_counter: {
+        title: 'Point of Sale (POS)',
+        sub: 'BLUE CHIP COMPUTER TRADING'
+      },
+      customers: {
+        title: 'Clients',
+        sub: 'BLUE CHIP COMPUTER TRADING'
+      },
+      suppliers: {
+        title: 'Suppliers',
+        sub: 'BLUE CHIP COMPUTER TRADING'
+      },
+      inventory: {
+        title: 'Inventory',
+        sub: 'BLUE CHIP COMPUTER TRADING'
+      },
+      quotations: {
+        title: 'Quotations & BOM',
+        sub: 'BLUE CHIP COMPUTER TRADING'
       },
       orders: {
-        title: 'Order List & Fulfillment',
-        sub: 'Workshop order status, delivery stages, and counter sales records'
+        title: 'Purchase orders & bids',
+        sub: 'BLUE CHIP COMPUTER TRADING'
+      },
+      payments: {
+        title: 'Invoices & billing',
+        sub: 'BLUE CHIP COMPUTER TRADING'
+      },
+      projects: {
+        title: 'Assembly & testing',
+        sub: 'BLUE CHIP COMPUTER TRADING'
+      },
+      reports: {
+        title: 'Reports',
+        sub: 'BLUE CHIP COMPUTER TRADING'
+      },
+      users: {
+        title: 'User management',
+        sub: 'BLUE CHIP COMPUTER TRADING'
       },
       estimator: {
         title: 'Custom Job Estimator',
-        sub: 'Dimension-based pricing calculator for glass, wood, and metal fabrications'
-      },
-      quotations: {
-        title: 'Project Quotations',
-        sub: 'Formal proposals and cost estimations for clients in Digos City'
-      },
-      projects: {
-        title: 'Job Orders & Projects',
-        sub: '6-Stage workshop monitoring for fabrication, finishing, and on-site installation'
-      },
-      inventory: {
-        title: 'Material Inventory',
-        sub: 'Stock levels, glass sheets, lumber, steel profiles, and reorder alerts'
-      },
-      customers: {
-        title: 'Customer Directory',
-        sub: 'Homeowners, contractors, and commercial business accounts in Digos City'
-      },
-      payments: {
-        title: 'Billing & Receivables',
-        sub: 'Downpayments, contract balance collections, and official receipts'
-      },
-      suppliers: {
-        title: 'Supplier Network & Raw Materials',
-        sub: 'Authorized distributors for glass sheets, lumber, aluminum extrusions, and steel in Davao Region'
+        sub: 'BLUE CHIP COMPUTER TRADING'
       },
       store_location: {
-        title: 'Workshop & Store Location Map',
-        sub: 'Tabor Lumber Compound, Roxas Extension, Barangay Zone III, Digos City, Davao del Sur'
-      },
-      users: {
-        title: 'User Management & Role Permissions',
-        sub: 'System access control, personnel credentials, and role-based permissions'
-      },
-      reports: {
-        title: 'Reports & Business Analytics',
-        sub: 'Official Workshop Performance Metrics & Financial Intelligence'
+        title: 'Store Location',
+        sub: 'BLUE CHIP COMPUTER TRADING'
       }
     };
 
@@ -463,6 +467,12 @@ class WorkshopApp {
     // Trigger view-specific renders
     switch (viewName) {
       case 'pos':
+        this.updateDashboardMetrics();
+        break;
+      case 'pos_counter':
+        this.populateCustomerDropdowns();
+        this.renderPosProducts();
+        this.updateCartUI();
         this.populateCustomerDropdowns();
         this.renderPosProducts();
         this.updateCartUI();
