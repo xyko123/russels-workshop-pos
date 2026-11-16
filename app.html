@@ -204,8 +204,8 @@
           </button>
 
           <div class="page-title-group">
-            <h1 id="topbarTitle">Point of Sales (POS)</h1>
-            <p id="topbarSubtitle">Counter checkout, custom fabrication orders, and deposit processing</p>
+            <p id="topbarSubtitle" class="topbar-company-sub">RUSELL'S GLASS, WOODS &amp; METALS • DIGOS CITY</p>
+            <h1 id="topbarTitle">Dashboard</h1>
           </div>
         </div>
 
@@ -347,180 +347,189 @@
       <!-- VIEW 1: POINT OF SALE (POS) & WORKSHOP DASHBOARD -->
       <section id="view-pos" class="view-container active">
 
-        <!-- IMAGE 1: EXECUTIVE GREETING & PERIOD SELECTOR -->
-        <div class="dash-greeting-banner">
-          <div class="greeting-text">
-            <h2>Hello, <span id="dashGreetingUser">Russel</span>! 👋</h2>
-            <p>This is what's happening in your workshop this month.</p>
-          </div>
-          <div class="greeting-actions">
-            <div class="period-pill-select" title="Change date period">
-              <span>This month</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </div>
-            <button type="button" class="period-icon-btn" title="Calendar schedule">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        <!-- SIMPLE MINIMALIST BLUECHIP NAVIGATION TABS -->
+        <div class="bluechip-view-nav-bar">
+          <div class="bluechip-tab-group">
+            <button type="button" class="bluechip-tab-btn active" id="tabDashOverview" onclick="App.switchPosMode('dashboard')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+              <span>Dashboard Overview</span>
+            </button>
+            <button type="button" class="bluechip-tab-btn" id="tabPosCounter" onclick="App.switchPosMode('pos')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+              <span>Counter Point of Sale (POS)</span>
             </button>
           </div>
-        </div>
-
-        <!-- WORKSHOP "MY DAY" STORIES / HORIZONTAL KPI CAROUSEL (FACEBOOK-STYLE REEL) -->
-        <div class="dash-stories-section">
-          <div class="dash-stories-header">
-            <div class="dash-stories-title-group">
-              <span class="stories-badge-pill">
-                <span class="stories-live-ring"></span>
-                WORKSHOP "MY DAY" STORIES
-              </span>
-              <span class="stories-subtitle">Real-time KPI metrics &amp; operational pulse • Scroll left &amp; right</span>
-            </div>
-            <div class="stories-nav-controls">
-              <button type="button" class="stories-arrow-btn" onclick="App.scrollStories('left')" title="Scroll stories left [‹]">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-              </button>
-              <button type="button" class="stories-arrow-btn" onclick="App.scrollStories('right')" title="Scroll stories right [›]">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-              </button>
-            </div>
-          </div>
-
-          <div class="dash-stories-track-wrapper">
-            <div class="dash-metrics-carousel" id="dashMetricsCarousel">
-              <!-- Story Card 1: Total Revenue (Hero Gradient) -->
-              <div class="metric-card-hero story-card" onclick="App.loadView('payments')" title="Click to view Billing &amp; Payments">
-                <div class="metric-hero-top">
-                  <span class="metric-hero-title">Total revenue</span>
-                  <span class="metric-arrow-btn">↗</span>
-                </div>
-                <div>
-                  <div class="metric-hero-value">
-                    <span id="heroMetricRevenue">₱99,560</span>
-                    <span class="metric-trend-pill green-trans">↑ 2.6%</span>
-                  </div>
-                  <div class="metric-hero-sub">This month vs last</div>
-                </div>
-              </div>
-
-              <!-- Story Card 2: Total Orders -->
-              <div class="metric-card-clean story-card" onclick="App.loadView('orders')" title="Click to view Orders List">
-                <div class="metric-clean-top">
-                  <span class="metric-clean-title">Total orders</span>
-                  <span class="metric-clean-arrow">↗</span>
-                </div>
-                <div>
-                  <div class="metric-clean-value">
-                    <span id="cleanMetricOrders">35</span>
-                    <span class="metric-trend-pill red-soft">↓ 0.6%</span>
-                  </div>
-                  <div class="metric-clean-sub">This month vs last</div>
-                </div>
-              </div>
-
-              <!-- Story Card 3: Total Inquiries -->
-              <div class="metric-card-clean story-card" onclick="App.loadView('customers')" title="Click to view Customer Directory">
-                <div class="metric-clean-top">
-                  <span class="metric-clean-title">Total inquiries</span>
-                  <span class="metric-clean-arrow">↗</span>
-                </div>
-                <div>
-                  <div class="metric-clean-value">
-                    <span id="cleanMetricInquiries">45,600</span>
-                  </div>
-                  <div class="metric-clean-sub">This month vs last</div>
-                </div>
-              </div>
-
-              <!-- Story Card 4: Net Profit -->
-              <div class="metric-card-clean story-card" onclick="App.loadView('reports')" title="Click to view Reports &amp; Analytics">
-                <div class="metric-clean-top">
-                  <span class="metric-clean-title">Net profit</span>
-                  <span class="metric-clean-arrow">↗</span>
-                </div>
-                <div>
-                  <div class="metric-clean-value">
-                    <span id="cleanMetricProfit">₱60,450</span>
-                    <span class="metric-trend-pill green-soft">↑ 1.6%</span>
-                  </div>
-                  <div class="metric-clean-sub">This month vs last</div>
-                </div>
-              </div>
-
-              <!-- Story Card 5: Active Fabrication Jobs -->
-              <div class="metric-card-clean story-card story-card-accent-blue" onclick="App.loadView('projects')" title="Click to view Fabrication Kanban">
-                <div class="metric-clean-top">
-                  <span class="metric-clean-title">Fabrication Jobs</span>
-                  <span class="metric-clean-arrow" style="color: #38bdf8;">↗</span>
-                </div>
-                <div>
-                  <div class="metric-clean-value">
-                    <span id="storyMetricJobs">3 Active</span>
-                    <span class="metric-trend-pill blue-soft">In Progress</span>
-                  </div>
-                  <div class="metric-clean-sub">Welding, Glass &amp; Assembly</div>
-                </div>
-              </div>
-
-              <!-- Story Card 6: Project Quotations -->
-              <div class="metric-card-clean story-card story-card-accent-amber" onclick="App.loadView('quotations')" title="Click to view Quotations">
-                <div class="metric-clean-top">
-                  <span class="metric-clean-title">Quotations</span>
-                  <span class="metric-clean-arrow" style="color: #fbbf24;">↗</span>
-                </div>
-                <div>
-                  <div class="metric-clean-value">
-                    <span id="storyMetricQuotes">₱145,200</span>
-                    <span class="metric-trend-pill amber-soft">5 Pending</span>
-                  </div>
-                  <div class="metric-clean-sub">Awaiting client approval</div>
-                </div>
-              </div>
-
-              <!-- Story Card 7: Low Stock Alerts -->
-              <div class="metric-card-clean story-card story-card-accent-rose" onclick="App.loadView('inventory')" title="Click to view Material Inventory">
-                <div class="metric-clean-top">
-                  <span class="metric-clean-title">Low Stock</span>
-                  <span class="metric-clean-arrow" style="color: #f43f5e;">↗</span>
-                </div>
-                <div>
-                  <div class="metric-clean-value">
-                    <span id="storyMetricStock">3 Items</span>
-                    <span class="metric-trend-pill red-soft">Reorder</span>
-                  </div>
-                  <div class="metric-clean-sub">Bronze glass, 798 Analok</div>
-                </div>
-              </div>
-
-              <!-- Story Card 8: Registered Clients -->
-              <div class="metric-card-clean story-card story-card-accent-emerald" onclick="App.loadView('customers')" title="Click to view Digos Clients">
-                <div class="metric-clean-top">
-                  <span class="metric-clean-title">Registered Clients</span>
-                  <span class="metric-clean-arrow" style="color: #34d399;">↗</span>
-                </div>
-                <div>
-                  <div class="metric-clean-value">
-                    <span id="storyMetricClients">128</span>
-                    <span class="metric-trend-pill green-soft">Active</span>
-                  </div>
-                  <div class="metric-clean-sub">Digos City &amp; Davao del Sur</div>
-                </div>
-              </div>
-            </div>
+          <div class="bluechip-date-pill">
+            <span id="bluechipLiveDate">Mon, 16 Nov 2026</span>
           </div>
         </div>
 
-        <!-- FACEBOOK NEWSFEED-STYLE WORKSHOP OPERATIONS FEED HEADER -->
-        <div class="dash-feed-header">
-          <div class="dash-feed-title-left">
-            <div class="feed-live-indicator">
-              <span class="feed-pulse-dot"></span>
-              <span class="feed-badge-text">LIVE WORKSHOP NEWSFEED</span>
+        <!-- ====================================================================
+             IMAGE 2: SIMPLE & FLAT BLUECHIP DASHBOARD OVERVIEW
+             ==================================================================== -->
+        <div id="bluechipDashSection" class="bluechip-dash-container">
+          <!-- ROW 1: 4 TOP METRIC CARDS (EXACT IMAGE 2 BLUECHIP LAYOUT) -->
+          <div class="bluechip-metrics-row">
+            <!-- Card 1: Low-stock products -->
+            <div class="bluechip-metric-card" onclick="App.loadView('inventory')" title="Click to view material inventory">
+              <div class="bluechip-card-label">Low-stock products</div>
+              <div class="bluechip-card-val" id="bcLowStockCount">1</div>
+              <div class="bluechip-card-sub">At or below reorder point</div>
             </div>
-            <h3 class="dash-feed-heading">Fabrication &amp; Point of Sales Feed</h3>
-            <p class="dash-feed-sub">Counter order terminal, product inventory catalog, and custom job fabrication staging</p>
+
+            <!-- Card 2: Pending purchase orders -->
+            <div class="bluechip-metric-card" onclick="App.loadView('orders')" title="Click to view purchase & fabrication orders">
+              <div class="bluechip-card-label">Pending purchase orders</div>
+              <div class="bluechip-card-val" id="bcPendingOrdersCount">0</div>
+              <div class="bluechip-card-sub">Draft or submitted</div>
+            </div>
+
+            <!-- Card 3: Overdue receivables -->
+            <div class="bluechip-metric-card" onclick="App.loadView('payments')" title="Click to view receivables & billing">
+              <div class="bluechip-card-label">Overdue receivables</div>
+              <div class="bluechip-card-val" id="bcOverdueReceivables">₱0.00</div>
+              <div class="bluechip-card-sub">Past due date</div>
+            </div>
+
+            <!-- Card 4: Warranty expiring -->
+            <div class="bluechip-metric-card" onclick="App.loadView('reports')" title="Click to view reports & warranty">
+              <div class="bluechip-card-label">Warranty expiring</div>
+              <div class="bluechip-card-val" id="bcWarrantyExpiring">0</div>
+              <div class="bluechip-card-sub">Within the next 30 days</div>
+            </div>
+          </div>
+
+          <!-- ROW 2: 2 COLUMNS (SALES OVERVIEW & OVERDUE INVOICES) -->
+          <div class="bluechip-middle-row">
+            <!-- Left: Sales overview (Chart) -->
+            <div class="bluechip-panel-card bluechip-sales-panel">
+              <div class="bluechip-panel-head">
+                <div>
+                  <h3 class="bluechip-panel-title">Sales overview</h3>
+                  <p class="bluechip-panel-sub">Invoice totals for the last six months</p>
+                </div>
+              </div>
+              <div class="bluechip-chart-wrapper">
+                <svg class="bluechip-svg-chart" viewBox="0 0 650 210" preserveAspectRatio="none">
+                  <!-- Horizontal Gridlines from 0 to 1.0 -->
+                  <line x1="45" y1="20" x2="640" y2="20" stroke="rgba(255,255,255,0.08)" stroke-dasharray="2 2" />
+                  <text x="10" y="24" fill="#64748b" font-size="11">1.0 —</text>
+
+                  <line x1="45" y1="48" x2="640" y2="48" stroke="rgba(255,255,255,0.08)" stroke-dasharray="2 2" />
+                  <text x="10" y="52" fill="#64748b" font-size="11">0.9 —</text>
+
+                  <line x1="45" y1="76" x2="640" y2="76" stroke="rgba(255,255,255,0.08)" stroke-dasharray="2 2" />
+                  <text x="10" y="80" fill="#64748b" font-size="11">0.8 —</text>
+
+                  <line x1="45" y1="104" x2="640" y2="104" stroke="rgba(255,255,255,0.08)" stroke-dasharray="2 2" />
+                  <text x="10" y="108" fill="#64748b" font-size="11">0.7 —</text>
+
+                  <line x1="45" y1="132" x2="640" y2="132" stroke="rgba(255,255,255,0.08)" stroke-dasharray="2 2" />
+                  <text x="10" y="136" fill="#64748b" font-size="11">0.6 —</text>
+
+                  <line x1="45" y1="160" x2="640" y2="160" stroke="rgba(255,255,255,0.08)" stroke-dasharray="2 2" />
+                  <text x="10" y="164" fill="#64748b" font-size="11">0.5 —</text>
+
+                  <line x1="45" y1="188" x2="640" y2="188" stroke="rgba(255,255,255,0.18)" />
+                  <text x="25" y="192" fill="#64748b" font-size="11">0 —</text>
+
+                  <!-- Monthly Bars -->
+                  <g fill="#2563eb" opacity="0.85">
+                    <!-- Jun -->
+                    <rect x="75" y="115" width="40" height="73" rx="4" />
+                    <!-- Jul -->
+                    <rect x="175" y="98" width="40" height="90" rx="4" />
+                    <!-- Aug -->
+                    <rect x="275" y="80" width="40" height="108" rx="4" />
+                    <!-- Sep -->
+                    <rect x="375" y="65" width="40" height="123" rx="4" />
+                    <!-- Oct -->
+                    <rect x="475" y="70" width="40" height="118" rx="4" />
+                    <!-- Nov (Current) -->
+                    <rect x="575" y="52" width="40" height="136" rx="4" fill="#3b82f6" />
+                  </g>
+
+                  <!-- X Axis Month Labels -->
+                  <text x="95" y="202" fill="#94a3b8" font-size="11" text-anchor="middle">Jun</text>
+                  <text x="195" y="202" fill="#94a3b8" font-size="11" text-anchor="middle">Jul</text>
+                  <text x="295" y="202" fill="#94a3b8" font-size="11" text-anchor="middle">Aug</text>
+                  <text x="395" y="202" fill="#94a3b8" font-size="11" text-anchor="middle">Sep</text>
+                  <text x="495" y="202" fill="#94a3b8" font-size="11" text-anchor="middle">Oct</text>
+                  <text x="595" y="202" fill="#38bdf8" font-size="11" font-weight="700" text-anchor="middle">Nov</text>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Right: Overdue invoices -->
+            <div class="bluechip-panel-card bluechip-invoices-panel">
+              <div class="bluechip-panel-head">
+                <div>
+                  <h3 class="bluechip-panel-title">Overdue invoices</h3>
+                  <p class="bluechip-panel-sub">Follow up on outstanding balances</p>
+                </div>
+                <a href="javascript:void(0)" onclick="App.loadView('payments')" class="bluechip-link">View all</a>
+              </div>
+              <div class="bluechip-empty-invoices">
+                <p>No overdue invoices. Great work!</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ROW 3: REORDER ALERTS TABLE (IMAGE 2) -->
+          <div class="bluechip-panel-card bluechip-reorder-panel">
+            <div class="bluechip-panel-head">
+              <div>
+                <h3 class="bluechip-panel-title">Reorder alerts</h3>
+                <p class="bluechip-panel-sub">Products currently at or below reorder level</p>
+              </div>
+              <a href="javascript:void(0)" onclick="App.loadView('inventory')" class="bluechip-link">Manage inventory</a>
+            </div>
+
+            <div class="bluechip-table-responsive">
+              <table class="bluechip-data-table">
+                <thead>
+                  <tr>
+                    <th style="width: 25%;">SKU</th>
+                    <th style="width: 45%;">PRODUCT</th>
+                    <th style="width: 15%;">ON HAND</th>
+                    <th style="width: 15%;">REORDER AT</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="font-mono">BC-NET-003</td>
+                    <td class="font-medium">Ubiquiti UniFi U6+ (Workshop AP Unit)</td>
+                    <td>2</td>
+                    <td>2</td>
+                  </tr>
+                  <tr>
+                    <td class="font-mono">GLS-14-CLR</td>
+                    <td class="font-medium">1/4" Clear Float Glass Sheets (4ft x 8ft)</td>
+                    <td>4</td>
+                    <td>10</td>
+                  </tr>
+                  <tr>
+                    <td class="font-mono">AL-798-BRZ</td>
+                    <td class="font-medium">798 Series Sliding Window Profile (Bronze Analok)</td>
+                    <td>8</td>
+                    <td>15</td>
+                  </tr>
+                  <tr>
+                    <td class="font-mono">STN-304-1IN</td>
+                    <td class="font-medium">Stainless Round Tube 1" Grade 304 (Gates &amp; Railings)</td>
+                    <td>6</td>
+                    <td>12</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
-        <div class="pos-grid">
+        <!-- ====================================================================
+             POINT OF SALE (POS) CASHIER CHECKOUT & CATALOG
+             ==================================================================== -->
+        <div id="posCounterGrid" class="pos-grid" style="display: none;">
           <!-- Product Catalog -->
           <div class="pos-catalog-panel">
             <div class="catalog-header">

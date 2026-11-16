@@ -3,423 +3,356 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RUSELL'S Glass, Woods &amp; Metals | Enterprise Workshop &amp; POS System</title>
+    <title>Sign in | RUSELL'S Workshop POS &amp; Operations</title>
     <link rel="stylesheet" href="css/style.css" />
     <style>
-      .forgot-link {
-        font-size: 0.8rem;
-        color: #38bdf8;
-        text-decoration: none;
-        font-weight: 600;
-        transition: var(--transition);
+      :root {
+        --login-bg: #0b1628;
+        --login-card-bg: #132238;
+        --login-card-border: #1e385c;
+        --login-input-bg: #0d1a2d;
+        --login-input-border: #223c60;
+        --login-text-primary: #ffffff;
+        --login-text-muted: #94a3b8;
+        --login-btn-blue: #2563eb;
+        --login-btn-blue-hover: #1d4ed8;
       }
-      .forgot-link:hover {
-        color: #7dd3fc;
-        text-decoration: underline;
+
+      body.theme-light {
+        --login-bg: #f1f5f9;
+        --login-card-bg: #ffffff;
+        --login-card-border: #cbd5e1;
+        --login-input-bg: #f8fafc;
+        --login-input-border: #cbd5e1;
+        --login-text-primary: #0f172a;
+        --login-text-muted: #64748b;
+        --login-btn-blue: #2563eb;
+        --login-btn-blue-hover: #1d4ed8;
       }
-      .field-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 0.4rem;
+
+      * {
+        box-sizing: border-box;
       }
-      .field-header label {
-        margin-bottom: 0;
-      }
-      .signboard-tagline {
-        color: #ef4444;
-        font-weight: 900;
-        font-style: italic;
-        letter-spacing: 0.04em;
-        font-size: 1.15rem;
-        text-shadow: 0 2px 10px rgba(239, 68, 68, 0.4);
-        margin: 0.35rem 0 0.85rem 0;
-      }
-      .featured-banner {
-        background: linear-gradient(135deg, rgba(21, 128, 61, 0.25), rgba(220, 38, 38, 0.2));
-        border: 1px solid rgba(34, 197, 94, 0.4);
-        border-radius: var(--radius-sm);
-        padding: 0.65rem 0.85rem;
-        margin: 0.85rem 0 1.25rem;
+
+      body.auth-page {
+        min-height: 100vh;
+        margin: 0;
+        padding: 1.5rem;
+        background-color: var(--login-bg);
         display: flex;
         align-items: center;
-        gap: 0.65rem;
+        justify-content: center;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        position: relative;
+        transition: background-color 0.25s ease;
       }
-      .featured-banner-title {
-        font-size: 0.72rem;
-        font-weight: 800;
-        color: #4ade80;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
-      .featured-banner-desc {
-        font-size: 0.85rem;
-        font-weight: 700;
-        color: #f8fafc;
-      }
-      .contact-strip {
-        margin-top: 1.25rem;
-        padding-top: 1rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
-        font-size: 0.75rem;
-        color: var(--text-white-dim);
-      }
-      .contact-strip div {
-        margin-bottom: 0.35rem;
+
+      /* Top-Right Minimalist Theme Toggle (Image 1) */
+      .top-theme-toggle-wrap {
+        position: absolute;
+        top: 1.25rem;
+        right: 1.5rem;
         display: flex;
         align-items: center;
         gap: 0.5rem;
       }
-      .contact-strip strong {
-        color: #ffffff;
+
+      .btn-theme-minimal {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        background: var(--login-card-bg);
+        border: 1px solid var(--login-card-border);
+        color: var(--login-text-muted);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        padding: 0;
       }
-      .toast-notification {
-        position: fixed;
-        bottom: 24px;
-        right: 24px;
-        background: #0f172a;
-        border: 1px solid #22c55e;
-        border-left: 5px solid #22c55e;
-        color: #ffffff;
-        padding: 1rem 1.25rem;
-        border-radius: var(--radius-md);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
-        max-width: 380px;
-        z-index: 2000;
-        display: none;
-        animation: slideUp 0.3s ease;
+
+      .btn-theme-minimal:hover {
+        color: var(--login-text-primary);
+        border-color: #3b82f6;
+        transform: scale(1.05);
       }
-      @keyframes slideUp {
-        from { transform: translateY(20px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
+
+      /* Image 1 Centered Bluechip-Style Login Card */
+      .bluechip-login-card {
+        width: 100%;
+        max-width: 440px;
+        background: var(--login-card-bg);
+        border: 1px solid var(--login-card-border);
+        border-radius: 14px;
+        padding: 2.85rem 2.5rem 2.4rem;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+        transition: all 0.25s ease;
       }
-      .pro-svg-icon {
-        width: 15px;
-        height: 15px;
-        stroke: #38bdf8;
-        flex-shrink: 0;
+
+      body.theme-light .bluechip-login-card {
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
       }
-      .btn-toggle-password {
+
+      /* Brand Header */
+      .card-brand {
+        margin-bottom: 1.75rem;
+      }
+
+      .card-brand-name {
+        font-size: 1.35rem;
+        font-weight: 800;
+        color: var(--login-text-primary);
+        letter-spacing: -0.01em;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.2rem;
+      }
+
+      .card-brand-name span.brand-accent {
+        color: #3b82f6;
+      }
+
+      .card-brand-sub {
+        font-size: 0.76rem;
+        font-weight: 600;
+        color: var(--login-text-muted);
+        letter-spacing: 0.04em;
+        margin-top: 0.2rem;
+        text-transform: uppercase;
+      }
+
+      /* Welcome Headings */
+      .card-welcome-title {
+        font-size: 1.55rem;
+        font-weight: 700;
+        color: var(--login-text-primary);
+        margin: 0 0 0.35rem 0;
+        letter-spacing: -0.01em;
+      }
+
+      .card-welcome-sub {
+        font-size: 0.88rem;
+        color: var(--login-text-muted);
+        margin: 0 0 1.75rem 0;
+        line-height: 1.4;
+      }
+
+      /* Form Fields */
+      .auth-field-group {
+        margin-bottom: 1.25rem;
+      }
+
+      .auth-field-label {
+        display: block;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--login-text-primary);
+        margin-bottom: 0.45rem;
+      }
+
+      .auth-input-control {
+        width: 100%;
+        padding: 0.78rem 0.95rem;
+        background: var(--login-input-bg);
+        border: 1px solid var(--login-input-border);
+        border-radius: 7px;
+        color: var(--login-text-primary);
+        font-size: 0.92rem;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        font-family: inherit;
+      }
+
+      .auth-input-control:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+      }
+
+      .password-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .password-wrapper input {
+        padding-right: 2.75rem;
+      }
+
+      .btn-toggle-pw {
+        position: absolute;
+        right: 0.5rem;
         background: transparent;
         border: none;
-        color: #94a3b8;
+        color: var(--login-text-muted);
         cursor: pointer;
-        padding: 0 0.5rem;
+        padding: 0.4rem;
         display: flex;
         align-items: center;
         justify-content: center;
       }
-      .btn-toggle-password:hover {
-        color: #f8fafc;
+
+      .btn-toggle-pw:hover {
+        color: var(--login-text-primary);
       }
-      .btn-toggle-password svg {
-        width: 16px;
-        height: 16px;
+
+      /* Sign In Button (Image 1 vibrant flat blue) */
+      .btn-bluechip-signin {
+        width: 100%;
+        padding: 0.82rem;
+        background: var(--login-btn-blue);
+        border: none;
+        border-radius: 7px;
+        color: #ffffff;
+        font-size: 0.95rem;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 0.65rem;
+        transition: background-color 0.2s, transform 0.1s;
+      }
+
+      .btn-bluechip-signin:hover {
+        background: var(--login-btn-blue-hover);
+      }
+
+      .btn-bluechip-signin:active {
+        transform: translateY(1px);
+      }
+
+      /* Notice text & credentials pills */
+      .card-footer-notice {
+        font-size: 0.76rem;
+        color: var(--login-text-muted);
+        line-height: 1.5;
+        margin-top: 1.65rem;
+        text-align: left;
+      }
+
+      .demo-pills-row {
+        display: flex;
+        gap: 0.45rem;
+        margin-top: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .pill-demo-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--login-card-border);
+        border-radius: 5px;
+        color: var(--login-text-muted);
+        font-size: 0.73rem;
+        font-weight: 600;
+        padding: 0.35rem 0.65rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .pill-demo-btn:hover {
+        background: rgba(59, 130, 246, 0.15);
+        color: #38bdf8;
+        border-color: #38bdf8;
+      }
+
+      .message {
+        padding: 0.65rem 0.85rem;
+        border-radius: 6px;
+        font-size: 0.82rem;
+        margin-bottom: 1rem;
+        display: none;
+      }
+
+      .message.error {
+        background: rgba(239, 68, 68, 0.15);
+        border: 1px solid #ef4444;
+        color: #fca5a5;
+        display: block;
+      }
+
+      .message.success {
+        background: rgba(34, 197, 94, 0.15);
+        border: 1px solid #22c55e;
+        color: #86efac;
+        display: block;
       }
     </style>
 </head>
 <body class="auth-page">
-    <!-- TOP NAVIGATION BAR (IMAGE 2) -->
-    <header class="auth-top-nav">
-        <a href="app.html" class="auth-nav-back">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-            <span>Workshop POS</span>
-        </a>
-        <div class="auth-brand-center">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-            <span>RUSELL'S GLASS, WOODS &amp; METALS</span>
+    <!-- TOP-RIGHT SUN/MOON THEME TOGGLE (IMAGE 1) -->
+    <div class="top-theme-toggle-wrap">
+        <button type="button" class="btn-theme-minimal" id="themeToggleBtn" onclick="toggleAuthTheme()" title="Switch Light &amp; Night Mode">
+            <svg id="themeIconSun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+    </div>
+
+    <!-- MAIN CENTERED LOGIN CARD (EXACT IMAGE 1 BLUECHIP LAYOUT) -->
+    <main class="bluechip-login-card">
+        <div class="card-brand">
+            <h1 class="card-brand-name">RUSELL<span class="brand-accent">'S</span></h1>
+            <div class="card-brand-sub">Inventory &amp; Billing • Workshop POS</div>
         </div>
-        <div style="display: flex; justify-content: flex-end; min-width: 140px;">
-            <button type="button" class="auth-theme-toggle" id="authThemeToggle" onclick="toggleAuthTheme()" title="Switch Light &amp; Night/Dark Mode">
-                <span id="authThemeIcon">🌙</span>
-                <span id="authThemeLabel" style="font-size: 0.78rem; font-weight: 700; margin-left: 0.25rem;">Night Mode</span>
+
+        <h2 class="card-welcome-title">Welcome back</h2>
+        <p class="card-welcome-sub">Sign in to manage company operations.</p>
+
+        <form id="loginForm" novalidate>
+            <div class="auth-field-group">
+                <label class="auth-field-label" for="username">Username or email</label>
+                <input class="auth-input-control" id="username" name="username" type="text" autocomplete="username" placeholder="Enter username (e.g. owner or demo)" required />
+            </div>
+
+            <div class="auth-field-group">
+                <label class="auth-field-label" for="password">Password</label>
+                <div class="password-wrapper">
+                    <input class="auth-input-control" id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter password" required />
+                    <button type="button" class="btn-toggle-pw" onclick="togglePasswordVisibility('password', this)" title="Show / Hide Password" aria-label="Toggle password visibility">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <input type="checkbox" id="rememberMe" checked style="display: none;" />
+
+            <div id="loginMessage" class="message" aria-live="polite"></div>
+
+            <button type="submit" class="btn-bluechip-signin" id="loginBtn">
+                Sign in
             </button>
+        </form>
+
+        <div class="card-footer-notice">
+            Initial account credentials are listed in README.md. Change them immediately.
+            <div class="demo-pills-row">
+                <button type="button" class="pill-demo-btn" onclick="fillCredentials('demo', 'DemoUser2026!')">
+                    ⚡ Auto-Fill Demo
+                </button>
+                <button type="button" class="pill-demo-btn" onclick="fillCredentials('owner', 'Admin123!')">
+                    🔑 Auto-Fill Owner
+                </button>
+            </div>
         </div>
-    </header>
-
-    <main class="auth-shell">
-        <!-- IMAGE 2: FLOATING PURE WHITE LOGIN CARD -->
-        <section class="login-card">
-            <div class="login-card-header">
-                <h2>Welcome Back!</h2>
-                <p>We missed you! Please enter your details.</p>
-            </div>
-
-            <form id="loginForm" novalidate>
-                <div class="field-group">
-                    <label for="username">Email or Username</label>
-                    <input id="username" name="username" type="text" autocomplete="username" placeholder="Enter your Email or Username (e.g. owner, sales)" required />
-                </div>
-
-                <div class="field-group">
-                    <label for="password">Password</label>
-                    <div class="password-input-wrapper">
-                        <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter Password" required />
-                        <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('password', this)" title="Show / Hide Password" aria-label="Toggle password visibility">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="auth-remember-row">
-                    <label class="remember-label">
-                        <input type="checkbox" id="rememberMe" checked />
-                        <span>Remember me</span>
-                    </label>
-                    <a href="javascript:void(0)" onclick="openForgotModal()" class="forgot-link">Forgot password?</a>
-                </div>
-
-                <div id="loginMessage" class="message" aria-live="polite"></div>
-
-                <button type="submit" class="btn-primary-peppo" id="loginBtn">
-                    <span>Sign in</span>
-                </button>
-
-                <button type="button" class="btn-secondary-google" onclick="fillCredentials('demo', 'DemoUser2026!')">
-                    <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.98 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
-                    <span>Try Live Interactive Demo (Guest Mode)</span>
-                </button>
-            </form>
-
-            <div class="auth-bottom-text">
-                <span>Don't have an account? <a href="javascript:void(0)" onclick="fillCredentials('owner', 'Admin123!')">Sign in as Owner</a></span>
-            </div>
-        </section>
-
-        <!-- SIDE BRAND & WORKSHOP INFO DRAWER (PRESERVES ALL DATA) -->
-        <section class="auth-side-panel">
-            <div class="auth-side-brand-header">
-                <img src="assets/logo.jpg" alt="RUSELL'S Logo" class="auth-side-logo" />
-                <h3 class="auth-side-title">RUSELL'S GLASS, WOODS &amp; METALS</h3>
-                <p class="auth-side-tagline">"You NAME it, we BUILD it"</p>
-                <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 0.75rem;">
-                    Enterprise Workshop Point of Sale, Custom Fabrication Estimator &amp; Kanban Operations
-                </div>
-            </div>
-
-            <!-- 4 Pillars -->
-            <div class="auth-side-pills">
-                <div class="auth-pillar-box">
-                    <strong>Glass &amp; Auto Tint</strong>
-                    <small>Aluminum 798/900, 3M Tint</small>
-                </div>
-                <div class="auth-pillar-box">
-                    <strong>Woods &amp; Moldings</strong>
-                    <small>Panel doors, jambs, cabinets</small>
-                </div>
-                <div class="auth-pillar-box">
-                    <strong>Stainless &amp; Metal</strong>
-                    <small>Gates, fences, trusses</small>
-                </div>
-                <div class="auth-pillar-box">
-                    <strong>Partitions &amp; Shutters</strong>
-                    <small>Roll-up doors, modular cubicles</small>
-                </div>
-            </div>
-
-            <!-- 3D Material Matrix Preview -->
-            <div class="auth-3d-toggle-box">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem;">
-                    <span style="font-size: 0.7rem; font-weight: 800; color: #4ade80;">3D MATERIAL MATRIX</span>
-                    <small style="font-size: 0.65rem; color: rgba(255,255,255,0.7);">Interactive Stage</small>
-                </div>
-                <canvas id="login3dCanvas" width="340" height="90" style="width: 100%; height: 90px; border-radius: 6px; background: rgba(0,0,0,0.3); display: block;"></canvas>
-            </div>
-
-            <!-- Contact Hotlines -->
-            <div class="auth-side-hotlines" style="margin-top: 1rem;">
-                <div>📍 <strong>Facility:</strong> Tabor Lumber Cmpd, Roxas Ext., Digos City</div>
-                <div>📞 <strong>Hotlines:</strong> 0921-371-0555 (Rusell) • 0929-590-2201 (Iris)</div>
-                <div>📧 <strong>Email:</strong> irisjunetaborbajura@gmail.com</div>
-            </div>
-        </section>
     </main>
 
-    <!-- FORGOT PASSWORD & SMS/EMAIL OTP MODAL -->
-    <div id="forgotModal" class="otp-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="otpModalTitle">
-        <div class="otp-modal-card">
-            <div class="otp-modal-header">
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <svg class="pro-svg-icon" style="stroke: #38bdf8; width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-1.5 1.5L12 11l-3 3-3 3 1.5 1.5M12 11l3 3 1.5-1.5M19 5a3 3 0 1 0-4.24-4.24 3 3 0 0 0 4.24 4.24z"/></svg>
-                    <h3 id="otpModalTitle" style="margin: 0; font-size: 1.1rem; color: #fff;">Identity Verification &amp; Password Reset</h3>
-                </div>
-                <button type="button" class="otp-close-btn" onclick="closeForgotModal()" aria-label="Close modal">&times;</button>
-            </div>
-
-            <div class="otp-modal-body">
-                <!-- Step Indicator -->
-                <div class="otp-step-indicator">
-                    <div class="step-dot active" id="dot1">1</div>
-                    <div class="step-line" id="line1"></div>
-                    <div class="step-dot" id="dot2">2</div>
-                    <div class="step-line" id="line2"></div>
-                    <div class="step-dot" id="dot3">3</div>
-                </div>
-
-                <!-- STEP 1: Select Channel & Target Account -->
-                <div class="otp-step active" id="step1">
-                    <p style="font-size: 0.88rem; color: var(--text-white-dim); margin-bottom: 1rem;">
-                        Select your registered security channel to receive a 6-digit One-Time Verification Code (OTP).
-                    </p>
-
-                    <div class="field-group">
-                        <label for="recoveryAccount">Target Account</label>
-                        <select id="recoveryAccount" onchange="updateRecoveryPreviews()" style="width: 100%; padding: 0.75rem; background: #1e293b; border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-sm); color: #fff;">
-                            <option value="owner" selected>Executive Proprietor (Russel T. - 0921-371-0555)</option>
-                            <option value="sales">Counter Sales (Iris / Office - 0929-590-2201)</option>
-                            <option value="workshop">Fabrication Lead (Arnel Mendoza - 09053602201)</option>
-                        </select>
-                    </div>
-
-                    <label style="font-size: 0.82rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; display: block;">
-                        Choose Delivery Channel
-                    </label>
-
-                    <div class="channel-selector">
-                        <div class="channel-card active" id="channelSms" onclick="selectChannel('sms')">
-                            <div class="channel-icon">
-                                <svg class="pro-svg-icon" style="stroke: #4ade80;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                            </div>
-                            <div class="channel-title">SMS to Registered Mobile</div>
-                            <div class="channel-sub" id="smsPreviewText">+63 0921-371-0555</div>
-                        </div>
-                        <div class="channel-card" id="channelEmail" onclick="selectChannel('email')">
-                            <div class="channel-icon">
-                                <svg class="pro-svg-icon" style="stroke: #38bdf8;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                            </div>
-                            <div class="channel-title">Corporate Email OTP</div>
-                            <div class="channel-sub">irisjunetaborbajura@gmail.com</div>
-                        </div>
-                    </div>
-
-                    <div id="step1Msg" class="message" style="display: none;"></div>
-
-                    <button type="button" class="btn btn-dark" style="width: 100%;" onclick="sendOTP()">
-                        Dispatch 6-Digit Verification Code
-                    </button>
-                </div>
-
-                <!-- STEP 2: Enter 6-digit OTP -->
-                <div class="otp-step" id="step2">
-                    <p style="font-size: 0.88rem; color: var(--text-white-dim); margin-bottom: 0.75rem;">
-                        Verification code dispatched to <strong id="sentTargetDisplay" style="color: #4ade80;">+63 0921-371-0555</strong>. Enter code:
-                    </p>
-
-                    <!-- Real-time Gateway Simulation Banner -->
-                    <div class="otp-simulation-alert" id="simAlert">
-                        <svg class="pro-svg-icon" style="stroke: #38bdf8; width: 22px; height: 22px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                        <div>
-                            <strong id="simSender">[SMS GATEWAY DISPATCH]</strong>
-                            <p id="simBody" style="margin-top: 0.2rem;">Security Verification Code: <strong id="simCodeDisplay" style="color: #38bdf8; font-size: 1rem; letter-spacing: 0.1em;">123456</strong>. Valid for 5 minutes.</p>
-                        </div>
-                    </div>
-
-                    <!-- 6 Digit Inputs -->
-                    <div class="otp-digit-inputs">
-                        <input type="text" maxlength="1" class="otp-box" id="otp0" autofocus />
-                        <input type="text" maxlength="1" class="otp-box" id="otp1" />
-                        <input type="text" maxlength="1" class="otp-box" id="otp2" />
-                        <input type="text" maxlength="1" class="otp-box" id="otp3" />
-                        <input type="text" maxlength="1" class="otp-box" id="otp4" />
-                        <input type="text" maxlength="1" class="otp-box" id="otp5" />
-                    </div>
-
-                    <div style="text-align: center; margin-bottom: 1rem;">
-                        <button type="button" class="role-chip" style="font-size: 0.75rem; background: rgba(56, 189, 248, 0.15); border-color: #38bdf8; color: #bae6fd;" onclick="autoFillOTP()">
-                            Autofill Dispatched OTP
-                        </button>
-                    </div>
-
-                    <div id="step2Msg" class="message" style="display: none;"></div>
-
-                    <button type="button" class="btn btn-dark" style="width: 100%;" onclick="verifyOTP()">
-                        Verify Security Code
-                    </button>
-
-                    <div class="otp-resend-timer">
-                        Didn't receive code? 
-                        <button type="button" class="otp-resend-btn" id="resendBtn" onclick="sendOTP()" disabled>
-                            Resend in <span id="timerCount">45</span>s
-                        </button>
-                    </div>
-                </div>
-
-                <!-- STEP 3: Reset Password -->
-                <div class="otp-step" id="step3">
-                    <p style="font-size: 0.88rem; color: var(--text-white-dim); margin-bottom: 1rem;">
-                        Identity confirmed. Set a new secure password for your account.
-                    </p>
-
-                    <div class="field-group">
-                        <label for="newPassword">New Password</label>
-                        <div class="password-input-wrapper">
-                            <input id="newPassword" type="password" placeholder="At least 6 characters" oninput="checkStrength(this.value)" style="width: 100%; padding: 0.75rem; padding-right: 2.8rem; background: #1e293b; border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-sm); color: #fff;" />
-                            <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('newPassword', this)" title="Show / Hide Password" aria-label="Toggle password visibility">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                            </button>
-                        </div>
-                        <div class="pw-strength-bar">
-                            <div class="pw-strength-fill" id="strengthBar"></div>
-                        </div>
-                        <small id="strengthText" style="font-size: 0.72rem; color: var(--text-white-dim); margin-top: 0.25rem; display: block;">Strength: Enter password</small>
-                    </div>
-
-                    <div class="field-group">
-                        <label for="confirmPassword">Confirm New Password</label>
-                        <div class="password-input-wrapper">
-                            <input id="confirmPassword" type="password" placeholder="Repeat new password" style="width: 100%; padding: 0.75rem; padding-right: 2.8rem; background: #1e293b; border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-sm); color: #fff;" />
-                            <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('confirmPassword', this)" title="Show / Hide Password" aria-label="Toggle password visibility">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div id="step3Msg" class="message" style="display: none;"></div>
-
-                    <button type="button" class="btn btn-dark" style="width: 100%;" onclick="resetPasswordAndLogin()">
-                        Update Password &amp; Enter System
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- TOAST NOTIFICATION -->
-    <div id="simToast" class="toast-notification">
-        <div style="display: flex; gap: 0.75rem; align-items: flex-start;">
-            <svg class="pro-svg-icon" style="stroke: #4ade80; width: 22px; height: 22px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            <div>
-                <strong id="toastTitle" style="color: #4ade80;">System Notification</strong>
-                <p id="toastMessage" style="font-size: 0.8rem; color: #bae6fd; margin-top: 0.2rem;"></p>
-            </div>
-        </div>
-    </div>
-
     <script src="js/auth.js"></script>
-    <script src="js/workshop-3d.js"></script>
     <script>
       function initAuthTheme() {
-        var t = localStorage.getItem('russels_theme') || 'light';
+        var t = localStorage.getItem('russels_theme') || 'dark';
         applyAuthTheme(t);
       }
       function toggleAuthTheme() {
-        var isDark = document.body.classList.contains('theme-dark');
-        var newTheme = isDark ? 'light' : 'dark';
+        var isLight = document.body.classList.contains('theme-light');
+        var newTheme = isLight ? 'dark' : 'light';
         applyAuthTheme(newTheme);
       }
       function applyAuthTheme(t) {
-        var label = document.getElementById('authThemeLabel');
-        var icon = document.getElementById('authThemeIcon');
-        if (t === 'dark') {
-          document.body.classList.add('theme-dark');
-          localStorage.setItem('russels_theme', 'dark');
-          if (label) label.textContent = 'Light Mode';
-          if (icon) icon.textContent = '☀️';
-        } else {
+        if (t === 'light') {
+          document.body.classList.add('theme-light');
           document.body.classList.remove('theme-dark');
           localStorage.setItem('russels_theme', 'light');
-          if (label) label.textContent = 'Night Mode';
-          if (icon) icon.textContent = '🌙';
+        } else {
+          document.body.classList.remove('theme-light');
+          document.body.classList.add('theme-dark');
+          localStorage.setItem('russels_theme', 'dark');
         }
       }
       initAuthTheme();

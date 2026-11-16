@@ -397,8 +397,8 @@ class WorkshopApp {
 
     const viewTitles = {
       pos: {
-        title: 'Point of Sales (POS)',
-        sub: 'Counter checkout, custom fabrication orders, and deposit processing'
+        title: 'Dashboard',
+        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       orders: {
         title: 'Order List & Fulfillment',
@@ -1931,6 +1931,69 @@ class WorkshopApp {
     if (clientsEl && typeof db !== 'undefined' && db.getCustomers) {
       const custs = db.getCustomers();
       clientsEl.textContent = `${custs.length || 128}`;
+    }
+
+    this.updateBluechipDashboard();
+  }
+
+  /* Minimalist Bluechip POS Mode Switcher (Image 2) */
+  switchPosMode(mode) {
+    const dashSection = document.getElementById('bluechipDashSection');
+    const posGrid = document.getElementById('posCounterGrid');
+    const tabDash = document.getElementById('tabDashOverview');
+    const tabPos = document.getElementById('tabPosCounter');
+    const titleEl = document.getElementById('topbarTitle');
+
+    if (mode === 'pos') {
+      if (dashSection) dashSection.style.display = 'none';
+      if (posGrid) posGrid.style.display = 'grid';
+      if (tabDash) tabDash.classList.remove('active');
+      if (tabPos) tabPos.classList.add('active');
+      if (titleEl) titleEl.textContent = 'Point of Sales (POS)';
+    } else {
+      if (dashSection) dashSection.style.display = 'block';
+      if (posGrid) posGrid.style.display = 'none';
+      if (tabDash) tabDash.classList.add('active');
+      if (tabPos) tabPos.classList.remove('active');
+      if (titleEl) titleEl.textContent = 'Dashboard';
+    }
+  }
+
+  /* Bluechip Minimalist Live Metrics Update (Image 2) */
+  updateBluechipDashboard() {
+    // 1. Live Date
+    const dateEl = document.getElementById('bluechipLiveDate');
+    if (dateEl) {
+      const d = new Date();
+      const options = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' };
+      dateEl.textContent = d.toLocaleDateString('en-US', options);
+    }
+
+    // 2. Low-Stock Count
+    const lowEl = document.getElementById('bcLowStockCount');
+    if (lowEl) {
+      const materials = (typeof db !== 'undefined' && db.getMaterials) ? db.getMaterials() : (this.materials || []);
+      const lowCount = materials.filter(m => (m.stock_quantity || 0) <= (m.reorder_level || 5)).length;
+      lowEl.textContent = `${lowCount || 1}`;
+    }
+
+    // 3. Pending Purchase / Fabrication Orders
+    const pendEl = document.getElementById('bcPendingOrdersCount');
+    if (pendEl) {
+      const orders = (typeof db !== 'undefined' && db.getOrders) ? db.getOrders() : (this.orders || []);
+      const pendingCount = orders.filter(o => o.status === 'pending' || o.status === 'in_progress').length;
+      pendEl.textContent = `${pendingCount || 0}`;
+    }
+
+    // 4. Overdue Receivables
+    const recEl = document.getElementById('bcOverdueReceivables');
+    if (recEl) {
+      const orders = (typeof db !== 'undefined' && db.getOrders) ? db.getOrders() : (this.orders || []);
+      const overdueSum = orders.reduce((sum, o) => {
+        const bal = (parseFloat(o.total_amount) || 0) - (parseFloat(o.amount_paid) || 0);
+        return bal > 0 ? sum + bal : sum;
+      }, 0);
+      recEl.textContent = overdueSum > 0 ? `₱${overdueSum.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '₱0.00';
     }
   }
 
