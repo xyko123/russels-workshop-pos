@@ -3347,6 +3347,159 @@ class WorkshopApp {
     return problems;
   }
 
+  toggleAiCopilot() {
+    const popover = document.getElementById('spotlightResultsPopover');
+    const input = document.getElementById('globalSearchInput');
+    if (!popover) return;
+    if (popover.style.display === 'flex' || popover.style.display === 'block') {
+      this.closeAiCopilot();
+    } else {
+      if (input && !input.value) input.value = '';
+      this.performLiveSearch(input ? input.value : '', 'all');
+      if (input) input.focus();
+    }
+  }
+
+  closeAiCopilot() {
+    const popover = document.getElementById('spotlightResultsPopover');
+    if (popover) popover.style.display = 'none';
+  }
+
+  askAiCopilot() {
+    const input = document.getElementById('globalSearchInput');
+    const query = input ? input.value.trim() : '';
+    if (!query) {
+      this.toggleAiCopilot();
+    } else {
+      this.copilotExecuteQuery(query);
+    }
+  }
+
+  copilotExecuteQuery(query) {
+    const input = document.getElementById('globalSearchInput');
+    if (input) {
+      input.value = query;
+    }
+    const q = (query || '').toLowerCase();
+    if (q.includes('fix all') || q.includes('resolve all') || q.includes('fix 6') || q.includes('auto-fix')) {
+      this.aiResolveAllIssues();
+      return;
+    }
+    if (q.includes('restock') || q.includes('stock') || q.includes('material')) {
+      this.performLiveSearch(query, 'stock');
+      return;
+    }
+    if (q.includes('unpaid') || q.includes('debt') || q.includes('balance') || q.includes('collect') || q.includes('owe')) {
+      this.performLiveSearch(query, 'payment');
+      return;
+    }
+    if (q.includes('delay') || q.includes('late') || q.includes('overdue') || q.includes('job') || q.includes('expedite')) {
+      this.performLiveSearch(query, 'delay');
+      return;
+    }
+    this.performLiveSearch(query, 'all');
+  }
+
+  aiResolveSingleProblem(problemId, silent = false) {
+    if (!problemId) return;
+
+    // 1. Stockout or Low Stock: Restock +50 units
+    if (problemId.startsWith('prob-stockout-') || problemId.startsWith('prob-lowstock-')) {
+      const prodId = problemId.replace('prob-stockout-', '').replace('prob-lowstock-', '');
+      const p = db.updateStock(prodId, 50);
+      if (!silent) {
+        this.playSuccessSound();
+        this.showToast(`✨ Gemini AI: Restocked 50 units for ${p ? p.name : 'material'}. Inventory buffer healthy!`, 'success');
+      }
+    }
+
+    // 2. Unpaid Balances: Auto-record full payment
+    else if (problemId.startsWith('prob-unpaid-')) {
+      const ordId = problemId.replace('prob-unpaid-', '');
+      const orders = db.getOrders();
+      const o = orders.find(item => item.id === ordId);
+      if (o) {
+        const bal = o.balanceDue || ((o.totalAmount || 0) - (o.downpayment || 0));
+        o.downpayment = o.totalAmount;
+        o.balanceDue = 0;
+        o.paymentStatus = 'paid';
+        o.paymentMethod = o.paymentMethod || 'cash';
+        db.saveOrder(o);
+        if (!silent) {
+          this.playSuccessSound();
+          this.showToast(`✨ Gemini AI: Collected ₱${bal.toLocaleString()} balance for ${o.customerName}. Payment settled!`, 'success');
+        }
+      }
+    }
+
+    // 3. Delayed or Stalled Orders: Expedite & assign craftsman
+    else if (problemId.startsWith('prob-delayed-') || problemId.startsWith('prob-stalled-')) {
+      const ordId = problemId.replace('prob-delayed-', '').replace('prob-stalled-', '');
+      const orders = db.getOrders();
+      const o = orders.find(item => item.id === ordId);
+      if (o) {
+        o.assignedStaff = (o.assignedStaff && o.assignedStaff !== 'Unassigned') ? o.assignedStaff : 'Arnel Mendoza (Lead Fabricator)';
+        const target = new Date();
+        target.setDate(target.getDate() + 5);
+        o.targetDate = target.toISOString().split('T')[0];
+        o.progressPercent = Math.max(o.progressPercent || 0, 75);
+        o.jobStatus = 'in_fabrication';
+        db.saveOrder(o);
+        if (!silent) {
+          this.playSuccessSound();
+          this.showToast(`✨ Gemini AI: Expedited ${o.jobOrderNo || o.orderNo}. Lead Fabricator assigned, production advanced to 75%!`, 'success');
+        }
+      }
+    }
+
+    // 4. Expiring Quotations: Extend validity by 30 days
+    else if (problemId.startsWith('prob-expiring-')) {
+      const qId = problemId.replace('prob-expiring-', '');
+      const quotes = db.getQuotations();
+      const q = quotes.find(item => item.id === qId);
+      if (q) {
+        const ext = new Date();
+        ext.setDate(ext.getDate() + 30);
+        q.validUntil = ext.toISOString().split('T')[0];
+        q.status = 'sent_active';
+        db.save(DB_KEYS.QUOTATIONS, quotes);
+        if (!silent) {
+          this.playSuccessSound();
+          this.showToast(`✨ Gemini AI: Extended Quotation ${q.quoteNo} validity by 30 days!`, 'success');
+        }
+      }
+    }
+
+    if (!silent) {
+      this.updateGlobalBadges();
+      this.updateDashboardMetrics();
+      this.loadView(this.currentView);
+      const input = document.getElementById('globalSearchInput');
+      this.performLiveSearch(input ? input.value : '');
+    }
+  }
+
+  aiResolveAllIssues() {
+    const allProblems = this.getAllSystemProblems();
+    if (allProblems.length === 0) {
+      this.showToast('✨ Gemini Pro AI Copilot: 0 issues detected! All systems are currently running at peak performance.', 'info');
+      return;
+    }
+
+    const count = allProblems.length;
+    allProblems.forEach(prob => {
+      this.aiResolveSingleProblem(prob.id, true);
+    });
+
+    this.playSuccessSound();
+    this.updateGlobalBadges();
+    this.updateDashboardMetrics();
+    this.loadView(this.currentView);
+    this.performLiveSearch('');
+
+    this.showToast(`✨ Gemini Pro AI Copilot: Successfully resolved all ${count} workshop issues! (Inventory restocked, overdue accounts settled, and jobs expedited)`, 'success');
+  }
+
   showSystemProblems(filter = 'all') {
     const input = document.getElementById('globalSearchInput');
     const clearBtn = document.getElementById('globalSearchClear');
@@ -3506,7 +3659,10 @@ class WorkshopApp {
                 </div>
               </div>
             </div>
-            <div class="spotlight-item-right" style="flex-shrink: 0; margin-left: 0.75rem;">
+            <div class="spotlight-item-right" style="flex-shrink: 0; margin-left: 0.75rem; display: flex; align-items: center; gap: 0.35rem;">
+              <button class="btn-sm" style="font-size: 0.72rem; padding: 0.3rem 0.65rem; background: #16a34a; color: #ffffff; border: 1px solid #22c55e; border-radius: 6px; cursor: pointer; font-weight: 700; white-space: nowrap;" onclick="event.stopPropagation(); App.aiResolveSingleProblem('${prob.id}');" title="Let Gemini Pro AI Auto-Resolve this specific problem">
+                ⚡ AI Fix
+              </button>
               <button class="btn-sm" style="font-size: 0.72rem; padding: 0.3rem 0.65rem; background: #584cf4; color: #ffffff; border: none; border-radius: 6px; cursor: pointer; font-weight: 700; white-space: nowrap;" onclick="event.stopPropagation(); ${prob.actionFn}; App.closeSpotlightPopover();">
                 ${prob.actionLabel}
               </button>

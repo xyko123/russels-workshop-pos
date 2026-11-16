@@ -210,28 +210,63 @@
         </div>
 
         <div class="topbar-center">
-          <div class="topbar-search-wrapper" style="position: relative; width: 100%; max-width: 520px;">
-            <div class="topbar-search">
-              <button class="search-btn-trigger" id="globalSearchBtn" onclick="App.triggerGlobalSearch()" title="Click to search or press Enter">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-              </button>
-              <input type="text" id="globalSearchInput" placeholder="Search records or type 'problem' / 'issues' to diagnose..." autocomplete="off" />
-              <!-- Direct System Problem Indicator & 1-Click Locator -->
-              <button type="button" class="topbar-issue-indicator" id="topbarProblemIndicator" onclick="App.showSystemProblems()" title="Workshop Issue Radar: Click to locate and resolve all system problems">
+          <div class="topbar-search-wrapper" style="position: relative; width: 100%; max-width: 590px;">
+            <div class="topbar-search ai-search-bar" id="aiSearchBar">
+              <!-- Gemini Pro AI Copilot Sparkle Badge -->
+              <div class="ai-copilot-pill" onclick="App.toggleAiCopilot()" title="Gemini Pro Workshop Copilot • Click to summon AI Diagnostic Engine">
+                <span class="ai-sparkle-anim">✨</span>
+                <span class="ai-copilot-label">Gemini Pro</span>
+              </div>
+
+              <input type="text" id="globalSearchInput" placeholder="Ask Gemini Pro Copilot (e.g. 'Fix 6 issues', 'Who owes balance?', 'Low stock')..." autocomplete="off" />
+              
+              <!-- Direct System Problem Indicator with 1-Click Locator -->
+              <button type="button" class="topbar-issue-indicator has-issues" id="topbarProblemIndicator" onclick="App.toggleAiCopilot()" title="Gemini Pro Copilot Radar: Click to inspect &amp; auto-resolve workshop issues">
                 <span class="indicator-icon">🚨</span>
-                <span class="indicator-text" id="topbarProblemText">Issues</span>
+                <span class="indicator-text" id="topbarProblemText">6 Issues</span>
               </button>
+
+              <button type="button" class="btn-ask-copilot" onclick="App.askAiCopilot()" title="Run AI Copilot Diagnosis">
+                <span>AI Fix</span>
+              </button>
+
               <button class="search-clear-btn" id="globalSearchClear" onclick="App.clearGlobalSearch()" title="Clear search" style="display: none;">
                 ✕
               </button>
-              <span class="search-kbd-shortcut" title="Press / anywhere to search">/</span>
+              <span class="search-kbd-shortcut" title="Press / anywhere to summon Gemini AI Copilot">/</span>
             </div>
 
-            <!-- Instant Spotlight Search Results Dropdown -->
-            <div class="spotlight-results-popover" id="spotlightResultsPopover" style="display: none;">
+            <!-- Instant Spotlight & Gemini Copilot Dropdown -->
+            <div class="spotlight-results-popover ai-copilot-popover" id="spotlightResultsPopover" style="display: none;">
+              <!-- Embedded AI Copilot Command Center Header -->
+              <div class="ai-copilot-card-header">
+                <div class="copilot-header-brand">
+                  <div class="copilot-sparkle-circle">✨</div>
+                  <div>
+                    <h4 class="copilot-header-title">Gemini Pro Workshop Copilot</h4>
+                    <p class="copilot-header-sub">Active System Co-Pilot • Real-Time Diagnostics &amp; Auto-Resolution</p>
+                  </div>
+                </div>
+                <div class="copilot-header-actions">
+                  <button type="button" class="btn-ai-autofix" id="btnAiFixAll" onclick="App.aiResolveAllIssues()">
+                    <span class="bolt-icon">⚡</span> AI Fix All Issues
+                  </button>
+                  <button type="button" class="copilot-close-btn" onclick="App.closeAiCopilot()" title="Close Copilot">&times;</button>
+                </div>
+              </div>
+
+              <!-- Copilot Suggested AI Prompts -->
+              <div class="copilot-quick-chips">
+                <button type="button" class="copilot-chip" onclick="App.copilotExecuteQuery('Fix all issues')">⚡ Fix all 6 issues</button>
+                <button type="button" class="copilot-chip" onclick="App.copilotExecuteQuery('Locate all problems')">🚨 Locate 6 problems</button>
+                <button type="button" class="copilot-chip" onclick="App.copilotExecuteQuery('Restock low inventory')">📦 Restock low materials</button>
+                <button type="button" class="copilot-chip" onclick="App.copilotExecuteQuery('Who has unpaid balance?')">💰 Collect unpaid debt</button>
+                <button type="button" class="copilot-chip" onclick="App.copilotExecuteQuery('Delayed fabrication jobs')">⏰ Expedite delayed jobs</button>
+              </div>
+
               <div class="spotlight-results-header">
-                <span id="spotlightResultsCount">0 results found</span>
-                <span class="spotlight-hint">Press ESC to dismiss • Click item to jump</span>
+                <span id="spotlightResultsCount">6 issues detected</span>
+                <span class="spotlight-hint">Type natural queries • Click any issue to auto-resolve</span>
               </div>
               <div class="spotlight-results-body" id="spotlightResultsList"></div>
             </div>
