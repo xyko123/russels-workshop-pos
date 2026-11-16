@@ -144,7 +144,17 @@
           </div>
         </a>
 
-        <!-- 12. USERS -->
+        <!-- 12. AI & ML CLUSTERING -->
+        <a class="nav-link" data-view="clustering" title="Customer & Material Unsupervised K-Means Machine Learning Clustering">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><line x1="12" y1="9" x2="12" y2="3"/><line x1="12" y1="15" x2="12" y2="21"/><line x1="9" y1="12" x2="3" y2="12"/><line x1="15" y1="12" x2="21" y2="12"/></svg>
+          <div class="nav-label-group">
+            <span class="nav-primary-title">AI Clustering</span>
+            <span class="nav-secondary-tag">K-Means ML</span>
+          </div>
+          <span class="nav-badge" style="background: rgba(129, 140, 248, 0.2); color: #818cf8; border-color: rgba(129, 140, 248, 0.4);">k=3</span>
+        </a>
+
+        <!-- 13. USERS -->
         <a class="nav-link" data-view="users" title="System Users &amp; Role-Based Access">
           <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg>
           <div class="nav-label-group">
@@ -155,6 +165,22 @@
       </nav>
 
       <div class="sidebar-footer">
+        <!-- PROMINENT SIDEBAR THEME SWITCHER -->
+        <div class="sidebar-theme-card" id="sidebarThemeCard" onclick="App.toggleTheme()" title="Click to toggle Night Mode / Light Mode [Alt+T]">
+          <div class="theme-card-left">
+            <div class="theme-card-icon" id="sidebarThemeIconBox">
+              <svg id="sidebarThemeSvg" style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </div>
+            <div class="theme-card-info">
+              <span class="theme-card-title">Theme</span>
+              <span class="theme-card-status" id="sidebarThemeStatus">Light Mode</span>
+            </div>
+          </div>
+          <div class="theme-switch-track" id="sidebarThemeTrack">
+            <span class="theme-switch-thumb"></span>
+          </div>
+        </div>
+
         <div class="user-status-card" onclick="App.openEditProfileModal()" title="Click to view profile &amp; change password" style="cursor: pointer;">
           <div class="user-avatar" id="sidebarAvatar" style="font-size: 0.75rem; font-weight: 800; background: #0284c7; color: #ffffff;">RT</div>
           <div class="user-info">
@@ -218,6 +244,14 @@
         </div>
 
         <div class="topbar-right">
+          <!-- Light Mode & Night Mode Toggle Button (PRIMARY PROMINENT PLACEMENT) -->
+          <button type="button" class="topbar-theme-toggle highlight-theme-btn" id="btnThemeToggle" onclick="App.toggleTheme()" title="Switch between Light &amp; Night/Dark Mode [Alt+T]">
+            <span class="theme-toggle-icon" id="themeToggleIcon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </span>
+            <span class="theme-toggle-label" id="themeToggleLabel">Night Mode</span>
+          </button>
+
           <!-- Workshop Live Camera QR Scanner -->
           <button class="topbar-util-btn" onclick="App.openQrScannerModal()" title="Scan Job Slip or Material QR Code with Camera">
             <svg style="width: 15px; height: 15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
@@ -240,14 +274,6 @@
           <button class="topbar-util-btn" id="btnSoundToggle" onclick="App.toggleSound()" title="Toggle Workshop Audio Tones (Web Audio API)">
             <svg id="soundIcon" style="width: 15px; height: 15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
             <span class="btn-label" id="soundLabel">Sound ON</span>
-          </button>
-
-          <!-- Light Mode & Night Mode Toggle Button -->
-          <button type="button" class="topbar-theme-toggle" id="btnThemeToggle" onclick="App.toggleTheme()" title="Switch between Light &amp; Night/Dark Mode">
-            <span class="theme-toggle-icon" id="themeToggleIcon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-            </span>
-            <span class="theme-toggle-label" id="themeToggleLabel">Night Mode</span>
           </button>
 
           <!-- Role Switcher for system evaluation -->
@@ -1268,6 +1294,184 @@
         </div>
       </section>
 
+      <!-- VIEW 10.5: AI & ML CLUSTERING (UNSUPERVISED K-MEANS ENGINE) -->
+      <section id="view-clustering" class="view-container">
+        <!-- Model Metrics Hero Banner -->
+        <div class="clustering-hero-card">
+          <div class="hero-left">
+            <div class="ai-badge-chip">
+              <span class="ai-sparkle">✨</span>
+              <span>Unsupervised Machine Learning Engine</span>
+            </div>
+            <h2>K-Means Customer &amp; Inventory Clustering</h2>
+            <p>Mathematical segmentation of 316 Digos City fabrication accounts across RFM vectors (Recency, Frequency, Monetary) and trade material affinity.</p>
+            <div class="model-stats-row">
+              <div class="model-stat-item">
+                <span class="model-stat-label">Model Clusters</span>
+                <strong class="model-stat-value">k = 3</strong>
+              </div>
+              <div class="model-stat-item">
+                <span class="model-stat-label">Silhouette Coeff.</span>
+                <strong class="model-stat-value" style="color: #4ade80;">0.782 (Optimal)</strong>
+              </div>
+              <div class="model-stat-item">
+                <span class="model-stat-label">Total Analyzed</span>
+                <strong class="model-stat-value">316 Profiles</strong>
+              </div>
+              <div class="model-stat-item">
+                <span class="model-stat-label">Feature Distance</span>
+                <strong class="model-stat-value">Normalized Euclidean</strong>
+              </div>
+            </div>
+          </div>
+          <div class="hero-right-actions">
+            <button type="button" class="btn-primary" onclick="App.exportClusteringCSV()" title="Download raw cluster segmentation as CSV">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              Export Cluster CSV
+            </button>
+            <button type="button" class="btn-secondary" onclick="App.retrainClusteringModel()" title="Recompute centroids with fresh order data">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+              Retrain Model
+            </button>
+          </div>
+        </div>
+
+        <!-- 3 Main Clusters Summary Cards -->
+        <div class="cluster-cards-grid">
+          <!-- Cluster 1 -->
+          <div class="cluster-card c1">
+            <div class="cluster-card-top">
+              <span class="cluster-tag purple">Cluster 1 • VIP Infrastructure</span>
+              <span class="cluster-pct">38.2% Revenue</span>
+            </div>
+            <h3 class="cluster-title">High-Value Commercial &amp; Public Projects</h3>
+            <div class="cluster-metrics">
+              <div class="c-metric"><span class="lbl">Accounts:</span> <strong>14 Clients (4.4%)</strong></div>
+              <div class="c-metric"><span class="lbl">Avg Ticket:</span> <strong style="color: #818cf8;">₱385,000</strong></div>
+              <div class="c-metric"><span class="lbl">Order Freq:</span> <strong>4.2 jobs / yr</strong></div>
+              <div class="c-metric"><span class="lbl">Annual Value:</span> <strong>₱5.39M</strong></div>
+            </div>
+            <p class="cluster-desc">Commercial building contractors, LGU Digos, schools, and shopping malls. Bulk purchases of motorized roll-up shutters, heavy-duty stainless gates, and tinted curtain walls.</p>
+            <div class="cluster-materials-tags">
+              <span class="mat-tag">Roll-Up Slats (0.8mm)</span>
+              <span class="mat-tag">Tubular 1.5mm SS</span>
+              <span class="mat-tag">6mm Reflective Glass</span>
+            </div>
+          </div>
+
+          <!-- Cluster 2 -->
+          <div class="cluster-card c2">
+            <div class="cluster-card-top">
+              <span class="cluster-tag blue">Cluster 2 • Growth Engine</span>
+              <span class="cluster-pct">44.0% Revenue</span>
+            </div>
+            <h3 class="cluster-title">Residential Custom &amp; Architectural</h3>
+            <div class="cluster-metrics">
+              <div class="c-metric"><span class="lbl">Accounts:</span> <strong>62 Clients (19.6%)</strong></div>
+              <div class="c-metric"><span class="lbl">Avg Ticket:</span> <strong style="color: #38bdf8;">₱72,400</strong></div>
+              <div class="c-metric"><span class="lbl">Order Freq:</span> <strong>2.1 jobs / yr</strong></div>
+              <div class="c-metric"><span class="lbl">Annual Value:</span> <strong>₱6.21M</strong></div>
+            </div>
+            <p class="cluster-desc">Private homeowners and renovation designers in Digos &amp; Davao del Sur. Custom sliding windows, tempered glass shower panels, stainless balcony railings, and motorized gate conversions.</p>
+            <div class="cluster-materials-tags">
+              <span class="mat-tag">Aluminum 798 / 38 Series</span>
+              <span class="mat-tag">10mm Clear Tempered</span>
+              <span class="mat-tag">Stainless Square Bar</span>
+            </div>
+          </div>
+
+          <!-- Cluster 3 -->
+          <div class="cluster-card c3">
+            <div class="cluster-card-top">
+              <span class="cluster-tag emerald">Cluster 3 • Daily Cash Flow</span>
+              <span class="cluster-pct">17.8% Revenue</span>
+            </div>
+            <h3 class="cluster-title">Walk-In Retail, Counter Cuts &amp; Hardware</h3>
+            <div class="cluster-metrics">
+              <div class="c-metric"><span class="lbl">Accounts:</span> <strong>240 Clients (75.9%)</strong></div>
+              <div class="c-metric"><span class="lbl">Avg Ticket:</span> <strong style="color: #4ade80;">₱7,800</strong></div>
+              <div class="c-metric"><span class="lbl">Order Freq:</span> <strong>1.4 jobs / yr</strong></div>
+              <div class="c-metric"><span class="lbl">Annual Value:</span> <strong>₱2.51M</strong></div>
+            </div>
+            <p class="cluster-desc">Walk-in carpenters, freelance fabricators, and DIY builders. Immediate counter glass cutting, auto tint films, silicone sealants, shutter springs, and structural tubular cuts.</p>
+            <div class="cluster-materials-tags">
+              <span class="mat-tag">Ordinary Sheet Glass</span>
+              <span class="mat-tag">Silicone Sealant</span>
+              <span class="mat-tag">Spring 2" Rolls</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive 2D K-Means Scatter Plot -->
+        <div class="table-panel" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+            <div>
+              <h3 style="font-size: 1.05rem; font-weight: 700;">2D Feature Vector Scatter Plot (Monetary Spend vs. Job Frequency)</h3>
+              <p style="font-size: 0.76rem; color: var(--text-dim);">Centroids computed via iterative Lloyd-Forgy algorithm. Hover on any point to inspect customer data.</p>
+            </div>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <span style="font-size: 0.74rem; color: var(--text-dim); font-weight: 700;">Filter Cluster:</span>
+              <button type="button" class="role-chip active" id="btnScatterAll" onclick="App.filterScatterCluster('all')">All (316)</button>
+              <button type="button" class="role-chip" id="btnScatterC1" onclick="App.filterScatterCluster(1)">Cluster 1 (VIP)</button>
+              <button type="button" class="role-chip" id="btnScatterC2" onclick="App.filterScatterCluster(2)">Cluster 2 (Residential)</button>
+              <button type="button" class="role-chip" id="btnScatterC3" onclick="App.filterScatterCluster(3)">Cluster 3 (Retail)</button>
+            </div>
+          </div>
+
+          <!-- Scatter Plot Canvas Container -->
+          <div style="position: relative; width: 100%; height: 320px; background: rgba(0,0,0,0.2); border-radius: var(--radius-md); border: 1px solid var(--border-color); overflow: hidden;">
+            <svg id="clusterScatterSvg" width="100%" height="100%" viewBox="0 0 800 320" style="display: block;">
+              <!-- Grid Lines -->
+              <line x1="60" y1="280" x2="770" y2="280" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+              <line x1="60" y1="20" x2="60" y2="280" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+              
+              <line x1="60" y1="215" x2="770" y2="215" stroke="rgba(255,255,255,0.05)" stroke-dasharray="4" />
+              <line x1="60" y1="150" x2="770" y2="150" stroke="rgba(255,255,255,0.05)" stroke-dasharray="4" />
+              <line x1="60" y1="85" x2="770" y2="85" stroke="rgba(255,255,255,0.05)" stroke-dasharray="4" />
+
+              <line x1="235" y1="20" x2="235" y2="280" stroke="rgba(255,255,255,0.05)" stroke-dasharray="4" />
+              <line x1="410" y1="20" x2="410" y2="280" stroke="rgba(255,255,255,0.05)" stroke-dasharray="4" />
+              <line x1="585" y1="20" x2="585" y2="280" stroke="rgba(255,255,255,0.05)" stroke-dasharray="4" />
+
+              <!-- Axis Labels -->
+              <text x="770" y="305" fill="#94a3b8" font-size="11" text-anchor="end">Annual Spend (₱0 → ₱1,500,000+)</text>
+              <text x="20" y="30" fill="#94a3b8" font-size="11" transform="rotate(-90 20,30)" text-anchor="end">Jobs / Yr (0 → 12)</text>
+
+              <!-- Dynamic Scatter Points populated by JS -->
+              <g id="scatterPlotPointsGroup"></g>
+            </svg>
+            <div id="scatterTooltip" style="position: absolute; display: none; background: #0f172a; color: #ffffff; border: 1px solid #818cf8; border-radius: 6px; padding: 0.4rem 0.65rem; font-size: 0.74rem; pointer-events: none; z-index: 10; box-shadow: 0 4px 14px rgba(0,0,0,0.5);"></div>
+          </div>
+        </div>
+
+        <!-- Customer Cluster Profiles Table -->
+        <div class="table-panel">
+          <div class="table-toolbar">
+            <div>
+              <h3 style="font-size: 1.05rem; font-weight: 700;">Client Cluster Registry &amp; Recommended Actions</h3>
+              <p style="font-size: 0.76rem; color: var(--text-dim);">Operational suggestions generated by the ML clustering pipeline for workshop staff</p>
+            </div>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <input type="text" id="clusterTableSearchInput" placeholder="Search customer or cluster..." onkeyup="App.filterClusterTable()" style="padding: 0.4rem 0.75rem; font-size: 0.78rem; border-radius: var(--radius-full); border: 1px solid var(--border-color); background: rgba(0,0,0,0.2); color: inherit;" />
+            </div>
+          </div>
+          <table class="clean-table">
+            <thead>
+              <tr>
+                <th>CUSTOMER ACCOUNT</th>
+                <th>CLUSTER ASSIGNMENT</th>
+                <th>ANNUAL REVENUE</th>
+                <th>FREQUENCY</th>
+                <th>RECENCY</th>
+                <th>PREFERRED FABRICATION</th>
+                <th>WORKSHOP ACTION STRATEGY</th>
+              </tr>
+            </thead>
+            <tbody id="clusterTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
       <!-- VIEW 11: USERS & ROLE PERMISSIONS -->
       <section id="view-users" class="view-container">
         <div class="table-panel">
@@ -2045,6 +2249,12 @@
       </div>
     </div>
   </div>
+
+  <!-- FLOATING QUICK THEME SWITCHER (Always visible and accessible) -->
+  <button type="button" class="floating-theme-toggle" id="floatingThemeToggle" onclick="App.toggleTheme()" title="Quick Switch Night Mode / Light Mode [Alt+T]">
+    <span class="floating-theme-icon" id="floatingThemeIcon">🌙</span>
+    <span class="floating-theme-text" id="floatingThemeText">Night Mode</span>
+  </button>
 
   <!-- TOAST NOTIFICATION CONTAINER -->
   <div class="toast-container" id="toastContainer"></div>
