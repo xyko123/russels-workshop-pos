@@ -129,7 +129,12 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
             <span>RUSELL'S GLASS, WOODS &amp; METALS</span>
         </div>
-        <div style="width: 100px;"></div>
+        <div style="display: flex; justify-content: flex-end; min-width: 140px;">
+            <button type="button" class="auth-theme-toggle" id="authThemeToggle" onclick="toggleAuthTheme()" title="Switch Light &amp; Night/Dark Mode">
+                <span id="authThemeIcon">🌙</span>
+                <span id="authThemeLabel" style="font-size: 0.78rem; font-weight: 700; margin-left: 0.25rem;">Night Mode</span>
+            </button>
+        </div>
     </header>
 
     <main class="auth-shell">
@@ -392,5 +397,32 @@
 
     <script src="js/auth.js"></script>
     <script src="js/workshop-3d.js"></script>
+    <script>
+      function initAuthTheme() {
+        var t = localStorage.getItem('russels_theme') || 'light';
+        applyAuthTheme(t);
+      }
+      function toggleAuthTheme() {
+        var isDark = document.body.classList.contains('theme-dark');
+        var newTheme = isDark ? 'light' : 'dark';
+        applyAuthTheme(newTheme);
+      }
+      function applyAuthTheme(t) {
+        var label = document.getElementById('authThemeLabel');
+        var icon = document.getElementById('authThemeIcon');
+        if (t === 'dark') {
+          document.body.classList.add('theme-dark');
+          localStorage.setItem('russels_theme', 'dark');
+          if (label) label.textContent = 'Light Mode';
+          if (icon) icon.textContent = '☀️';
+        } else {
+          document.body.classList.remove('theme-dark');
+          localStorage.setItem('russels_theme', 'light');
+          if (label) label.textContent = 'Night Mode';
+          if (icon) icon.textContent = '🌙';
+        }
+      }
+      initAuthTheme();
+    </script>
 </body>
 </html>

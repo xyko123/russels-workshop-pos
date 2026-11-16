@@ -107,6 +107,79 @@ body {
   transform: translateX(-2px);
 }
 
+.auth-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #ffffff;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: inherit;
+}
+
+.auth-theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Dark / Night Mode for Auth Page */
+body.theme-dark.auth-page {
+  background: radial-gradient(circle at 85% 15%, #1e1b4b 0%, #0f172a 40%, #020617 85%, #000000 100%);
+}
+
+body.theme-dark .login-card {
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.7);
+}
+
+body.theme-dark .login-card-header h2 {
+  color: #f8fafc;
+}
+
+body.theme-dark .login-card-header p {
+  color: #94a3b8;
+}
+
+body.theme-dark .field-group label {
+  color: #cbd5e1;
+}
+
+body.theme-dark .field-group input {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+}
+
+body.theme-dark .field-group input:focus {
+  background-color: #0b1120;
+  border-color: #818cf8;
+}
+
+body.theme-dark .auth-remember-row label {
+  color: #cbd5e1;
+}
+
+body.theme-dark .btn-secondary-google {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+}
+
+body.theme-dark .btn-secondary-google:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+body.theme-dark .auth-bottom-text {
+  color: #94a3b8;
+}
+
 .auth-brand-center {
   display: flex;
   align-items: center;

@@ -3187,3 +3187,490 @@ body.app-body {
   box-shadow: 0 0 10px rgba(34, 197, 94, 0.15);
   user-select: none;
 }
+
+/* ==========================================================================
+   THEME TOGGLE CONTROLS & NIGHT MODE (DARK MODE) SYSTEM
+   ========================================================================== */
+
+.topbar-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-full);
+  color: var(--text-dark);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.topbar-theme-toggle:hover {
+  background: #f8fafc;
+  border-color: var(--accent-purple);
+  color: var(--accent-purple);
+  transform: translateY(-1px);
+}
+
+.theme-toggle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+}
+
+/* NIGHT / DARK MODE OVERRIDES */
+body.theme-dark {
+  --primary-navy: #0b1120;
+  --bg-page: #0b1120;
+  --bg-body-gradient: radial-gradient(circle at 15% 0%, #1e1b4b 0%, #0f172a 45%, #020617 100%);
+  --sidebar-bg: #0f172a;
+  --topbar-bg: #0f172a;
+  --card-bg: #1e293b;
+  --card-hover: #334155;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --border-focus: #818cf8;
+
+  --text-white: #ffffff;
+  --text-dark: #f8fafc;
+  --text-dim: #94a3b8;
+  --text-muted: #64748b;
+
+  --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+  background-color: #0b1120;
+  background-image: radial-gradient(circle at 15% 0%, #1e1b4b 0%, #0f172a 45%, #020617 100%);
+  color: #f8fafc;
+}
+
+/* Sidebar in Dark Mode */
+body.theme-dark .sidebar {
+  background-color: #0f172a;
+  border-right-color: rgba(255, 255, 255, 0.08);
+}
+
+body.theme-dark .sidebar-brand-info h2 {
+  color: #f8fafc;
+}
+
+body.theme-dark .nav-link {
+  color: #94a3b8;
+}
+
+body.theme-dark .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+}
+
+body.theme-dark .nav-link.active {
+  background-color: #312e81;
+  color: #ffffff;
+  border-color: #4338ca;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+}
+
+body.theme-dark .sidebar-academic-block {
+  background: rgba(2, 132, 199, 0.12) !important;
+  border-color: rgba(56, 189, 248, 0.2) !important;
+}
+
+body.theme-dark .sidebar-footer {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+body.theme-dark .user-name {
+  color: #f8fafc;
+}
+
+/* Topbar in Dark Mode */
+body.theme-dark .topbar {
+  background-color: #0f172a;
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+body.theme-dark .workshop-brand-strip {
+  background: #090e17;
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+  color: #94a3b8;
+}
+
+body.theme-dark .brand-strip-item strong {
+  color: #f8fafc;
+}
+
+body.theme-dark .page-title-group h1 {
+  color: #f8fafc;
+}
+
+body.theme-dark .page-title-group p {
+  color: #94a3b8;
+}
+
+body.theme-dark .topbar-search input {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+}
+
+body.theme-dark .topbar-search input:focus {
+  background-color: #0b1120;
+  border-color: #818cf8;
+}
+
+body.theme-dark .topbar-util-btn,
+body.theme-dark .role-switcher-select,
+body.theme-dark .time-pill {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+}
+
+body.theme-dark .topbar-util-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+body.theme-dark .role-switcher-select option {
+  background: #0f172a;
+  color: #f8fafc;
+}
+
+body.theme-dark .topbar-theme-toggle {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #fbbf24;
+}
+
+body.theme-dark .topbar-theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: #fbbf24;
+  color: #fef08a;
+  box-shadow: 0 0 14px rgba(251, 191, 36, 0.3);
+}
+
+body.theme-dark .greeting-text h2 {
+  color: #f8fafc;
+}
+
+body.theme-dark .greeting-text p {
+  color: #94a3b8;
+}
+
+body.theme-dark .period-pill-select,
+body.theme-dark .period-icon-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+}
+
+/* Cards & Metric Cards in Dark Mode */
+body.theme-dark .metric-card-clean {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+}
+
+body.theme-dark .metric-clean-title {
+  color: #94a3b8;
+}
+
+body.theme-dark .metric-clean-value {
+  color: #f8fafc;
+}
+
+body.theme-dark .metric-clean-arrow {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+}
+
+body.theme-dark .chart-card-clean,
+body.theme-dark .quick-status-card {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+}
+
+body.theme-dark .chart-title-box h3,
+body.theme-dark .status-info-num {
+  color: #f8fafc;
+}
+
+body.theme-dark .status-icon-circle {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
+}
+
+/* Pastel Status Cards in Dark Mode */
+body.theme-dark .pastel-status-card {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.theme-dark .pastel-big-count {
+  color: #f8fafc;
+}
+
+body.theme-dark .orders-overview-header h2 {
+  color: #f8fafc;
+}
+
+body.theme-dark .orders-search-pill-wrapper {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+body.theme-dark .orders-search-pill-wrapper input {
+  color: #f8fafc;
+}
+
+body.theme-dark .orders-count-badge {
+  background: rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+}
+
+body.theme-dark .filter-chip-pill,
+body.theme-dark .btn-pill-outline {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+}
+
+body.theme-dark .clean-table-card,
+body.theme-dark .table-panel {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.theme-dark .clean-table thead tr,
+body.theme-dark .data-table th {
+  background-color: #0f172a;
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+}
+
+body.theme-dark .clean-table td,
+body.theme-dark .data-table td {
+  color: #f8fafc;
+  border-bottom-color: rgba(255, 255, 255, 0.05);
+}
+
+body.theme-dark .clean-table tbody tr:hover td,
+body.theme-dark .data-table tr:hover td {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+body.theme-dark .clean-order-id,
+body.theme-dark .clean-customer-name,
+body.theme-dark .clean-price-bold {
+  color: #f8fafc;
+}
+
+body.theme-dark .table-toolbar {
+  background: #1e293b;
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+/* POS Panel in Dark Mode */
+body.theme-dark .pos-catalog-panel,
+body.theme-dark .pos-terminal-panel {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.theme-dark .catalog-header,
+body.theme-dark .terminal-header,
+body.theme-dark .terminal-footer {
+  background: #0f172a;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.theme-dark .catalog-search-row input {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+}
+
+body.theme-dark .cat-tab {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+}
+
+body.theme-dark .cat-tab:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+body.theme-dark .cat-tab.active {
+  background: var(--accent-purple);
+  border-color: var(--accent-purple);
+  color: #ffffff;
+}
+
+body.theme-dark .product-card {
+  background: #0f172a;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.theme-dark .product-card:hover {
+  border-color: #6366f1;
+}
+
+body.theme-dark .product-title {
+  color: #f8fafc;
+}
+
+body.theme-dark .product-desc {
+  color: #94a3b8;
+}
+
+body.theme-dark .product-code-badge {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+}
+
+body.theme-dark .customer-select-row select {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+}
+
+body.theme-dark .customer-select-row select option {
+  background: #0f172a;
+}
+
+body.theme-dark .order-type-tabs {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+body.theme-dark .order-type-btn.active {
+  background: #1e293b;
+  color: #ffffff;
+}
+
+body.theme-dark .cart-item {
+  background: #0f172a;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.theme-dark .cart-item-title {
+  color: #f8fafc;
+}
+
+body.theme-dark .cart-qty-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+}
+
+body.theme-dark .payment-options-box {
+  background: #0f172a;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.theme-dark .pay-term-btn,
+body.theme-dark .pay-method-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+}
+
+/* Modals in Dark Mode */
+body.theme-dark .modal-card {
+  background: #0f172a;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+body.theme-dark .modal-header,
+body.theme-dark .modal-footer {
+  background: #0b1120;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.theme-dark .modal-header h3 {
+  color: #f8fafc;
+}
+
+body.theme-dark .form-field input,
+body.theme-dark .form-field select,
+body.theme-dark .form-field textarea {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+}
+
+body.theme-dark .form-field label {
+  color: #cbd5e1;
+}
+
+body.theme-dark .metric-card {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.theme-dark .metric-details h3 {
+  color: #f8fafc;
+}
+
+/* Kanban in Dark Mode */
+body.theme-dark .kanban-column {
+  background: #0f172a;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.theme-dark .kanban-column-header {
+  background: #0b1120;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.theme-dark .column-title {
+  color: #f8fafc;
+}
+
+body.theme-dark .job-card {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.theme-dark .job-customer {
+  color: #f8fafc;
+}
+
+body.theme-dark .job-items-summary {
+  background: #0f172a;
+  color: #cbd5e1;
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+body.theme-dark .spotlight-results-popover {
+  background: #0f172a;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+body.theme-dark .spotlight-results-header {
+  background: #0b1120;
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+body.theme-dark .spotlight-item-card {
+  background: #0f172a;
+}
+
+body.theme-dark .spotlight-item-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+body.theme-dark .spotlight-item-title {
+  color: #f8fafc;
+}

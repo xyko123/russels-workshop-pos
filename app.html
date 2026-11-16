@@ -242,6 +242,14 @@
             <span id="soundLabel">Sound ON</span>
           </button>
 
+          <!-- Light Mode & Night Mode Toggle Button -->
+          <button type="button" class="topbar-theme-toggle" id="btnThemeToggle" onclick="App.toggleTheme()" title="Switch between Light &amp; Night/Dark Mode">
+            <span class="theme-toggle-icon" id="themeToggleIcon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </span>
+            <span class="theme-toggle-label" id="themeToggleLabel">Night Mode</span>
+          </button>
+
           <!-- Role Switcher for system evaluation -->
           <select id="roleSwitcher" class="role-switcher-select" title="Switch Role for Evaluation">
             <option value="owner">Executive / General Manager</option>
