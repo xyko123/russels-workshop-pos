@@ -16,9 +16,12 @@
     <!-- SIDEBAR NAVIGATION (AUTHENTIC BLUECHIP MINIMALIST) -->
     <aside class="sidebar">
       <div class="sidebar-header" onclick="App.loadView('pos')" style="cursor: pointer;" title="Back to Dashboard">
-        <div class="sidebar-brand-info">
-          <h2>BLUECHIP</h2>
-          <p class="sidebar-brand-sub">Inventory &amp; Billing</p>
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <img src="assets/logo.jpg" alt="RUSELL'S Logo" class="sidebar-logo-img" style="width: 38px; height: 38px; border-radius: 8px; object-fit: contain; background: #ffffff; padding: 2px;" />
+          <div class="sidebar-brand-info">
+            <h2>RUSELL'S</h2>
+            <p class="sidebar-brand-sub">Inventory &amp; Billing</p>
+          </div>
         </div>
         <!-- Inner Sidebar Slide / Collapse Button -->
         <button type="button" class="sidebar-inner-close-btn" id="sidebarInnerCloseBtn" onclick="event.stopPropagation(); App.toggleSidebar();" title="Slide sidebar inside (Collapse) [Ctrl+B]">
@@ -29,21 +32,22 @@
       </div>
 
       <nav class="sidebar-nav">
-        <!-- Exact Bluechip Navigation Links -->
-        <a class="nav-link active" data-view="pos">Dashboard</a>
-        <a class="nav-link" data-view="customers">Clients</a>
-        <a class="nav-link" data-view="suppliers">Suppliers</a>
-        <a class="nav-link" data-view="inventory">Inventory</a>
-        <a class="nav-link" data-view="quotations">Quotations &amp; BOM</a>
-        <a class="nav-link" data-view="orders">Purchase orders &amp; bids</a>
-        <a class="nav-link" data-view="payments">Invoices &amp; billing</a>
-        <a class="nav-link" data-view="payments">Payments</a>
-        <a class="nav-link" data-view="reports">Serials &amp; warranty</a>
-        <a class="nav-link" data-view="projects">Assembly &amp; testing</a>
-        <a class="nav-link" data-view="reports">Reports</a>
-        <a class="nav-link" data-view="users">User management</a>
-        <a class="nav-link" data-view="reports">Audit trail</a>
-        <a class="nav-link" data-view="pos_counter">Point of Sale (POS)</a>
+        <!-- Exact Bluechip Navigation Links with direct reliable click handlers -->
+        <a class="nav-link active" data-view="pos" onclick="App.loadView('pos')">Dashboard</a>
+        <a class="nav-link" data-view="customers" onclick="App.loadView('customers')">Clients</a>
+        <a class="nav-link" data-view="suppliers" onclick="App.loadView('suppliers')">Suppliers</a>
+        <a class="nav-link" data-view="inventory" onclick="App.loadView('inventory')">Inventory</a>
+        <a class="nav-link" data-view="quotations" onclick="App.loadView('quotations')">Quotations &amp; BOM</a>
+        <a class="nav-link" data-view="orders" onclick="App.loadView('orders')">Purchase orders &amp; bids</a>
+        <a class="nav-link" data-view="payments" onclick="App.loadView('payments')">Invoices &amp; billing</a>
+        <a class="nav-link" data-view="payments" onclick="App.loadView('payments')">Payments</a>
+        <a class="nav-link" data-view="reports" onclick="App.loadView('reports')">Serials &amp; warranty</a>
+        <a class="nav-link" data-view="projects" onclick="App.loadView('projects')">Assembly &amp; testing</a>
+        <a class="nav-link" data-view="reports" onclick="App.loadView('reports')">Reports</a>
+        <a class="nav-link" data-view="users" onclick="App.loadView('users')">User management</a>
+        <a class="nav-link" data-view="reports" onclick="App.loadView('reports')">Audit trail</a>
+        <a class="nav-link" data-view="pos_counter" onclick="App.loadView('pos_counter')">Point of Sale (POS)</a>
+        <a class="nav-link" data-view="database" onclick="App.loadView('database')">Database</a>
         <a class="nav-link" onclick="App.openEditProfileModal()" style="cursor: pointer;">My account</a>
       </nav>
 
@@ -72,7 +76,7 @@
           </button>
 
           <div class="page-title-group">
-            <p id="topbarSubtitle" class="topbar-company-sub">BLUE CHIP COMPUTER TRADING</p>
+            <p id="topbarSubtitle" class="topbar-company-sub">RUSELL'S GLASS, WOODS &amp; METALS • DIGOS CITY</p>
             <h1 id="topbarTitle">Dashboard</h1>
           </div>
         </div>
@@ -1092,6 +1096,116 @@
             </thead>
             <tbody id="usersTableBody"></tbody>
           </table>
+        </div>
+      </section>
+
+    
+      <!-- ====================================================================
+           VIEW: DATABASE MANAGEMENT & CLOUD OPERATIONS (11 TABLES & ACTIONS)
+           ==================================================================== -->
+      <section id="view-database" class="view-container">
+        <!-- Database Top Controls Panel -->
+        <div class="table-panel" style="padding: 1.6rem; margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <span class="college-badge" style="background: rgba(2, 132, 199, 0.15); color: #38bdf8; font-weight: 700;">Database Operations &amp; Engine</span>
+              <h2 style="font-size: 1.35rem; font-weight: 800; margin-top: 0.4rem; color: #ffffff;">
+                Database Control Center &amp; Table Manager
+              </h2>
+              <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 2px;">
+                Multi-tier workshop database engine connecting Local IndexedDB, Turso Cloud (Singapore), and MySQL/phpMyAdmin
+              </p>
+            </div>
+            <div style="display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center;">
+              <button type="button" class="btn-primary" style="background: #15803d; border-color: #22c55e;" onclick="App.testTursoCloudConnection()" title="Test Turso Cloud Database connection in Singapore">
+                ☁️ Turso Cloud Status
+              </button>
+              <button type="button" class="btn-primary" style="background: #0284c7; border-color: #38bdf8;" onclick="App.backupDatabaseSQL()" title="Generate full SQL dump of all 11 tables for disaster recovery">
+                💾 Backup Database (.sql)
+              </button>
+              <button type="button" class="btn-secondary" onclick="App.exportAuditCSV()" title="Export all workshop orders as CSV file">
+                📊 Export CSV Data
+              </button>
+              <button type="button" class="btn-amber" onclick="App.resetDemoData()" title="Reset workshop to clean demo state">
+                🔄 Reset Demo Data
+              </button>
+            </div>
+          </div>
+
+          <!-- 4 Database Metrics Cards -->
+          <div class="bluechip-metrics-row" style="margin-top: 1rem; margin-bottom: 0;">
+            <div class="bluechip-metric-card">
+              <div class="bluechip-card-label">Database Status</div>
+              <div class="bluechip-card-val" style="color: #4ade80; font-size: 1.5rem;">Online</div>
+              <div class="bluechip-card-sub">IndexedDB &amp; Cloud Ready</div>
+            </div>
+            <div class="bluechip-metric-card">
+              <div class="bluechip-card-label">Active Tables</div>
+              <div class="bluechip-card-val" id="dbTotalTablesCount" style="color: #38bdf8; font-size: 1.5rem;">11</div>
+              <div class="bluechip-card-sub">Relational Schema Ready</div>
+            </div>
+            <div class="bluechip-metric-card">
+              <div class="bluechip-card-label">Total Records</div>
+              <div class="bluechip-card-val" id="dbTotalRecordsCount" style="color: #f8fafc; font-size: 1.5rem;">0</div>
+              <div class="bluechip-card-sub">Synced across storage</div>
+            </div>
+            <div class="bluechip-metric-card">
+              <div class="bluechip-card-label">Disaster Recovery</div>
+              <div class="bluechip-card-val" style="color: #f59e0b; font-size: 1.5rem;">.SQL Ready</div>
+              <div class="bluechip-card-sub">1-Click Full Backup</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Clickable Database Tables Grid -->
+        <div class="table-panel" style="padding: 1.6rem; margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <div>
+              <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin: 0 0 0.25rem 0;">
+                Workshop Relational Tables (Click to Redirect &amp; Inspect)
+              </h3>
+              <p style="font-size: 0.8rem; color: #94a3b8; margin: 0;">
+                Click any table card to immediately navigate to its data view in the system
+              </p>
+            </div>
+            <span style="font-size: 0.8rem; font-weight: 600; color: #38bdf8;">11 Tables Available</span>
+          </div>
+
+          <div id="databaseTablesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem;">
+            <!-- Rendered by App.renderDatabaseScreen() -->
+          </div>
+        </div>
+
+        <!-- Live SQL Inspector -->
+        <div class="table-panel" style="padding: 1.6rem;">
+          <h3 style="font-size: 1.05rem; font-weight: 700; color: #ffffff; margin: 0 0 0.5rem 0;">
+            Live Database SQL Inspection &amp; Schema
+          </h3>
+          <p style="font-size: 0.8rem; color: #94a3b8; margin: 0 0 1rem 0;">
+            Select any table above or run immediate test queries directly against the workshop state
+          </p>
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+            <select id="dbTableSelector" class="form-control" style="max-width: 260px;" onchange="App.inspectDatabaseTable(this.value)">
+              <option value="products">products (Inventory &amp; Materials)</option>
+              <option value="customers">customers (Client Accounts)</option>
+              <option value="orders">orders (Counter &amp; Workshop)</option>
+              <option value="quotations">quotations (Project Bids &amp; BOM)</option>
+              <option value="job_orders">job_orders (Fabrication Kanban)</option>
+              <option value="suppliers">suppliers (Raw Material Vendors)</option>
+              <option value="payments">payments (Billing &amp; Receipts)</option>
+              <option value="users">users (System Access &amp; Roles)</option>
+              <option value="audit_logs">audit_logs (Security Audit Trail)</option>
+            </select>
+            <button type="button" class="btn-primary" onclick="App.inspectDatabaseTable(document.getElementById('dbTableSelector').value)">
+              View Table Data
+            </button>
+          </div>
+          <div class="bluechip-table-responsive" style="max-height: 400px; overflow-y: auto;">
+            <table class="bluechip-data-table" id="dbInspectionTable">
+              <thead><tr id="dbInspectionThead"></tr></thead>
+              <tbody id="dbInspectionTbody"></tbody>
+            </table>
+          </div>
         </div>
       </section>
 

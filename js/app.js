@@ -407,55 +407,59 @@ class WorkshopApp {
     const viewTitles = {
       pos: {
         title: 'Dashboard',
-        sub: 'BLUE CHIP COMPUTER TRADING'
+        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       pos_counter: {
         title: 'Point of Sale (POS)',
-        sub: 'BLUE CHIP COMPUTER TRADING'
+        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       customers: {
         title: 'Clients',
-        sub: 'BLUE CHIP COMPUTER TRADING'
+        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       suppliers: {
         title: 'Suppliers',
-        sub: 'BLUE CHIP COMPUTER TRADING'
+        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       inventory: {
         title: 'Inventory',
-        sub: 'BLUE CHIP COMPUTER TRADING'
+        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       quotations: {
         title: 'Quotations & BOM',
-        sub: 'BLUE CHIP COMPUTER TRADING'
+        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       orders: {
         title: 'Purchase orders & bids',
-        sub: 'BLUE CHIP COMPUTER TRADING'
+        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       payments: {
         title: 'Invoices & billing',
-        sub: 'BLUE CHIP COMPUTER TRADING'
+        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       projects: {
         title: 'Assembly & testing',
-        sub: 'BLUE CHIP COMPUTER TRADING'
+        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       reports: {
         title: 'Reports',
-        sub: 'BLUE CHIP COMPUTER TRADING'
+        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       users: {
         title: 'User management',
-        sub: 'BLUE CHIP COMPUTER TRADING'
+        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
+      },
+      database: {
+        title: 'Database Management',
+        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       estimator: {
         title: 'Custom Job Estimator',
-        sub: 'BLUE CHIP COMPUTER TRADING'
+        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       store_location: {
         title: 'Store Location',
-        sub: 'BLUE CHIP COMPUTER TRADING'
+        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
       }
     };
 
@@ -466,6 +470,9 @@ class WorkshopApp {
 
     // Trigger view-specific renders
     switch (viewName) {
+      case 'database':
+        this.renderDatabaseScreen();
+        break;
       case 'pos':
         this.updateDashboardMetrics();
         break;
