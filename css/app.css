@@ -1382,12 +1382,254 @@ body.theme-dark .spotlight-filter-pill {
   color: var(--accent-purple);
 }
 
-/* 2. Top Metrics 4-Column Grid */
+/* 2. Workshop "My Day" Stories / KPI Carousel Section (Facebook-Style Reel) */
+.dash-stories-section {
+  position: relative;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.dash-stories-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.85rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.dash-stories-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.stories-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+  background: rgba(88, 76, 244, 0.1);
+  color: var(--accent-purple);
+  border: 1px solid rgba(88, 76, 244, 0.22);
+}
+
+.stories-live-ring {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
+  display: inline-block;
+  animation: storyPulse 1.8s infinite;
+}
+
+@keyframes storyPulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+  70% { transform: scale(1.05); box-shadow: 0 0 0 5px rgba(239, 68, 68, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+.stories-subtitle {
+  font-size: 0.82rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.stories-nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.stories-arrow-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s;
+}
+
+.stories-arrow-btn:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: var(--accent-purple);
+  transform: scale(1.06);
+}
+
+.dash-stories-track-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.stories-float-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #1e293b;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.95;
+}
+
+.stories-float-arrow:hover {
+  background: #f8fafc;
+  color: var(--accent-purple);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.stories-float-arrow.left {
+  left: -8px;
+}
+
+.stories-float-arrow.right {
+  right: -8px;
+}
+
+/* Horizontal Scroll Reel */
+.dash-metrics-carousel {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 0.4rem 0.25rem 0.85rem 0.25rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.dash-metrics-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+/* Legacy fallback support */
 .dash-metrics-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-  margin-bottom: 1.75rem;
+  display: contents;
+}
+
+.story-card {
+  flex: 0 0 280px;
+  min-width: 280px;
+  max-width: 310px;
+  scroll-snap-align: start;
+  cursor: pointer;
+}
+
+/* Accent Card Borders & Pills for My Day Stories */
+.story-card-accent-blue {
+  border-left: 4px solid #0284c7;
+}
+
+.story-card-accent-amber {
+  border-left: 4px solid #f59e0b;
+}
+
+.story-card-accent-rose {
+  border-left: 4px solid #f43f5e;
+}
+
+.story-card-accent-emerald {
+  border-left: 4px solid #10b981;
+}
+
+.metric-trend-pill.blue-soft {
+  background: rgba(2, 132, 199, 0.12);
+  color: #0284c7;
+}
+
+.metric-trend-pill.amber-soft {
+  background: rgba(245, 158, 11, 0.12);
+  color: #d97706;
+}
+
+/* 3. Facebook Newsfeed-Style Workshop Feed Header */
+.dash-feed-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 0.5rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.dash-feed-title-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.feed-live-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.feed-pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.3);
+  display: inline-block;
+  animation: feedPulse 2s infinite;
+}
+
+@keyframes feedPulse {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.8; }
+}
+
+.feed-badge-text {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #0284c7;
+  text-transform: uppercase;
+}
+
+.dash-feed-heading {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.dash-feed-sub {
+  font-size: 0.82rem;
+  color: #64748b;
+  margin: 0;
+  margin-top: 2px;
 }
 
 /* Hero Purple Card (Image 1: Total Revenue) */
@@ -3721,6 +3963,69 @@ body.theme-dark .period-icon-btn {
 }
 
 /* Cards & Metric Cards in Dark Mode */
+body.theme-dark .stories-badge-pill {
+  background: rgba(88, 76, 244, 0.2);
+  color: #a5b4fc;
+  border-color: rgba(99, 102, 241, 0.35);
+}
+
+body.theme-dark .stories-subtitle {
+  color: #94a3b8;
+}
+
+body.theme-dark .stories-arrow-btn {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #f8fafc;
+}
+
+body.theme-dark .stories-arrow-btn:hover {
+  background: #334155;
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+body.theme-dark .stories-float-arrow {
+  background: #1e293b;
+  color: #f8fafc;
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
+}
+
+body.theme-dark .stories-float-arrow:hover {
+  background: #334155;
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+body.theme-dark .dash-feed-heading {
+  color: #f8fafc;
+}
+
+body.theme-dark .dash-feed-sub {
+  color: #94a3b8;
+}
+
+body.theme-dark .feed-badge-text {
+  color: #38bdf8;
+}
+
+body.theme-dark .story-card-accent-blue {
+  border-left-color: #38bdf8;
+}
+
+body.theme-dark .story-card-accent-amber {
+  border-left-color: #fbbf24;
+}
+
+body.theme-dark .story-card-accent-rose {
+  border-left-color: #fb7185;
+}
+
+body.theme-dark .story-card-accent-emerald {
+  border-left-color: #34d399;
+}
+
 body.theme-dark .metric-card-clean {
   background: #1e293b;
   border-color: rgba(255, 255, 255, 0.08);

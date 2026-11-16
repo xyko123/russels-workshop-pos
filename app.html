@@ -329,65 +329,163 @@
           </div>
         </div>
 
-        <!-- IMAGE 1: TOP 4 METRICS (HERO PURPLE REVENUE + WHITE CARDS) -->
-        <div class="dash-metrics-grid">
-          <!-- Hero Purple Card: Total Revenue -->
-          <div class="metric-card-hero" onclick="App.loadView('payments')" style="cursor: pointer;" title="Click to view Billing &amp; Payments">
-            <div class="metric-hero-top">
-              <span class="metric-hero-title">Total revenue</span>
-              <span class="metric-arrow-btn">↗</span>
+        <!-- WORKSHOP "MY DAY" STORIES / HORIZONTAL KPI CAROUSEL (FACEBOOK-STYLE REEL) -->
+        <div class="dash-stories-section">
+          <div class="dash-stories-header">
+            <div class="dash-stories-title-group">
+              <span class="stories-badge-pill">
+                <span class="stories-live-ring"></span>
+                WORKSHOP "MY DAY" STORIES
+              </span>
+              <span class="stories-subtitle">Real-time KPI metrics &amp; operational pulse • Scroll left &amp; right</span>
             </div>
-            <div>
-              <div class="metric-hero-value">
-                <span id="heroMetricRevenue">₱99,560</span>
-                <span class="metric-trend-pill green-trans">↑ 2.6%</span>
-              </div>
-              <div class="metric-hero-sub">This month vs last</div>
-            </div>
-          </div>
-
-          <!-- Total Orders Card -->
-          <div class="metric-card-clean" onclick="App.loadView('orders')" style="cursor: pointer;" title="Click to view Orders List">
-            <div class="metric-clean-top">
-              <span class="metric-clean-title">Total orders</span>
-              <span class="metric-clean-arrow">↗</span>
-            </div>
-            <div>
-              <div class="metric-clean-value">
-                <span id="cleanMetricOrders">35</span>
-                <span class="metric-trend-pill red-soft">↓ 0.6%</span>
-              </div>
-              <div class="metric-clean-sub">This month vs last</div>
+            <div class="stories-nav-controls">
+              <button type="button" class="stories-arrow-btn" onclick="App.scrollStories('left')" title="Scroll stories left [‹]">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+              </button>
+              <button type="button" class="stories-arrow-btn" onclick="App.scrollStories('right')" title="Scroll stories right [›]">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
             </div>
           </div>
 
-          <!-- Total Visitors / Inquiries Card -->
-          <div class="metric-card-clean" onclick="App.loadView('customers')" style="cursor: pointer;" title="Click to view Customer Directory">
-            <div class="metric-clean-top">
-              <span class="metric-clean-title">Total inquiries</span>
-              <span class="metric-clean-arrow">↗</span>
-            </div>
-            <div>
-              <div class="metric-clean-value">
-                <span id="cleanMetricInquiries">45,600</span>
+          <div class="dash-stories-track-wrapper">
+            <button type="button" class="stories-float-arrow left" onclick="App.scrollStories('left')" title="Scroll Left (Previous Stories)">‹</button>
+            
+            <div class="dash-metrics-carousel" id="dashMetricsCarousel">
+              <!-- Story Card 1: Total Revenue (Hero Gradient) -->
+              <div class="metric-card-hero story-card" onclick="App.loadView('payments')" title="Click to view Billing &amp; Payments">
+                <div class="metric-hero-top">
+                  <span class="metric-hero-title">Total revenue</span>
+                  <span class="metric-arrow-btn">↗</span>
+                </div>
+                <div>
+                  <div class="metric-hero-value">
+                    <span id="heroMetricRevenue">₱99,560</span>
+                    <span class="metric-trend-pill green-trans">↑ 2.6%</span>
+                  </div>
+                  <div class="metric-hero-sub">This month vs last</div>
+                </div>
               </div>
-              <div class="metric-clean-sub">This month vs last</div>
-            </div>
-          </div>
 
-          <!-- Net Profit Card -->
-          <div class="metric-card-clean" onclick="App.loadView('reports')" style="cursor: pointer;" title="Click to view Reports &amp; Analytics">
-            <div class="metric-clean-top">
-              <span class="metric-clean-title">Net profit</span>
-              <span class="metric-clean-arrow">↗</span>
-            </div>
-            <div>
-              <div class="metric-clean-value">
-                <span id="cleanMetricProfit">₱60,450</span>
-                <span class="metric-trend-pill green-soft">↑ 1.6%</span>
+              <!-- Story Card 2: Total Orders -->
+              <div class="metric-card-clean story-card" onclick="App.loadView('orders')" title="Click to view Orders List">
+                <div class="metric-clean-top">
+                  <span class="metric-clean-title">Total orders</span>
+                  <span class="metric-clean-arrow">↗</span>
+                </div>
+                <div>
+                  <div class="metric-clean-value">
+                    <span id="cleanMetricOrders">35</span>
+                    <span class="metric-trend-pill red-soft">↓ 0.6%</span>
+                  </div>
+                  <div class="metric-clean-sub">This month vs last</div>
+                </div>
               </div>
-              <div class="metric-clean-sub">This month vs last</div>
+
+              <!-- Story Card 3: Total Inquiries -->
+              <div class="metric-card-clean story-card" onclick="App.loadView('customers')" title="Click to view Customer Directory">
+                <div class="metric-clean-top">
+                  <span class="metric-clean-title">Total inquiries</span>
+                  <span class="metric-clean-arrow">↗</span>
+                </div>
+                <div>
+                  <div class="metric-clean-value">
+                    <span id="cleanMetricInquiries">45,600</span>
+                  </div>
+                  <div class="metric-clean-sub">This month vs last</div>
+                </div>
+              </div>
+
+              <!-- Story Card 4: Net Profit -->
+              <div class="metric-card-clean story-card" onclick="App.loadView('reports')" title="Click to view Reports &amp; Analytics">
+                <div class="metric-clean-top">
+                  <span class="metric-clean-title">Net profit</span>
+                  <span class="metric-clean-arrow">↗</span>
+                </div>
+                <div>
+                  <div class="metric-clean-value">
+                    <span id="cleanMetricProfit">₱60,450</span>
+                    <span class="metric-trend-pill green-soft">↑ 1.6%</span>
+                  </div>
+                  <div class="metric-clean-sub">This month vs last</div>
+                </div>
+              </div>
+
+              <!-- Story Card 5: Active Fabrication Jobs -->
+              <div class="metric-card-clean story-card story-card-accent-blue" onclick="App.loadView('projects')" title="Click to view Fabrication Kanban">
+                <div class="metric-clean-top">
+                  <span class="metric-clean-title">Fabrication Jobs</span>
+                  <span class="metric-clean-arrow" style="color: #38bdf8;">↗</span>
+                </div>
+                <div>
+                  <div class="metric-clean-value">
+                    <span id="storyMetricJobs">3 Active</span>
+                    <span class="metric-trend-pill blue-soft">In Progress</span>
+                  </div>
+                  <div class="metric-clean-sub">Welding, Glass &amp; Assembly</div>
+                </div>
+              </div>
+
+              <!-- Story Card 6: Project Quotations -->
+              <div class="metric-card-clean story-card story-card-accent-amber" onclick="App.loadView('quotations')" title="Click to view Quotations">
+                <div class="metric-clean-top">
+                  <span class="metric-clean-title">Quotations</span>
+                  <span class="metric-clean-arrow" style="color: #fbbf24;">↗</span>
+                </div>
+                <div>
+                  <div class="metric-clean-value">
+                    <span id="storyMetricQuotes">₱145,200</span>
+                    <span class="metric-trend-pill amber-soft">5 Pending</span>
+                  </div>
+                  <div class="metric-clean-sub">Awaiting client approval</div>
+                </div>
+              </div>
+
+              <!-- Story Card 7: Low Stock Alerts -->
+              <div class="metric-card-clean story-card story-card-accent-rose" onclick="App.loadView('inventory')" title="Click to view Material Inventory">
+                <div class="metric-clean-top">
+                  <span class="metric-clean-title">Low Stock</span>
+                  <span class="metric-clean-arrow" style="color: #f43f5e;">↗</span>
+                </div>
+                <div>
+                  <div class="metric-clean-value">
+                    <span id="storyMetricStock">3 Items</span>
+                    <span class="metric-trend-pill red-soft">Reorder</span>
+                  </div>
+                  <div class="metric-clean-sub">Bronze glass, 798 Analok</div>
+                </div>
+              </div>
+
+              <!-- Story Card 8: Registered Clients -->
+              <div class="metric-card-clean story-card story-card-accent-emerald" onclick="App.loadView('customers')" title="Click to view Digos Clients">
+                <div class="metric-clean-top">
+                  <span class="metric-clean-title">Registered Clients</span>
+                  <span class="metric-clean-arrow" style="color: #34d399;">↗</span>
+                </div>
+                <div>
+                  <div class="metric-clean-value">
+                    <span id="storyMetricClients">128</span>
+                    <span class="metric-trend-pill green-soft">Active</span>
+                  </div>
+                  <div class="metric-clean-sub">Digos City &amp; Davao del Sur</div>
+                </div>
+              </div>
             </div>
+
+            <button type="button" class="stories-float-arrow right" onclick="App.scrollStories('right')" title="Scroll Right (Next Stories)">›</button>
+          </div>
+        </div>
+
+        <!-- FACEBOOK NEWSFEED-STYLE WORKSHOP OPERATIONS FEED HEADER -->
+        <div class="dash-feed-header">
+          <div class="dash-feed-title-left">
+            <div class="feed-live-indicator">
+              <span class="feed-pulse-dot"></span>
+              <span class="feed-badge-text">LIVE WORKSHOP NEWSFEED</span>
+            </div>
+            <h3 class="dash-feed-heading">Fabrication &amp; Point of Sales Feed</h3>
+            <p class="dash-feed-sub">Counter order terminal, product inventory catalog, and custom job fabrication staging</p>
           </div>
         </div>
 

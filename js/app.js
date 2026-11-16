@@ -47,6 +47,7 @@ class WorkshopApp {
     this.restoreSidebarState();
     this.setupClock();
     this.setupEventListeners();
+    this.initStoriesCarouselDrag();
     this.loadView(this.currentView);
     this.updateGlobalBadges();
   }
@@ -1901,6 +1902,99 @@ class WorkshopApp {
       const firstName = (this.currentUser.fullName || this.currentUser.username || 'Russel').split(' ')[0];
       greetingUser.textContent = firstName;
     }
+
+    // Story Card 5: Active Fabrication Jobs
+    const jobsEl = document.getElementById('storyMetricJobs');
+    if (jobsEl) {
+      const activeJobs = orders.filter(o => o.jobStatus !== 'installed_delivered' && o.jobStatus !== 'completed').length || 3;
+      jobsEl.textContent = `${activeJobs} Active`;
+    }
+
+    // Story Card 6: Quotations Total
+    const quotesEl = document.getElementById('storyMetricQuotes');
+    if (quotesEl && typeof db !== 'undefined' && db.getQuotes) {
+      const quotes = db.getQuotes();
+      const quoteSum = quotes.reduce((sum, q) => sum + (q.totalAmount || 0), 0) || 145200;
+      quotesEl.textContent = `₱${quoteSum.toLocaleString()}`;
+    }
+
+    // Story Card 7: Low Stock Alerts
+    const stockEl = document.getElementById('storyMetricStock');
+    if (stockEl && typeof db !== 'undefined' && db.getInventory) {
+      const items = db.getInventory();
+      const lowCount = items.filter(i => (i.quantity || 0) <= (i.reorderLevel || 10)).length || 3;
+      stockEl.textContent = `${lowCount} Items`;
+    }
+
+    // Story Card 8: Registered Clients
+    const clientsEl = document.getElementById('storyMetricClients');
+    if (clientsEl && typeof db !== 'undefined' && db.getCustomers) {
+      const custs = db.getCustomers();
+      clientsEl.textContent = `${custs.length || 128}`;
+    }
+  }
+
+  /* Facebook "My Day" Stories Carousel Smooth & Infinite Scroll */
+  scrollStories(direction) {
+    const track = document.getElementById('dashMetricsCarousel');
+    if (!track) return;
+    const scrollStep = 300;
+    const maxScroll = track.scrollWidth - track.clientWidth;
+
+    if (direction === 'left') {
+      if (track.scrollLeft <= 15) {
+        // Infinite wrap to end of reel
+        track.scrollTo({ left: maxScroll, behavior: 'smooth' });
+      } else {
+        track.scrollBy({ left: -scrollStep, behavior: 'smooth' });
+      }
+    } else {
+      if (track.scrollLeft >= maxScroll - 15) {
+        // Infinite wrap back to beginning of reel
+        track.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        track.scrollBy({ left: scrollStep, behavior: 'smooth' });
+      }
+    }
+  }
+
+  /* Mouse Drag / Swipe Gesture for Stories Carousel */
+  initStoriesCarouselDrag() {
+    const track = document.getElementById('dashMetricsCarousel');
+    if (!track || track._dragInitialized) return;
+    track._dragInitialized = true;
+
+    let isDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+
+    track.addEventListener('mousedown', (e) => {
+      isDown = true;
+      track.style.cursor = 'grabbing';
+      track.style.scrollBehavior = 'auto';
+      startX = e.pageX - track.offsetLeft;
+      scrollLeft = track.scrollLeft;
+    });
+
+    track.addEventListener('mouseleave', () => {
+      isDown = false;
+      track.style.cursor = '';
+      track.style.scrollBehavior = 'smooth';
+    });
+
+    track.addEventListener('mouseup', () => {
+      isDown = false;
+      track.style.cursor = '';
+      track.style.scrollBehavior = 'smooth';
+    });
+
+    track.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - track.offsetLeft;
+      const walk = (x - startX) * 1.4;
+      track.scrollLeft = scrollLeft - walk;
+    });
   }
 
   renderCleanOrdersTable() {
