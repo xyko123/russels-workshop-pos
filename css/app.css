@@ -732,8 +732,7 @@ body.theme-dark .workshop-brand-strip {
   flex-shrink: 0;
   margin: 0;
 }
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.45);
-}
+
 
 /* AI Copilot Card Header in Popover */
 .ai-copilot-card-header {
@@ -1388,9 +1387,6 @@ body.theme-dark .spotlight-filter-pill {
   .topbar-logout-btn .btn-label {
     display: none;
   }
-}
-  border-color: #dc2626;
-  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
 }
 
 /* CONTENT VIEW CONTAINERS */
@@ -5826,4 +5822,16 @@ body.theme-light .btn-secondary:hover {
   background: #ffffff;
   padding: 2px;
   flex-shrink: 0;
+}
+
+
+/* CONTENT VIEW CONTAINERS - STRICT VISIBILITY ISOLATION */
+.view-container {
+  padding: 1.5rem 1.75rem !important;
+  box-sizing: border-box !important;
+  display: none !important;
+}
+
+.view-container.active {
+  display: block !important;
 }
