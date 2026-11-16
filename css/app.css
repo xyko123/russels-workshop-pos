@@ -2062,39 +2062,44 @@ body.app-body {
 .product-add-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(4px);
+  background: transparent;
+  backdrop-filter: none;
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease;
+  border-radius: inherit;
 }
 
 .product-card:hover .product-add-overlay {
   opacity: 1;
   pointer-events: auto;
+  background: transparent;
 }
 
 .btn-quick-add {
-  background: var(--accent-purple);
+  background: linear-gradient(135deg, rgba(88, 76, 244, 0.95), rgba(67, 56, 202, 0.95));
+  backdrop-filter: blur(8px);
   color: #ffffff;
-  border: none;
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
   border-radius: var(--radius-full);
   padding: 0.65rem 1.35rem;
   font-size: 0.85rem;
   font-weight: 700;
-  box-shadow: 0 4px 14px rgba(88, 76, 244, 0.35);
+  box-shadow: 0 8px 24px -2px rgba(88, 76, 244, 0.5), 0 0 12px rgba(88, 76, 244, 0.3);
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  transition: transform 0.15s ease;
+  gap: 0.45rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .btn-quick-add:hover {
-  transform: scale(1.05);
+  transform: scale(1.06);
+  background: #473be6;
+  box-shadow: 0 10px 28px -2px rgba(88, 76, 244, 0.65);
 }
 
 /* POS RIGHT TERMINAL (CART) */
@@ -3925,198 +3930,165 @@ body.theme-dark .floating-theme-toggle {
 }
 
 /* ==========================================================================
-   AI & ML CLUSTERING VIEW STYLES
+   CATEGORY COLOR SYSTEM & BEAUTIFUL DESIGN FOR LIGHT & DARK MODES
    ========================================================================== */
 
-.clustering-hero-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: linear-gradient(135deg, rgba(79, 70, 229, 0.08), rgba(129, 140, 248, 0.04));
-  border: 1px solid rgba(99, 102, 241, 0.2);
-  border-radius: var(--radius-lg);
-  padding: 1.75rem 2rem;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
-  gap: 1.5rem;
+/* Product Cards - Category Accents */
+.product-card {
+  transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.22s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.22s ease;
 }
 
-.ai-badge-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.3rem 0.65rem;
-  border-radius: var(--radius-full);
-  background: rgba(99, 102, 241, 0.15);
-  color: #4f46e5;
-  font-size: 0.72rem;
-  font-weight: 700;
-  margin-bottom: 0.65rem;
+.product-card.card-cat-glass { border-top: 3.5px solid #0284c7; }
+.product-card.card-cat-wood { border-top: 3.5px solid #d97706; }
+.product-card.card-cat-metal { border-top: 3.5px solid #64748b; }
+.product-card.card-cat-shutter { border-top: 3.5px solid #059669; }
+.product-card.card-cat-hardware { border-top: 3.5px solid #7c3aed; }
+
+.product-card.card-cat-glass:hover { border-color: #38bdf8; box-shadow: 0 10px 25px -4px rgba(2, 132, 199, 0.18); }
+.product-card.card-cat-wood:hover { border-color: #f59e0b; box-shadow: 0 10px 25px -4px rgba(217, 119, 6, 0.18); }
+.product-card.card-cat-metal:hover { border-color: #94a3b8; box-shadow: 0 10px 25px -4px rgba(100, 116, 139, 0.18); }
+.product-card.card-cat-shutter:hover { border-color: #10b981; box-shadow: 0 10px 25px -4px rgba(5, 150, 105, 0.18); }
+.product-card.card-cat-hardware:hover { border-color: #a855f7; box-shadow: 0 10px 25px -4px rgba(124, 58, 237, 0.18); }
+
+/* Category Navigation Filter Pills */
+.cat-tab.tab-glass.active {
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  border-color: #0284c7;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
 }
 
-.clustering-hero-card h2 {
-  font-size: 1.45rem;
-  font-weight: 800;
-  color: var(--text-dark);
-  margin-bottom: 0.35rem;
+.cat-tab.tab-wood.active {
+  background: linear-gradient(135deg, #d97706, #b45309);
+  border-color: #d97706;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.35);
 }
 
-.clustering-hero-card p {
-  font-size: 0.82rem;
-  color: var(--text-dim);
-  max-width: 650px;
-  margin-bottom: 1.15rem;
+.cat-tab.tab-metal.active {
+  background: linear-gradient(135deg, #475569, #334155);
+  border-color: #475569;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(71, 85, 105, 0.35);
 }
 
-.model-stats-row {
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
+.cat-tab.tab-shutter.active {
+  background: linear-gradient(135deg, #059669, #047857);
+  border-color: #059669;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35);
 }
 
-.model-stat-item {
-  display: flex;
-  flex-direction: column;
+.cat-tab.tab-hardware.active {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  border-color: #7c3aed;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35);
 }
 
-.model-stat-label {
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 700;
+/* Category Badges & Chips */
+.cat-chip-glass {
+  background: rgba(2, 132, 199, 0.1);
+  color: #0284c7;
+  border: 1px solid rgba(2, 132, 199, 0.25);
 }
 
-.model-stat-value {
-  font-size: 1rem;
-  color: var(--text-dark);
-  font-weight: 800;
+.cat-chip-wood {
+  background: rgba(217, 119, 6, 0.1);
+  color: #d97706;
+  border: 1px solid rgba(217, 119, 6, 0.25);
 }
 
-.hero-right-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-}
-
-.cluster-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
-  gap: 1.25rem;
-  margin-bottom: 1.5rem;
-}
-
-.cluster-card {
-  background: #ffffff;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 1.4rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.cluster-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.08);
-}
-
-.cluster-card-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.75rem;
-}
-
-.cluster-tag {
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 0.25rem 0.55rem;
-  border-radius: var(--radius-full);
-}
-
-.cluster-tag.purple { background: rgba(129, 140, 248, 0.15); color: #4f46e5; border: 1px solid rgba(129, 140, 248, 0.3); }
-.cluster-tag.blue { background: rgba(56, 189, 248, 0.15); color: #0284c7; border: 1px solid rgba(56, 189, 248, 0.3); }
-.cluster-tag.emerald { background: rgba(52, 211, 153, 0.15); color: #059669; border: 1px solid rgba(52, 211, 153, 0.3); }
-
-.cluster-pct {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--text-dim);
-}
-
-.cluster-title {
-  font-size: 1.05rem;
-  font-weight: 800;
-  color: var(--text-dark);
-  margin-bottom: 0.85rem;
-}
-
-.cluster-metrics {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem 1rem;
-  background: #f8fafc;
-  padding: 0.75rem 0.9rem;
-  border-radius: var(--radius-sm);
-  margin-bottom: 0.85rem;
-}
-
-.c-metric {
-  font-size: 0.76rem;
-}
-
-.c-metric .lbl {
-  color: var(--text-muted);
-  margin-right: 0.25rem;
-}
-
-.cluster-desc {
-  font-size: 0.78rem;
-  color: var(--text-dim);
-  line-height: 1.4;
-  margin-bottom: 0.85rem;
-}
-
-.cluster-materials-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-.mat-tag {
-  font-size: 0.68rem;
-  padding: 0.2rem 0.45rem;
-  border-radius: 4px;
-  background: #e2e8f0;
+.cat-chip-metal {
+  background: rgba(100, 116, 139, 0.1);
   color: #475569;
-  font-weight: 600;
+  border: 1px solid rgba(100, 116, 139, 0.25);
 }
 
-/* Dark Mode for Clustering */
-body.theme-dark .clustering-hero-card {
-  background: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(15, 23, 42, 0.6));
-  border-color: rgba(99, 102, 241, 0.3);
+.cat-chip-shutter {
+  background: rgba(5, 150, 105, 0.1);
+  color: #059669;
+  border: 1px solid rgba(5, 150, 105, 0.25);
 }
 
-body.theme-dark .ai-badge-chip {
-  background: rgba(99, 102, 241, 0.25);
-  color: #818cf8;
+.cat-chip-hardware {
+  background: rgba(124, 58, 237, 0.1);
+  color: #7c3aed;
+  border: 1px solid rgba(124, 58, 237, 0.25);
 }
 
-body.theme-dark .cluster-card {
-  background: #1e293b;
-  border-color: rgba(255, 255, 255, 0.08);
+/* Dark Mode Category Glows & Ambient Highlights */
+body.theme-dark .product-card.card-cat-glass {
+  border-top-color: #38bdf8;
+  background: #0f172a;
+}
+body.theme-dark .product-card.card-cat-glass:hover {
+  border-color: #38bdf8;
+  box-shadow: 0 10px 25px -4px rgba(56, 189, 248, 0.25);
 }
 
-body.theme-dark .cluster-tag.purple { color: #818cf8; }
-body.theme-dark .cluster-tag.blue { color: #38bdf8; }
-body.theme-dark .cluster-tag.emerald { color: #4ade80; }
-
-body.theme-dark .cluster-metrics {
-  background: rgba(0, 0, 0, 0.25);
+body.theme-dark .product-card.card-cat-wood {
+  border-top-color: #fbbf24;
+  background: #0f172a;
+}
+body.theme-dark .product-card.card-cat-wood:hover {
+  border-color: #fbbf24;
+  box-shadow: 0 10px 25px -4px rgba(251, 191, 36, 0.25);
 }
 
-body.theme-dark .mat-tag {
-  background: rgba(255, 255, 255, 0.08);
+body.theme-dark .product-card.card-cat-metal {
+  border-top-color: #94a3b8;
+  background: #0f172a;
+}
+body.theme-dark .product-card.card-cat-metal:hover {
+  border-color: #94a3b8;
+  box-shadow: 0 10px 25px -4px rgba(148, 163, 184, 0.25);
+}
+
+body.theme-dark .product-card.card-cat-shutter {
+  border-top-color: #34d399;
+  background: #0f172a;
+}
+body.theme-dark .product-card.card-cat-shutter:hover {
+  border-color: #34d399;
+  box-shadow: 0 10px 25px -4px rgba(52, 211, 153, 0.25);
+}
+
+body.theme-dark .product-card.card-cat-hardware {
+  border-top-color: #c084fc;
+  background: #0f172a;
+}
+body.theme-dark .product-card.card-cat-hardware:hover {
+  border-color: #c084fc;
+  box-shadow: 0 10px 25px -4px rgba(192, 132, 252, 0.25);
+}
+
+body.theme-dark .cat-chip-glass {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.35);
+}
+
+body.theme-dark .cat-chip-wood {
+  background: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
+  border-color: rgba(251, 191, 36, 0.35);
+}
+
+body.theme-dark .cat-chip-metal {
+  background: rgba(148, 163, 184, 0.15);
   color: #cbd5e1;
+  border-color: rgba(148, 163, 184, 0.35);
+}
+
+body.theme-dark .cat-chip-shutter {
+  background: rgba(52, 211, 153, 0.15);
+  color: #34d399;
+  border-color: rgba(52, 211, 153, 0.35);
+}
+
+body.theme-dark .cat-chip-hardware {
+  background: rgba(192, 132, 252, 0.15);
+  color: #c084fc;
+  border-color: rgba(192, 132, 252, 0.35);
 }
