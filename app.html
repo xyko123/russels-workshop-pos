@@ -210,12 +210,17 @@
         </div>
 
         <div class="topbar-center">
-          <div class="topbar-search-wrapper" style="position: relative; width: 100%; max-width: 480px;">
+          <div class="topbar-search-wrapper" style="position: relative; width: 100%; max-width: 520px;">
             <div class="topbar-search">
               <button class="search-btn-trigger" id="globalSearchBtn" onclick="App.triggerGlobalSearch()" title="Click to search or press Enter">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
               </button>
-              <input type="text" id="globalSearchInput" placeholder="Spotlight: Job #, Customer, Material, or Quote..." autocomplete="off" />
+              <input type="text" id="globalSearchInput" placeholder="Search records or type 'problem' / 'issues' to diagnose..." autocomplete="off" />
+              <!-- Direct System Problem Indicator & 1-Click Locator -->
+              <button type="button" class="topbar-issue-indicator" id="topbarProblemIndicator" onclick="App.showSystemProblems()" title="Workshop Issue Radar: Click to locate and resolve all system problems">
+                <span class="indicator-icon">🚨</span>
+                <span class="indicator-text" id="topbarProblemText">Issues</span>
+              </button>
               <button class="search-clear-btn" id="globalSearchClear" onclick="App.clearGlobalSearch()" title="Clear search" style="display: none;">
                 ✕
               </button>

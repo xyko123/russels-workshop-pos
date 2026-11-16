@@ -269,9 +269,8 @@ class WorkshopApp {
       });
 
       globalSearch.addEventListener('focus', () => {
-        if (globalSearch.value.trim().length > 0) {
-          this.performLiveSearch(globalSearch.value.trim());
-        }
+        const query = globalSearch.value.trim();
+        this.performLiveSearch(query || 'problem');
       });
 
       globalSearch.addEventListener('keydown', (e) => {
@@ -481,12 +480,12 @@ class WorkshopApp {
   }
 
   updateGlobalBadges() {
-    const orders = db.getOrders();
-    const products = db.getProducts();
-    const quotations = db.getQuotations();
+    const orders = db.getOrders ? db.getOrders() : [];
+    const products = db.getProducts ? db.getProducts() : [];
+    const quotations = db.getQuotations ? db.getQuotations() : [];
 
     const activeJobs = orders.filter(o => o.jobStatus !== 'installed_delivered' && o.jobStatus !== 'completed').length;
-    const lowStockCount = products.filter(p => (p.stockQuantity || 0) <= (p.reorderLevel || 0)).length;
+    const lowStockCount = products.filter(p => (p.stockQuantity || 0) <= (p.reorderLevel || 10)).length;
     const pendingQuotes = quotations.filter(q => q.status === 'Pending Approval').length;
 
     const navJobsBadge = document.getElementById('navJobsBadge');
@@ -505,6 +504,34 @@ class WorkshopApp {
     if (navQuoteBadge) {
       navQuoteBadge.textContent = pendingQuotes;
       navQuoteBadge.style.display = pendingQuotes > 0 ? 'inline-block' : 'none';
+    }
+
+    // Topbar Problem Indicator & Search Bar Prompt
+    if (typeof this.getAllSystemProblems === 'function') {
+      const allProblems = this.getAllSystemProblems();
+      const indicator = document.getElementById('topbarProblemIndicator');
+      const probText = document.getElementById('topbarProblemText');
+      const searchInput = document.getElementById('globalSearchInput');
+
+      if (indicator && probText) {
+        if (allProblems.length > 0) {
+          indicator.classList.add('has-issues');
+          probText.textContent = `${allProblems.length} Issue${allProblems.length === 1 ? '' : 's'}`;
+          indicator.title = `${allProblems.length} workshop issue${allProblems.length === 1 ? '' : 's'} detected: Click to locate & resolve`;
+        } else {
+          indicator.classList.remove('has-issues');
+          probText.textContent = '0 Issues';
+          indicator.title = 'All system metrics normal: 0 issues detected';
+        }
+      }
+
+      if (searchInput && !searchInput.value) {
+        if (allProblems.length > 0) {
+          searchInput.placeholder = `Search records, or click 🚨 ${allProblems.length} Issues to locate...`;
+        } else {
+          searchInput.placeholder = "Search jobs, customers, materials, or type 'problem'...";
+        }
+      }
     }
   }
 
@@ -1420,17 +1447,17 @@ class WorkshopApp {
 
     tbody.innerHTML = quotations.map(q => `
       <tr>
-        <td><strong style="color: #38bdf8; font-family: var(--font-mono);">${q.quotationNo}</strong></td>
+        <td><strong style="color: #0284c7; font-family: var(--font-mono);">${q.quotationNo}</strong></td>
         <td>
-          <div style="font-weight: 600; color: #fff;">${q.customerName}</div>
+          <div style="font-weight: 700; color: var(--text-dark);">${q.customerName}</div>
           <small style="color: var(--text-dim);">${q.projectTitle}</small>
         </td>
         <td>
-          <div>${q.customerPhone}</div>
+          <div style="color: var(--text-dark);">${q.customerPhone}</div>
           <small style="color: var(--text-muted);">${q.deliveryAddress}</small>
         </td>
         <td><span class="badge badge-metal">${q.tradeCategory || 'Glass'}</span></td>
-        <td><strong style="color: #fff;">₱${q.totalAmount.toLocaleString()}</strong></td>
+        <td><strong style="color: var(--text-dark);">₱${q.totalAmount.toLocaleString()}</strong></td>
         <td><span class="badge ${q.status === 'Converted to Order' ? 'badge-success' : 'badge-warning'}">${q.status}</span></td>
         <td>
           <div style="display: flex; gap: 0.35rem;">
@@ -1534,9 +1561,9 @@ class WorkshopApp {
 
       return `
         <tr>
-          <td><strong style="font-family: var(--font-mono); color: #fff;">${p.code}</strong></td>
+          <td><strong style="font-family: var(--font-mono); color: var(--text-dark);">${p.code}</strong></td>
           <td>
-            <div style="font-weight: 600; color: #fff;">${p.name}</div>
+            <div style="font-weight: 700; color: var(--text-dark);">${p.name}</div>
             <small style="color: var(--text-dim);">${p.description || ''}</small>
           </td>
           <td><span class="badge ${catClass}">${p.categoryLabel.split(' ')[0]}</span></td>
@@ -1663,14 +1690,14 @@ class WorkshopApp {
 
     tbody.innerHTML = customers.map(c => `
       <tr>
-        <td><strong style="font-family: var(--font-mono); color: #38bdf8;">${c.code}</strong></td>
+        <td><strong style="font-family: var(--font-mono); color: #0284c7;">${c.code}</strong></td>
         <td>
-          <div style="font-weight: 600; color: #fff;">${c.name}</div>
+          <div style="font-weight: 700; color: var(--text-dark);">${c.name}</div>
           <small style="color: var(--text-dim);">${c.notes || ''}</small>
         </td>
         <td><span class="badge badge-metal">${c.customerType}</span></td>
-        <td>${c.phone}</td>
-        <td>${c.address}</td>
+        <td style="color: var(--text-dark);">${c.phone}</td>
+        <td style="color: var(--text-dim);">${c.address}</td>
         <td><strong style="color: #34d399;">₱${(c.totalSpent || 0).toLocaleString()}</strong></td>
         <td>
           <button class="btn-primary" style="padding: 0.3rem 0.6rem; font-size: 0.72rem;" onclick="App.startOrderForCustomer('${c.id}')">
@@ -1750,17 +1777,17 @@ class WorkshopApp {
       return `
         <tr>
           <td>
-            <div style="font-weight: 700; color: #38bdf8;">${o.jobOrderNo || o.orderNo}</div>
+            <div style="font-weight: 700; color: #0284c7;">${o.jobOrderNo || o.orderNo}</div>
             <small style="color: var(--text-dim);">${new Date(o.orderDate).toLocaleDateString()}</small>
           </td>
           <td>
-            <div style="font-weight: 600; color: #fff;">${o.customerName}</div>
+            <div style="font-weight: 700; color: var(--text-dark);">${o.customerName}</div>
             <small style="color: var(--text-muted);">${o.customerPhone}</small>
           </td>
-          <td>₱${o.totalAmount.toLocaleString()}</td>
-          <td><strong style="color: #34d399;">₱${(o.downpayment || 0).toLocaleString()}</strong></td>
+          <td style="color: var(--text-dark);">₱${o.totalAmount.toLocaleString()}</td>
+          <td><strong style="color: #16a34a;">₱${(o.downpayment || 0).toLocaleString()}</strong></td>
           <td>
-            <strong style="color: ${isPaid ? '#34d399' : '#fbbf24'}; font-size: 0.95rem;">
+            <strong style="color: ${isPaid ? '#16a34a' : '#d97706'}; font-size: 0.95rem;">
               ₱${(o.balanceDue || 0).toLocaleString()}
             </strong>
           </td>
@@ -2175,19 +2202,19 @@ class WorkshopApp {
     const suppliers = db.getSuppliers();
     tbody.innerHTML = suppliers.map(s => `
       <tr>
-        <td><strong style="font-family: var(--font-mono); color: #38bdf8;">${s.code}</strong></td>
+        <td><strong style="font-family: var(--font-mono); color: #0284c7;">${s.code}</strong></td>
         <td>
-          <div style="font-weight: 700; color: #ffffff;">${s.name}</div>
+          <div style="font-weight: 700; color: var(--text-dark);">${s.name}</div>
           <small style="color: var(--text-dim); font-size: 0.75rem;">${s.itemsSupplied || ''}</small>
         </td>
         <td><span class="badge badge-metal">${s.category}</span></td>
         <td>
-          <div style="font-weight: 600; color: #cbd5e1;">${s.contactPerson}</div>
+          <div style="font-weight: 600; color: var(--text-dark);">${s.contactPerson}</div>
           <small style="color: var(--text-muted); font-size: 0.72rem;">${s.phone}</small>
         </td>
-        <td style="font-size: 0.8rem; color: #cbd5e1;">${s.address}</td>
+        <td style="font-size: 0.8rem; color: var(--text-dim);">${s.address}</td>
         <td><span class="stock-tag ok" style="font-size: 0.72rem;">⏱️ ${s.leadTime}</span></td>
-        <td><strong style="color: #fbbf24; font-size: 0.8rem;">${s.rating}</strong></td>
+        <td><strong style="color: #d97706; font-size: 0.8rem;">${s.rating}</strong></td>
         <td>
           <button class="btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.72rem;" onclick="App.showToast('Supplier ${s.code} contact verified', 'success')">
             Direct Line
@@ -2212,19 +2239,19 @@ class WorkshopApp {
           <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #0284c7, #0369a1); color: #fff; font-weight: 800; font-size: 0.85rem; border: 1.5px solid #38bdf8; box-shadow: 0 2px 8px rgba(2,132,199,0.35);">${u.avatar || 'RT'}</span>
         </td>
         <td>
-          <div style="font-weight: 700; color: #ffffff;">${u.fullName}</div>
+          <div style="font-weight: 700; color: var(--text-dark);">${u.fullName}</div>
           <small style="color: var(--text-dim);">
             ${u.roleLabel || u.role}
           </small>
         </td>
-        <td><strong style="font-family: var(--font-mono); color: #38bdf8;">${u.username}</strong></td>
+        <td><strong style="font-family: var(--font-mono); color: #0284c7;">${u.username}</strong></td>
         <td>
           <span class="badge ${u.role === 'owner' ? 'badge-glass' : (u.role === 'sales' ? 'badge-wood' : 'badge-metal')}">
             ${u.role.toUpperCase()}
           </span>
         </td>
-        <td style="font-size: 0.82rem; color: #cbd5e1;">${u.phone || 'N/A'}</td>
-        <td style="font-size: 0.82rem; color: #94a3b8;">${u.email || 'N/A'}</td>
+        <td style="font-size: 0.82rem; color: var(--text-dark);">${u.phone || 'N/A'}</td>
+        <td style="font-size: 0.82rem; color: var(--text-muted);">${u.email || 'N/A'}</td>
         <td>
           <span class="badge badge-success" style="font-size: 0.72rem;">Active • 2FA/OTP Enabled</span>
         </td>
@@ -3091,64 +3118,230 @@ class WorkshopApp {
   }
 
   // ==========================================================================
-  // GLOBAL SPOTLIGHT SEARCH & QUICK JUMP
+  // SYSTEM HEALTH & COMPREHENSIVE PROBLEM DIAGNOSTIC RADAR
   // ==========================================================================
-  performLiveSearch(query) {
+  getAllSystemProblems() {
+    const orders = (typeof db !== 'undefined' && db.getOrders) ? db.getOrders() : [];
+    const products = (typeof db !== 'undefined' && db.getProducts) ? db.getProducts() : [];
+    const quotations = (typeof db !== 'undefined' && db.getQuotations) ? db.getQuotations() : [];
+    const problems = [];
+    const now = new Date();
+
+    // 1. Inventory Stockouts & Low Stock (Critical Material Bottlenecks)
+    products.forEach(p => {
+      const stock = p.stockQuantity !== undefined ? p.stockQuantity : 0;
+      const reorder = p.reorderLevel !== undefined ? p.reorderLevel : 10;
+      if (stock <= 0) {
+        problems.push({
+          id: `prob-stockout-${p.id}`,
+          category: 'stock',
+          severity: 'critical',
+          badgeText: 'CRITICAL OUT OF STOCK',
+          icon: '🚨',
+          title: `${p.name} [${p.code}]`,
+          subtitle: `0 ${p.unit} remaining in workshop yard (Reorder buffer: ${reorder}) • Supplier: ${p.supplier || 'Davao Region'}`,
+          actionLabel: '+ Restock Now',
+          actionFn: `App.quickRestockPrompt('${p.id}')`,
+          jumpFn: `App.jumpToProduct('${p.id}')`
+        });
+      } else if (stock <= reorder) {
+        problems.push({
+          id: `prob-lowstock-${p.id}`,
+          category: 'stock',
+          severity: 'warning',
+          badgeText: `LOW STOCK (${stock} ${p.unit})`,
+          icon: '⚠️',
+          title: `${p.name} [${p.code}]`,
+          subtitle: `Only ${stock} ${p.unit} left (Below reorder threshold ${reorder}) • Restock needed from ${p.supplier || 'Davao Region'}`,
+          actionLabel: '+ Stock In',
+          actionFn: `App.quickRestockPrompt('${p.id}')`,
+          jumpFn: `App.jumpToProduct('${p.id}')`
+        });
+      }
+    });
+
+    // 2. Financial Receivables & Unpaid Balances (Accounts Receivable)
+    orders.forEach(o => {
+      const bal = o.balanceDue !== undefined ? o.balanceDue : ((o.totalAmount || 0) - (o.downpayment || 0));
+      if (bal > 0) {
+        problems.push({
+          id: `prob-unpaid-${o.id}`,
+          category: 'payment',
+          severity: 'financial',
+          badgeText: `UNPAID ₱${bal.toLocaleString()}`,
+          icon: '💰',
+          title: `${o.customerName} • ${o.jobOrderNo || o.orderNo}`,
+          subtitle: `Collectible Balance: ₱${bal.toLocaleString()} of ₱${(o.totalAmount || 0).toLocaleString()} contract • ${o.customerPhone || 'Digos City'}`,
+          actionLabel: 'Collect Balance',
+          actionFn: `App.openPaymentCollectionModal('${o.id}')`,
+          jumpFn: `App.jumpToJob('${o.id}')`
+        });
+      }
+    });
+
+    // 3. Fabrication Delays & Production Bottlenecks
+    orders.forEach(o => {
+      const isDone = o.jobStatus === 'installed_delivered' || o.jobStatus === 'completed';
+      if (!isDone && o.targetDate) {
+        const target = new Date(o.targetDate);
+        if (target < now) {
+          problems.push({
+            id: `prob-delayed-${o.id}`,
+            category: 'delay',
+            severity: 'critical',
+            badgeText: 'OVERDUE TARGET DATE',
+            icon: '⏰',
+            title: `OVERDUE: ${o.jobOrderNo || o.orderNo} • ${o.customerName}`,
+            subtitle: `Target completion was ${target.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} • Stage: ${o.jobStatus} (${o.progressPercent || 0}%) • Craftsman: ${o.assignedStaff || 'Unassigned'}`,
+            actionLabel: '⚡ Expedite Job',
+            actionFn: `App.jumpToJob('${o.id}')`,
+            jumpFn: `App.jumpToJob('${o.id}')`
+          });
+        }
+      }
+      if (!isDone && (o.jobStatus === 'queued' || o.jobStatus === 'materials_prepared') && (!o.assignedStaff || o.assignedStaff === 'Unassigned')) {
+        problems.push({
+          id: `prob-stalled-${o.id}`,
+          category: 'delay',
+          severity: 'warning',
+          badgeText: 'AWAITING CRAFTSMAN',
+          icon: '⏳',
+          title: `STALLED QUEUE: ${o.jobOrderNo || o.orderNo}`,
+          subtitle: `${o.customerName} • No craftsman assigned to fabricate this order yet`,
+          actionLabel: 'Assign & Start',
+          actionFn: `App.jumpToJob('${o.id}')`,
+          jumpFn: `App.jumpToJob('${o.id}')`
+        });
+      }
+    });
+
+    // 4. Pending / Expiring Quotations
+    quotations.forEach(q => {
+      if (q.status === 'Pending Approval' || q.status === 'draft' || q.status === 'sent') {
+        problems.push({
+          id: `prob-quote-${q.id}`,
+          category: 'quotation',
+          severity: 'info',
+          badgeText: 'PENDING APPROVAL',
+          icon: '📄',
+          title: `QUOTE PENDING: ${q.quotationNo} • ${q.customerName}`,
+          subtitle: `₱${(q.totalAmount || 0).toLocaleString()} • ${q.projectTitle} • Valid until ${q.validUntil}`,
+          actionLabel: 'Convert to Order',
+          actionFn: `App.convertQuoteToOrderPrompt('${q.id}')`,
+          jumpFn: `App.jumpToQuotation('${q.id}')`
+        });
+      }
+    });
+
+    return problems;
+  }
+
+  showSystemProblems(filter = 'all') {
+    const input = document.getElementById('globalSearchInput');
+    const clearBtn = document.getElementById('globalSearchClear');
+    if (input) {
+      input.value = filter === 'all' ? 'problem' : filter;
+      input.focus();
+    }
+    if (clearBtn) clearBtn.style.display = 'block';
+    this.performLiveSearch(filter === 'all' ? 'problem' : filter, filter);
+  }
+
+  filterProblems(category) {
+    this.showSystemProblems(category);
+  }
+
+  // ==========================================================================
+  // GLOBAL SPOTLIGHT SEARCH & SYSTEM PROBLEM DIAGNOSIS
+  // ==========================================================================
+  performLiveSearch(query, problemFilter = 'all') {
     const popover = document.getElementById('spotlightResultsPopover');
     const listEl = document.getElementById('spotlightResultsList');
     const countEl = document.getElementById('spotlightResultsCount');
     if (!popover || !listEl) return;
 
-    const q = (query || '').toLowerCase().trim();
-    if (!q) {
-      popover.style.display = 'none';
-      return;
+    const rawQuery = (query || '').trim();
+    const q = rawQuery.toLowerCase();
+
+    const allProblems = this.getAllSystemProblems();
+    const problemTermsRegex = /^(problem|problems|issues?|alert|alerts|warning|warnings|bottlenecks?|delay|delayed|late|overdue|due|stock|low|zero|out|unpaid|balance|debt|owe|collect|pending|stalled|hold|!|\?|all)/i;
+    const isExplicitProblemSearch = !q || problemTermsRegex.test(q) || (problemFilter && problemFilter !== 'all' && problemFilter !== 'none');
+
+    // 1. Gather all system problems matching the query or filter
+    let matchedProblems = [];
+    if (isExplicitProblemSearch) {
+      matchedProblems = allProblems.filter(prob => {
+        if (problemFilter === 'stock') return prob.category === 'stock';
+        if (problemFilter === 'payment') return prob.category === 'payment';
+        if (problemFilter === 'delay') return prob.category === 'delay';
+        if (problemFilter === 'quotation') return prob.category === 'quotation';
+        if (q === 'stock' || q.includes('low') || q.includes('zero') || q.includes('out')) return prob.category === 'stock';
+        if (q === 'unpaid' || q.includes('balance') || q.includes('debt') || q.includes('owe') || q.includes('collect')) return prob.category === 'payment';
+        if (q === 'delay' || q.includes('late') || q.includes('overdue') || q.includes('stalled')) return prob.category === 'delay';
+        return true;
+      });
+    } else if (q.length > 0) {
+      // Cross-match problems for regular search queries (e.g. searching "Ben" or "Tubular")
+      matchedProblems = allProblems.filter(prob =>
+        prob.title.toLowerCase().includes(q) ||
+        prob.subtitle.toLowerCase().includes(q) ||
+        prob.badgeText.toLowerCase().includes(q)
+      );
     }
 
-    const orders = db.getOrders();
-    const customers = db.getCustomers();
-    const products = db.getProducts();
-    const quotations = db.getQuotations();
+    const orders = (typeof db !== 'undefined' && db.getOrders) ? db.getOrders() : [];
+    const customers = (typeof db !== 'undefined' && db.getCustomers) ? db.getCustomers() : [];
+    const products = (typeof db !== 'undefined' && db.getProducts) ? db.getProducts() : [];
+    const quotations = (typeof db !== 'undefined' && db.getQuotations) ? db.getQuotations() : [];
 
-    const matchedJobs = orders.filter(o => 
+    const matchedJobs = isExplicitProblemSearch ? [] : orders.filter(o => 
       (o.jobOrderNo && o.jobOrderNo.toLowerCase().includes(q)) ||
       (o.orderNo && o.orderNo.toLowerCase().includes(q)) ||
       (o.customerName && o.customerName.toLowerCase().includes(q))
     ).slice(0, 4);
 
-    const matchedCustomers = customers.filter(c => 
+    const matchedCustomers = isExplicitProblemSearch ? [] : customers.filter(c => 
       (c.name && c.name.toLowerCase().includes(q)) ||
       (c.phone && c.phone.toLowerCase().includes(q)) ||
       (c.address && c.address.toLowerCase().includes(q))
     ).slice(0, 3);
 
-    const matchedProducts = products.filter(p => 
+    const matchedProducts = isExplicitProblemSearch ? [] : products.filter(p => 
       (p.name && p.name.toLowerCase().includes(q)) ||
       (p.code && p.code.toLowerCase().includes(q)) ||
       (p.categoryLabel && p.categoryLabel.toLowerCase().includes(q)) ||
       (p.supplier && p.supplier.toLowerCase().includes(q))
     ).slice(0, 4);
 
-    const matchedQuotes = quotations.filter(qt => 
+    const matchedQuotes = isExplicitProblemSearch ? [] : quotations.filter(qt => 
       (qt.quoteNo && qt.quoteNo.toLowerCase().includes(q)) ||
       (qt.customerName && qt.customerName.toLowerCase().includes(q)) ||
       (qt.projectTitle && qt.projectTitle.toLowerCase().includes(q))
     ).slice(0, 3);
 
-    const totalMatches = matchedJobs.length + matchedCustomers.length + matchedProducts.length + matchedQuotes.length;
+    const totalMatches = matchedProblems.length + matchedJobs.length + matchedCustomers.length + matchedProducts.length + matchedQuotes.length;
 
     if (countEl) {
-      countEl.textContent = `${totalMatches} result${totalMatches === 1 ? '' : 's'} matching "${query}"`;
+      if (isExplicitProblemSearch) {
+        countEl.textContent = `🚨 ${matchedProblems.length} System Problem${matchedProblems.length === 1 ? '' : 's'} Identified`;
+      } else {
+        countEl.textContent = `${totalMatches} result${totalMatches === 1 ? '' : 's'} matching "${rawQuery}"`;
+      }
     }
 
     if (totalMatches === 0) {
       listEl.innerHTML = `
         <div style="padding: 1.5rem; text-align: center; color: var(--text-dim); font-size: 0.85rem;">
-          <div style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; color: var(--text-dim); margin-bottom: 0.4rem;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <div style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: rgba(34, 197, 94, 0.12); border-radius: 50%; color: #16a34a; margin-bottom: 0.5rem; font-size: 1.2rem;">
+            ✓
           </div>
-          <p>No records found for "<strong>${this.escapeHtml(query)}</strong>"</p>
-          <small style="color: var(--text-muted); display: block; margin-top: 0.25rem;">Try searching for a customer name, JO-2026-..., or item like "Bronze Glass"</small>
+          <p style="font-weight: 700; color: var(--text-dark); margin-bottom: 0.25rem;">No records or issues found for "<strong>${this.escapeHtml(rawQuery)}</strong>"</p>
+          <small style="color: var(--text-muted); display: block;">Workshop operations are optimal, or try searching with another keyword.</small>
+          <div style="margin-top: 0.75rem;">
+            <button class="btn-sm" style="background: #584cf4; color: #fff; padding: 0.35rem 0.85rem; border: none; border-radius: 6px; cursor: pointer; font-size: 0.75rem;" onclick="App.showSystemProblems('all')">
+              🚨 View All System Bottlenecks (${allProblems.length})
+            </button>
+          </div>
         </div>
       `;
       popover.style.display = 'flex';
@@ -3157,7 +3350,62 @@ class WorkshopApp {
 
     let html = '';
 
-    // 1. Job Orders & Projects
+    // Quick Radar Filter Bar
+    const stockCount = allProblems.filter(p => p.category === 'stock').length;
+    const unpaidCount = allProblems.filter(p => p.category === 'payment').length;
+    const delayCount = allProblems.filter(p => p.category === 'delay').length;
+    const quoteCount = allProblems.filter(p => p.category === 'quotation').length;
+
+    html += `
+      <div class="spotlight-radar-bar">
+        <span class="spotlight-radar-title">
+          <span>🚨</span> <strong>System Problem Radar (${allProblems.length} Active)</strong>
+        </span>
+        <div class="spotlight-filter-pills">
+          <button type="button" class="spotlight-filter-pill ${problemFilter === 'all' ? 'active' : ''}" onclick="App.showSystemProblems('all')">All (${allProblems.length})</button>
+          <button type="button" class="spotlight-filter-pill ${problemFilter === 'stock' ? 'active' : ''}" onclick="App.showSystemProblems('stock')">📉 Stock (${stockCount})</button>
+          <button type="button" class="spotlight-filter-pill ${problemFilter === 'payment' ? 'active' : ''}" onclick="App.showSystemProblems('payment')">💰 Unpaid (${unpaidCount})</button>
+          <button type="button" class="spotlight-filter-pill ${problemFilter === 'delay' ? 'active' : ''}" onclick="App.showSystemProblems('delay')">⏰ Delays (${delayCount})</button>
+          <button type="button" class="spotlight-filter-pill ${problemFilter === 'quotation' ? 'active' : ''}" onclick="App.showSystemProblems('quotation')">📄 Quotes (${quoteCount})</button>
+        </div>
+      </div>
+    `;
+
+    // 1. Render Problems Section
+    if (matchedProblems.length > 0) {
+      html += `<div class="spotlight-category-title" style="color: #dc2626; display: flex; align-items: center; justify-content: space-between;">
+        <span>🚨 Operational Bottlenecks &amp; Issues (${matchedProblems.length})</span>
+        <span style="font-size: 0.65rem; color: var(--text-muted); text-transform: none; font-weight: 500;">Click item to jump directly</span>
+      </div>`;
+
+      matchedProblems.forEach(prob => {
+        const severityClass = `severity-${prob.severity}`;
+        const badgeColor = prob.severity === 'critical' ? 'red' : (prob.severity === 'info' ? 'blue' : 'amber');
+        html += `
+          <div class="spotlight-problem-card ${severityClass}" onclick="${prob.jumpFn}">
+            <div class="spotlight-item-left" style="flex: 1; min-width: 0;">
+              <span class="spotlight-item-icon" style="font-size: 1.15rem; flex-shrink: 0;">${prob.icon}</span>
+              <div style="min-width: 0; flex: 1;">
+                <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;">
+                  <strong style="font-size: 0.84rem; color: var(--text-dark);">${this.escapeHtml(prob.title)}</strong>
+                  <span class="spotlight-problem-badge ${badgeColor}">${prob.badgeText}</span>
+                </div>
+                <div style="font-size: 0.72rem; color: var(--text-dim); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                  ${this.escapeHtml(prob.subtitle)}
+                </div>
+              </div>
+            </div>
+            <div class="spotlight-item-right" style="flex-shrink: 0; margin-left: 0.75rem;">
+              <button class="btn-sm" style="font-size: 0.72rem; padding: 0.3rem 0.65rem; background: #584cf4; color: #ffffff; border: none; border-radius: 6px; cursor: pointer; font-weight: 700; white-space: nowrap;" onclick="event.stopPropagation(); ${prob.actionFn}; App.closeSpotlightPopover();">
+                ${prob.actionLabel}
+              </button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // 2. Render Job Orders (with balance due / overdue warning pills)
     if (matchedJobs.length > 0) {
       html += `<div class="spotlight-category-title">Job Orders &amp; Projects (${matchedJobs.length})</div>`;
       matchedJobs.forEach(j => {
@@ -3170,6 +3418,9 @@ class WorkshopApp {
           installed_delivered: '6. Installed'
         };
         const stage = stageNames[j.jobStatus] || j.jobStatus;
+        const bal = j.balanceDue !== undefined ? j.balanceDue : ((j.totalAmount || 0) - (j.downpayment || 0));
+        const isOverdue = j.targetDate && (new Date(j.targetDate) < new Date()) && j.jobStatus !== 'installed_delivered';
+
         html += `
           <div class="spotlight-item-card" onclick="App.jumpToJob('${j.id}')">
             <div class="spotlight-item-left">
@@ -3177,22 +3428,30 @@ class WorkshopApp {
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
               </span>
               <div>
-                <div class="spotlight-item-title">${j.jobOrderNo || j.orderNo} • ${j.customerName}</div>
+                <div class="spotlight-item-title" style="color: var(--text-dark); font-weight: 700;">
+                  ${j.jobOrderNo || j.orderNo} • ${j.customerName}
+                  ${isOverdue ? '<span style="color: #dc2626; font-size: 0.68rem; font-weight: 800; margin-left: 0.35rem;">[⏰ OVERDUE]</span>' : ''}
+                </div>
                 <div class="spotlight-item-sub">Total: ₱${(j.totalAmount || 0).toLocaleString()} • Target: ${j.targetDate ? j.targetDate.split('T')[0] : 'N/A'}</div>
               </div>
             </div>
-            <div class="spotlight-item-right">
-              <span class="badge" style="font-size: 0.7rem; background: rgba(52, 211, 153, 0.15); color: #34d399; padding: 0.2rem 0.5rem; border-radius: 6px;">${stage}</span>
+            <div class="spotlight-item-right" style="display: flex; align-items: center; gap: 0.45rem;">
+              ${bal > 0 ? `<button class="btn-sm" style="font-size: 0.68rem; padding: 0.2rem 0.5rem; background: #d97706; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: 700;" onclick="event.stopPropagation(); App.openPaymentCollectionModal('${j.id}'); App.closeSpotlightPopover();">💰 Collect ₱${bal.toLocaleString()}</button>` : ''}
+              <span class="badge" style="font-size: 0.7rem; background: rgba(52, 211, 153, 0.15); color: #16a34a; padding: 0.2rem 0.5rem; border-radius: 6px;">${stage}</span>
             </div>
           </div>
         `;
       });
     }
 
-    // 2. Customers
+    // 3. Render Customers
     if (matchedCustomers.length > 0) {
       html += `<div class="spotlight-category-title">Customers &amp; Clients (${matchedCustomers.length})</div>`;
       matchedCustomers.forEach(c => {
+        // Find if customer owes balance
+        const custOrders = orders.filter(o => o.customerId === c.id || (o.customerName && o.customerName.toLowerCase() === (c.name || '').toLowerCase()));
+        const custBal = custOrders.reduce((sum, o) => sum + (o.balanceDue !== undefined ? o.balanceDue : ((o.totalAmount || 0) - (o.downpayment || 0))), 0);
+
         html += `
           <div class="spotlight-item-card" onclick="App.jumpToCustomer('${c.id}')">
             <div class="spotlight-item-left">
@@ -3200,26 +3459,37 @@ class WorkshopApp {
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
               </span>
               <div>
-                <div class="spotlight-item-title">${c.name}</div>
+                <div class="spotlight-item-title" style="color: var(--text-dark); font-weight: 700;">
+                  ${c.name}
+                  ${custBal > 0 ? `<span style="color: #d97706; font-size: 0.68rem; font-weight: 800; margin-left: 0.35rem;">[💰 ₱${custBal.toLocaleString()} Owed]</span>` : ''}
+                </div>
                 <div class="spotlight-item-sub">${c.phone} • ${c.address}</div>
               </div>
             </div>
             <div class="spotlight-item-right">
-              <span class="badge" style="font-size: 0.7rem; background: rgba(56, 189, 248, 0.15); color: #38bdf8; padding: 0.2rem 0.5rem; border-radius: 6px;">${c.customerType}</span>
+              <span class="badge" style="font-size: 0.7rem; background: rgba(56, 189, 248, 0.15); color: #0284c7; padding: 0.2rem 0.5rem; border-radius: 6px;">${c.customerType}</span>
             </div>
           </div>
         `;
       });
     }
 
-    // 3. Products & Stock
+    // 4. Render Products & Materials (with low/zero stock badges & Restock action)
     if (matchedProducts.length > 0) {
       html += `<div class="spotlight-category-title">Materials &amp; Products (${matchedProducts.length})</div>`;
       matchedProducts.forEach(p => {
-        const isLow = (p.stockQuantity || 0) <= (p.reorderLevel || 10);
-        const stockBadge = isLow 
-          ? `<span style="color: #f87171; font-size: 0.7rem; font-weight: 700;">Low: ${p.stockQuantity} ${p.unit}</span>`
-          : `<span style="color: #4ade80; font-size: 0.7rem;">${p.stockQuantity} ${p.unit}</span>`;
+        const stock = p.stockQuantity !== undefined ? p.stockQuantity : 0;
+        const reorder = p.reorderLevel !== undefined ? p.reorderLevel : 10;
+        const isOutOfStock = stock <= 0;
+        const isLow = stock <= reorder;
+
+        let stockBadge = `<span style="color: #16a34a; font-size: 0.7rem; font-weight: 700;">${stock} ${p.unit}</span>`;
+        if (isOutOfStock) {
+          stockBadge = `<span style="color: #dc2626; font-size: 0.7rem; font-weight: 800;">🚨 OUT OF STOCK (0)</span>`;
+        } else if (isLow) {
+          stockBadge = `<span style="color: #d97706; font-size: 0.7rem; font-weight: 700;">⚠️ LOW: ${stock} ${p.unit}</span>`;
+        }
+
         html += `
           <div class="spotlight-item-card" onclick="App.jumpToProduct('${p.id}')">
             <div class="spotlight-item-left">
@@ -3227,13 +3497,14 @@ class WorkshopApp {
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
               </span>
               <div>
-                <div class="spotlight-item-title">${p.name} <span style="font-size: 0.72rem; color: #a7f3d0;">[${p.code}]</span></div>
+                <div class="spotlight-item-title" style="color: var(--text-dark); font-weight: 700;">${p.name} <span style="font-size: 0.72rem; color: #0284c7;">[${p.code}]</span></div>
                 <div class="spotlight-item-sub">₱${(p.sellingPrice || 0).toLocaleString()} / ${p.unit} • ${p.categoryLabel || p.category}</div>
               </div>
             </div>
-            <div class="spotlight-item-right">
+            <div class="spotlight-item-right" style="display: flex; align-items: center; gap: 0.45rem;">
               ${stockBadge}
-              <button class="btn-sm" style="font-size: 0.7rem; padding: 0.2rem 0.5rem; background: #15803d; color: #fff; border: none; border-radius: 4px; cursor: pointer;" onclick="event.stopPropagation(); App.addProductToCart('${p.id}'); App.closeSpotlightPopover();">
+              ${isLow ? `<button class="btn-sm" style="font-size: 0.7rem; padding: 0.2rem 0.5rem; background: #d97706; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: 700;" onclick="event.stopPropagation(); App.quickRestockPrompt('${p.id}'); App.closeSpotlightPopover();">+ Stock</button>` : ''}
+              <button class="btn-sm" style="font-size: 0.7rem; padding: 0.2rem 0.5rem; background: #16a34a; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: 700;" onclick="event.stopPropagation(); App.addProductToCart('${p.id}'); App.closeSpotlightPopover();">
                 + Cart
               </button>
             </div>
@@ -3242,7 +3513,7 @@ class WorkshopApp {
       });
     }
 
-    // 4. Quotations
+    // 5. Render Quotations
     if (matchedQuotes.length > 0) {
       html += `<div class="spotlight-category-title">Project Quotations (${matchedQuotes.length})</div>`;
       matchedQuotes.forEach(qt => {
@@ -3253,12 +3524,13 @@ class WorkshopApp {
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line></svg>
               </span>
               <div>
-                <div class="spotlight-item-title">${qt.quoteNo} • ${qt.customerName}</div>
+                <div class="spotlight-item-title" style="color: var(--text-dark); font-weight: 700;">${qt.quoteNo} • ${qt.customerName}</div>
                 <div class="spotlight-item-sub">${qt.projectTitle || 'Quotation'} • Contract: ₱${(qt.totalAmount || 0).toLocaleString()}</div>
               </div>
             </div>
-            <div class="spotlight-item-right">
-              <span class="badge" style="font-size: 0.7rem; background: rgba(245, 158, 11, 0.15); color: #fbbf24; padding: 0.2rem 0.5rem; border-radius: 6px;">${qt.status}</span>
+            <div class="spotlight-item-right" style="display: flex; align-items: center; gap: 0.45rem;">
+              <span class="badge" style="font-size: 0.7rem; background: rgba(245, 158, 11, 0.15); color: #d97706; padding: 0.2rem 0.5rem; border-radius: 6px;">${qt.status}</span>
+              ${qt.status !== 'Converted to Order' ? `<button class="btn-sm" style="font-size: 0.68rem; padding: 0.2rem 0.5rem; background: #0284c7; color: #fff; border: none; border-radius: 4px; cursor: pointer;" onclick="event.stopPropagation(); App.convertQuoteToOrderPrompt('${qt.id}'); App.closeSpotlightPopover();">Convert</button>` : ''}
             </div>
           </div>
         `;
