@@ -274,50 +274,46 @@
         </div>
 
         <div class="topbar-right">
-          <!-- Light Mode & Night Mode Toggle Button (PRIMARY PROMINENT PLACEMENT) -->
-          <button type="button" class="topbar-theme-toggle highlight-theme-btn" id="btnThemeToggle" onclick="App.toggleTheme()" title="Switch between Light &amp; Night/Dark Mode [Alt+T]">
-            <span class="theme-toggle-icon" id="themeToggleIcon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-            </span>
-            <span class="theme-toggle-label" id="themeToggleLabel">Night Mode</span>
+          <!-- Workshop Tools Menu Dropdown (Clean & Compact) -->
+          <div class="topbar-tools-dropdown-wrapper" style="position: relative;">
+            <button type="button" class="topbar-util-btn" onclick="App.toggleToolsMenu()" title="Quick Tools (QR Scanner, Calculator, Cut Optimizer, Sound, Role)">
+              <span>🛠️ Tools</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div id="topbarToolsDropdown" class="topbar-tools-dropdown-menu" style="display: none;">
+              <button type="button" class="tool-dropdown-item" onclick="App.openQrScannerModal(); App.toggleToolsMenu();">
+                📷 Scan QR / Barcode
+              </button>
+              <button type="button" class="tool-dropdown-item" onclick="App.openConverterModal(); App.toggleToolsMenu();">
+                📐 Dimension Calculator
+              </button>
+              <button type="button" class="tool-dropdown-item" onclick="App.openCutOptimizerModal(); App.toggleToolsMenu();">
+                ✂️ Cut &amp; Waste Optimizer
+              </button>
+              <button type="button" class="tool-dropdown-item" onclick="App.toggleSound(); App.toggleToolsMenu();" id="soundDropdownBtn">
+                🔊 Sound Effects (ON/OFF)
+              </button>
+              <div class="tool-dropdown-divider"></div>
+              <div class="tool-dropdown-role">
+                <label style="font-size: 0.72rem; color: #94a3b8; display: block; margin-bottom: 0.25rem;">Switch Role:</label>
+                <select id="roleSwitcher" class="role-switcher-select" style="width: 100%;">
+                  <option value="owner">Executive / General Manager</option>
+                  <option value="sales">Counter Sales &amp; Front Desk</option>
+                  <option value="fabricator">Technical Fabrication Staff</option>
+                  <option value="demo">Public Demo / Guest Evaluator</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Theme Toggle Square Button (Image 2 style) -->
+          <button type="button" class="topbar-theme-icon-btn" id="btnThemeToggle" onclick="App.toggleTheme()" title="Switch Light &amp; Night/Dark Mode [Alt+T]">
+            <svg id="themeToggleIconSun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
           </button>
 
-          <!-- Workshop Live Camera QR Scanner -->
-          <button class="topbar-util-btn" onclick="App.openQrScannerModal()" title="Scan Job Slip or Material QR Code with Camera">
-            <svg style="width: 15px; height: 15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-            <span class="btn-label">Scan QR</span>
-          </button>
-
-          <!-- Workshop Quick Dimension & Area Calculator -->
-          <button class="topbar-util-btn" onclick="App.openConverterModal()" title="Calculate Glass, Shutter, and Panel Dimensions">
-            <svg style="width: 15px; height: 15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20M2 12l5-5M22 12l-5 5M12 2v20"/></svg>
-            <span class="btn-label">Dimension Calc</span>
-          </button>
-
-          <!-- 2D Material Cut & Waste Optimizer -->
-          <button class="topbar-util-btn" onclick="App.openCutOptimizerModal()" title="2D Sheet &amp; Bar Cutting Waste Minimizer">
-            <svg style="width: 15px; height: 15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
-            <span class="btn-label">Cut Optimizer</span>
-          </button>
-
-          <!-- Audio Haptic Sound Effects Toggle -->
-          <button class="topbar-util-btn" id="btnSoundToggle" onclick="App.toggleSound()" title="Toggle Workshop Audio Tones (Web Audio API)">
-            <svg id="soundIcon" style="width: 15px; height: 15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-            <span class="btn-label" id="soundLabel">Sound ON</span>
-          </button>
-
-          <!-- Role Switcher for system evaluation -->
-          <select id="roleSwitcher" class="role-switcher-select" title="Switch Role for Evaluation">
-            <option value="owner">Executive / General Manager</option>
-            <option value="sales">Counter Sales &amp; Front Desk</option>
-            <option value="fabricator">Technical Fabrication Staff</option>
-            <option value="demo">Public Demo / Guest Evaluator</option>
-          </select>
-
-          <div class="time-pill">
-            <svg style="width: 12px; height: 12px; stroke: #4ade80;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span class="time-pill-label">Digos City:</span>
-            <strong id="liveTimeClock">12:00 PM</strong>
+          <!-- Topbar Live Date (Image 2 style) -->
+          <div class="topbar-date-display" id="topbarLiveDate">
+            Mon, 16 Nov 2026
           </div>
 
           <!-- Prominent Logout Button -->
@@ -328,21 +324,7 @@
         </div>
       </header>
 
-      <!-- SIGNBOARD BRAND & HOTLINE BANNER -->
-      <div class="workshop-brand-strip">
-        <div class="brand-strip-item">
-          <svg style="width: 13px; height: 13px; stroke: #4ade80; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          <span><strong>Yard &amp; Workshop:</strong> Tabor Lumber Compound, Roxas Ext., Brgy. Zone III, Digos City</span>
-        </div>
-        <div class="brand-strip-item">
-          <svg style="width: 13px; height: 13px; stroke: #38bdf8; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          <span><strong>Direct Hotlines:</strong> 0921-371-0555 (Rusell) • 0929-590-2201 (Iris) • 09053602201 (Office)</span>
-        </div>
-        <div class="brand-strip-item">
-          <svg style="width: 13px; height: 13px; stroke: #fbbf24; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
-          <span style="color: #4ade80; font-weight: 700;">"You NAME it, we BUILD it" • Roll-Up Shutter Doors • Glass &amp; Auto Tint • Stainless Gates</span>
-        </div>
-      </div>
+
 
       <!-- VIEW 1: POINT OF SALE (POS) & WORKSHOP DASHBOARD -->
       <section id="view-pos" class="view-container active">

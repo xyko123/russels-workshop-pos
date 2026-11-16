@@ -244,6 +244,15 @@ class WorkshopApp {
       });
     }
 
+    // Close Tools Dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      const dropdownWrap = document.querySelector('.topbar-tools-dropdown-wrapper');
+      const dropdownMenu = document.getElementById('topbarToolsDropdown');
+      if (dropdownWrap && dropdownMenu && !dropdownWrap.contains(e.target)) {
+        dropdownMenu.style.display = 'none';
+      }
+    });
+
     // Category Tabs in POS
     document.querySelectorAll('.cat-tab').forEach(tab => {
       tab.addEventListener('click', (e) => {
@@ -1959,15 +1968,25 @@ class WorkshopApp {
     }
   }
 
+  toggleToolsMenu() {
+    const menu = document.getElementById('topbarToolsDropdown');
+    if (!menu) return;
+    const isHidden = menu.style.display === 'none' || !menu.style.display;
+    menu.style.display = isHidden ? 'block' : 'none';
+  }
+
   /* Bluechip Minimalist Live Metrics Update (Image 2) */
   updateBluechipDashboard() {
-    // 1. Live Date
+    // 1. Live Date (both topbar and dash)
+    const d = new Date();
+    const options = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' };
+    const dateStr = d.toLocaleDateString('en-US', options);
+
     const dateEl = document.getElementById('bluechipLiveDate');
-    if (dateEl) {
-      const d = new Date();
-      const options = { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' };
-      dateEl.textContent = d.toLocaleDateString('en-US', options);
-    }
+    if (dateEl) dateEl.textContent = dateStr;
+
+    const topbarDateEl = document.getElementById('topbarLiveDate');
+    if (topbarDateEl) topbarDateEl.textContent = dateStr;
 
     // 2. Low-Stock Count
     const lowEl = document.getElementById('bcLowStockCount');

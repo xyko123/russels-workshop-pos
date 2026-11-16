@@ -5284,3 +5284,133 @@ body.theme-light .bluechip-data-table td.font-mono {
 body.theme-light .bluechip-data-table td.font-medium {
   color: #0f172a;
 }
+
+/* Topbar Image 2 Minimal Theme & Date Buttons */
+.topbar-theme-icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: #132238;
+  border: 1px solid #1e385c;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.topbar-theme-icon-btn:hover {
+  background: #1a2f4d;
+  color: #ffffff;
+  border-color: #3b82f6;
+  transform: scale(1.05);
+}
+
+body.theme-light .topbar-theme-icon-btn {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  color: #64748b;
+}
+
+body.theme-light .topbar-theme-icon-btn:hover {
+  background: #f8fafc;
+  color: #0f172a;
+  border-color: #2563eb;
+}
+
+.topbar-date-display {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #94a3b8;
+  white-space: nowrap;
+  padding: 0 0.5rem;
+  flex-shrink: 0;
+}
+
+body.theme-light .topbar-date-display {
+  color: #64748b;
+}
+
+/* Workshop Tools Clean Dropdown */
+.topbar-tools-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 240px;
+  background: #111e33;
+  border: 1px solid #1c3252;
+  border-radius: 10px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  padding: 0.5rem;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+body.theme-light .topbar-tools-dropdown-menu {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.tool-dropdown-item {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: #f8fafc;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.15s;
+}
+
+.tool-dropdown-item:hover {
+  background: rgba(59, 130, 246, 0.15);
+  color: #38bdf8;
+}
+
+body.theme-light .tool-dropdown-item {
+  color: #1e293b;
+}
+
+body.theme-light .tool-dropdown-item:hover {
+  background: #f1f5f9;
+  color: #2563eb;
+}
+
+.tool-dropdown-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 0.45rem 0;
+}
+
+body.theme-light .tool-dropdown-divider {
+  background: #e2e8f0;
+}
+
+.tool-dropdown-role {
+  padding: 0.4rem 0.5rem;
+}
+
+/* Main Content Overlap Prevention */
+.view-container {
+  padding: 1.5rem 1.75rem !important;
+  box-sizing: border-box !important;
+}
+
+.bluechip-dash-container {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.bluechip-metrics-row {
+  margin-top: 0.5rem;
+}
