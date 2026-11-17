@@ -1,7 +1,7 @@
 {
-  "name": "RUSELL'S Glass, Woods & Metals POS",
-  "short_name": "Rusell's POS",
-  "description": "Workshop Point of Sale & Fabrication Operations for RUSELL'S GLASS, WOODS & METALS (Digos City)",
+  "name": "RUSSEL'S Glass, Woods & Metals POS",
+  "short_name": "Russell's POS",
+  "description": "Workshop Point of Sale & Order Monitoring for RUSSEL'S GLASS, WOODS & METALS (Digos City) - You NAME it, we BUILD it",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "landscape-primary",

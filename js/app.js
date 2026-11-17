@@ -407,59 +407,59 @@ class WorkshopApp {
     const viewTitles = {
       pos: {
         title: 'Dashboard',
-        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
+        sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       pos_counter: {
         title: 'Point of Sale (POS)',
-        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
+        sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       customers: {
         title: 'Clients',
-        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
+        sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       suppliers: {
         title: 'Suppliers',
-        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
+        sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       inventory: {
         title: 'Inventory',
-        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
+        sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       quotations: {
         title: 'Quotations & BOM',
-        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
+        sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       orders: {
         title: 'Purchase orders & bids',
-        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
+        sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       payments: {
         title: 'Invoices & billing',
-        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
+        sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       projects: {
         title: 'Assembly & testing',
-        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
+        sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       reports: {
         title: 'Reports',
-        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
+        sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       users: {
         title: 'User management',
-        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
+        sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       database: {
         title: 'Database Management',
-        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
+        sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       estimator: {
         title: 'Custom Job Estimator',
-        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
+        sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       store_location: {
         title: 'Store Location',
-        sub: "RUSELL'S GLASS, WOODS & METALS • DIGOS CITY"
+        sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
       }
     };
 
@@ -2627,9 +2627,10 @@ class WorkshopApp {
       docContainer.innerHTML = `
         <div style="font-family: 'Courier New', Courier, monospace; width: ${width}; margin: 0 auto; background: #fff; color: #000; padding: 12px 10px; border: 1px solid #ddd; box-shadow: 0 4px 15px rgba(0,0,0,0.1); font-size: ${fontSize}; line-height: 1.4;">
           <div style="text-align: center; margin-bottom: 8px;">
-            <div style="font-weight: 900; font-size: 14px; letter-spacing: 0.5px;">RUSELL'S WORKSHOP</div>
+            <img src="assets/logo.jpg" alt="Logo" style="height: 38px; width: 38px; object-fit: contain; border-radius: 4px; border: 1px solid #ddd; margin: 0 auto 4px auto; display: block;" />
+            <div style="font-weight: 900; font-size: 13px; letter-spacing: 0.5px; color: #15803d;">RUSSEL'S WORKSHOP</div>
             <div style="font-size: 10px; font-weight: bold;">GLASS, WOODS &amp; METALS</div>
-            <div style="font-style: italic; font-size: 9px;">"You NAME it, we BUILD it"</div>
+            <div style="font-style: italic; font-size: 9px; color: #dc2626; font-weight: bold;">"You NAME it, we BUILD it"</div>
             <div style="font-size: 9px; margin-top: 2px;">Tabor Lumber Compound, Roxas Ext.</div>
             <div style="font-size: 9px;">Brgy. Zone III, Digos City</div>
             <div style="font-size: 9px;">CP # 0921-371-0555 • 0929-590-2201</div>
@@ -2709,7 +2710,7 @@ class WorkshopApp {
       <div style="font-family: Arial, sans-serif; max-width: 650px; margin: 0 auto; color: #111; line-height: 1.5; position: relative;">
         ${(order.balanceDue <= 0 || order.paymentStatus === 'paid') ? `
           <div style="position: absolute; right: 15px; top: 15px; z-index: 10;">
-            <div class="official-paid-stamp">★ PAID &amp; CERTIFIED ★<br><span style="font-size: 8px; letter-spacing: 0.05em;">RUSELL'S WORKSHOP • DIGOS</span></div>
+            <div class="official-paid-stamp">★ PAID &amp; CERTIFIED ★<br><span style="font-size: 8px; letter-spacing: 0.05em;">RUSSEL'S WORKSHOP • DIGOS</span></div>
           </div>
         ` : ''}
         <!-- Header -->
@@ -2717,7 +2718,7 @@ class WorkshopApp {
           <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 6px;">
             <img src="assets/logo.jpg" alt="Logo" style="height: 48px; object-fit: contain; border-radius: 4px; border: 1px solid #ddd;" />
             <div>
-              <h2 style="margin: 0; font-size: 20px; font-weight: 900; letter-spacing: 0.5px; color: #15803d;">RUSELL'S GLASS, WOODS &amp; METALS</h2>
+              <h2 style="margin: 0; font-size: 20px; font-weight: 900; letter-spacing: 0.5px; color: #15803d;">RUSSEL'S GLASS, WOODS &amp; METALS</h2>
               <div style="color: #dc2626; font-weight: 800; font-size: 13px; font-style: italic;">"You NAME it, we BUILD it"</div>
             </div>
           </div>

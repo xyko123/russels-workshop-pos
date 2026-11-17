@@ -259,11 +259,11 @@ body.app-body {
 }
 
 .nav-link.active {
-  background-color: #1e2022;
+  background-color: #15803d;
   color: #ffffff;
-  border-color: #1e2022;
+  border-color: #15803d;
   font-weight: 700;
-  box-shadow: 0 4px 14px rgba(30, 32, 34, 0.2);
+  box-shadow: 0 4px 14px rgba(21, 128, 61, 0.25);
 }
 
 .nav-link .sidebar-icon {
@@ -4084,10 +4084,10 @@ body.theme-dark .nav-link:hover {
 }
 
 body.theme-dark .nav-link.active {
-  background-color: #312e81;
+  background-color: #16a34a;
   color: #ffffff;
-  border-color: #4338ca;
-  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+  border-color: #22c55e;
+  box-shadow: 0 4px 14px rgba(22, 163, 74, 0.35);
 }
 
 body.theme-dark .sidebar-academic-block {
@@ -4950,21 +4950,21 @@ body.theme-dark .cat-chip-hardware {
 }
 
 /* ==========================================================================
-   BLUECHIP ENTERPRISE MINIMALIST DASHBOARD (IMAGE 2)
+   RUSSEL'S WORKSHOP ENTERPRISE MINIMALIST DASHBOARD
    Clean, flat, high-contrast, uncluttered layout
    ========================================================================== */
 
 .topbar-company-sub {
   font-size: 0.72rem !important;
   font-weight: 700 !important;
-  color: #38bdf8 !important;
+  color: #22c55e !important;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   margin: 0 0 0.15rem 0 !important;
 }
 
 body.theme-light .topbar-company-sub {
-  color: #0284c7 !important;
+  color: #15803d !important;
 }
 
 .bluechip-view-nav-bar {
@@ -5002,14 +5002,14 @@ body.theme-light .topbar-company-sub {
 .bluechip-tab-btn:hover {
   background: #1a2f4d;
   color: #ffffff;
-  border-color: #3b82f6;
+  border-color: #22c55e;
 }
 
 .bluechip-tab-btn.active {
-  background: #2563eb !important;
+  background: #16a34a !important;
   color: #ffffff !important;
-  border-color: #3b82f6 !important;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+  border-color: #22c55e !important;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.35);
 }
 
 body.theme-light .bluechip-tab-btn {
@@ -5019,9 +5019,10 @@ body.theme-light .bluechip-tab-btn {
 }
 
 body.theme-light .bluechip-tab-btn.active {
-  background: #2563eb !important;
+  background: #15803d !important;
   color: #ffffff !important;
-  border-color: #2563eb !important;
+  border-color: #15803d !important;
+  box-shadow: 0 4px 12px rgba(21, 128, 61, 0.25);
 }
 
 .bluechip-date-pill {
@@ -5068,7 +5069,7 @@ body.theme-light .bluechip-tab-btn.active {
 }
 
 .bluechip-metric-card:hover {
-  border-color: #3b82f6;
+  border-color: #16a34a;
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
@@ -5080,8 +5081,8 @@ body.theme-light .bluechip-metric-card {
 }
 
 body.theme-light .bluechip-metric-card:hover {
-  border-color: #2563eb;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border-color: #15803d;
+  box-shadow: 0 8px 20px rgba(21, 128, 61, 0.12);
 }
 
 .bluechip-card-label {
@@ -5177,18 +5178,18 @@ body.theme-light .bluechip-panel-sub {
 .bluechip-link {
   font-size: 0.82rem;
   font-weight: 600;
-  color: #38bdf8;
+  color: #22c55e;
   text-decoration: none;
   transition: color 0.2s;
 }
 
 .bluechip-link:hover {
   text-decoration: underline;
-  color: #7dd3fc;
+  color: #4ade80;
 }
 
 body.theme-light .bluechip-link {
-  color: #0284c7;
+  color: #15803d;
 }
 
 /* SVG Chart */
@@ -5265,11 +5266,11 @@ body.theme-light .bluechip-data-table tbody tr:hover {
 .bluechip-data-table td.font-mono {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-weight: 600;
-  color: #38bdf8;
+  color: #f59e0b;
 }
 
 body.theme-light .bluechip-data-table td.font-mono {
-  color: #0284c7;
+  color: #d97706;
 }
 
 .bluechip-data-table td.font-medium {

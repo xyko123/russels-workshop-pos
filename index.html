@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign in | RUSELL'S Workshop POS &amp; Operations</title>
+    <title>Sign in | RUSSEL'S GLASS, WOODS &amp; METALS</title>
+    <link rel="icon" type="image/jpeg" href="assets/logo.jpg" />
     <link rel="stylesheet" href="css/style.css" />
     <style>
       :root {
@@ -14,8 +15,11 @@
         --login-input-border: #223c60;
         --login-text-primary: #ffffff;
         --login-text-muted: #94a3b8;
-        --login-btn-blue: #2563eb;
-        --login-btn-blue-hover: #1d4ed8;
+        --login-btn-primary: #16a34a;
+        --login-btn-primary-hover: #15803d;
+        --login-brand-green: #16a34a;
+        --login-brand-red: #dc2626;
+        --login-brand-yellow: #f59e0b;
       }
 
       body.theme-light {
@@ -26,8 +30,11 @@
         --login-input-border: #cbd5e1;
         --login-text-primary: #0f172a;
         --login-text-muted: #64748b;
-        --login-btn-blue: #2563eb;
-        --login-btn-blue-hover: #1d4ed8;
+        --login-btn-primary: #16a34a;
+        --login-btn-primary-hover: #15803d;
+        --login-brand-green: #15803d;
+        --login-brand-red: #dc2626;
+        --login-brand-yellow: #d97706;
       }
 
       * {
@@ -47,7 +54,7 @@
         transition: background-color 0.25s ease;
       }
 
-      /* Top-Right Minimalist Theme Toggle (Image 1) */
+      /* Top-Right Minimalist Theme Toggle */
       .top-theme-toggle-wrap {
         position: absolute;
         top: 1.25rem;
@@ -74,12 +81,12 @@
 
       .btn-theme-minimal:hover {
         color: var(--login-text-primary);
-        border-color: #3b82f6;
+        border-color: var(--login-brand-green);
         transform: scale(1.05);
       }
 
-      /* Image 1 Centered Bluechip-Style Login Card */
-      .bluechip-login-card {
+      /* Centered Flat Modern Login Card */
+      .russels-login-card {
         width: 100%;
         max-width: 440px;
         background: var(--login-card-bg);
@@ -90,13 +97,13 @@
         transition: all 0.25s ease;
       }
 
-      body.theme-light .bluechip-login-card {
+      body.theme-light .russels-login-card {
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
       }
 
       /* Brand Header */
       .card-brand {
-        margin-bottom: 1.75rem;
+        margin-bottom: 1.5rem;
       }
 
       .card-brand-name {
@@ -111,16 +118,25 @@
       }
 
       .card-brand-name span.brand-accent {
-        color: #3b82f6;
+        color: var(--login-brand-green);
       }
 
       .card-brand-sub {
         font-size: 0.76rem;
-        font-weight: 600;
-        color: var(--login-text-muted);
-        letter-spacing: 0.04em;
+        font-weight: 700;
+        color: var(--login-brand-green);
+        letter-spacing: 0.05em;
         margin-top: 0.2rem;
         text-transform: uppercase;
+      }
+
+      .card-brand-tagline {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: var(--login-brand-red);
+        font-style: italic;
+        letter-spacing: 0.02em;
+        margin-top: 0.15rem;
       }
 
       /* Welcome Headings */
@@ -166,8 +182,8 @@
       }
 
       .auth-input-control:focus {
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+        border-color: var(--login-brand-green);
+        box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.25);
       }
 
       .password-wrapper {
@@ -197,11 +213,11 @@
         color: var(--login-text-primary);
       }
 
-      /* Sign In Button (Image 1 vibrant flat blue) */
-      .btn-bluechip-signin {
+      /* Sign In Button (Russell's Forest Green) */
+      .btn-russels-signin {
         width: 100%;
         padding: 0.82rem;
-        background: var(--login-btn-blue);
+        background: var(--login-btn-primary);
         border: none;
         border-radius: 7px;
         color: #ffffff;
@@ -209,14 +225,16 @@
         font-weight: 700;
         cursor: pointer;
         margin-top: 0.65rem;
-        transition: background-color 0.2s, transform 0.1s;
+        transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+        box-shadow: 0 4px 14px rgba(22, 163, 74, 0.3);
       }
 
-      .btn-bluechip-signin:hover {
-        background: var(--login-btn-blue-hover);
+      .btn-russels-signin:hover {
+        background: var(--login-btn-primary-hover);
+        box-shadow: 0 6px 18px rgba(22, 163, 74, 0.45);
       }
 
-      .btn-bluechip-signin:active {
+      .btn-russels-signin:active {
         transform: translateY(1px);
       }
 
@@ -249,9 +267,9 @@
       }
 
       .pill-demo-btn:hover {
-        background: rgba(59, 130, 246, 0.15);
-        color: #38bdf8;
-        border-color: #38bdf8;
+        background: rgba(22, 163, 74, 0.15);
+        color: #86efac;
+        border-color: #22c55e;
       }
 
       .message {
@@ -278,23 +296,24 @@
     </style>
 </head>
 <body class="auth-page">
-    <!-- TOP-RIGHT SUN/MOON THEME TOGGLE (IMAGE 1) -->
+    <!-- TOP-RIGHT SUN/MOON THEME TOGGLE -->
     <div class="top-theme-toggle-wrap">
         <button type="button" class="btn-theme-minimal" id="themeToggleBtn" onclick="toggleAuthTheme()" title="Switch Light &amp; Night Mode">
             <svg id="themeIconSun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
         </button>
     </div>
 
-    <!-- MAIN CENTERED LOGIN CARD (EXACT IMAGE 1 BLUECHIP LAYOUT) -->
-    <main class="bluechip-login-card">
-        <div class="card-brand" style="display: flex; flex-direction: column; align-items: flex-start; gap: 0.4rem; margin-bottom: 1.5rem;">
-            <img src="assets/logo.jpg" alt="RUSELL'S Logo" style="width: 46px; height: 46px; border-radius: 9px; object-fit: contain; background: #ffffff; padding: 3px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);" />
-            <h1 class="card-brand-name">RUSELL<span class="brand-accent">'S</span></h1>
-            <div class="card-brand-sub">Inventory &amp; Billing • Workshop Operations</div>
+    <!-- MAIN CENTERED LOGIN CARD -->
+    <main class="russels-login-card">
+        <div class="card-brand" style="display: flex; flex-direction: column; align-items: flex-start; gap: 0.35rem; margin-bottom: 1.5rem;">
+            <img src="assets/logo.jpg" alt="RUSSEL'S Logo" style="width: 52px; height: 52px; border-radius: 9px; object-fit: contain; background: #ffffff; padding: 2px; box-shadow: 0 4px 12px rgba(0,0,0,0.25);" />
+            <h1 class="card-brand-name">RUSSEL<span class="brand-accent">'S</span></h1>
+            <div class="card-brand-sub">GLASS, WOODS &amp; METALS</div>
+            <div class="card-brand-tagline">"You NAME it, we BUILD it"</div>
         </div>
 
         <h2 class="card-welcome-title">Welcome back</h2>
-        <p class="card-welcome-sub">Sign in to manage company operations.</p>
+        <p class="card-welcome-sub">Sign in to manage workshop operations.</p>
 
         <form id="loginForm" novalidate>
             <div class="auth-field-group">
@@ -316,7 +335,7 @@
 
             <div id="loginMessage" class="message" aria-live="polite"></div>
 
-            <button type="submit" class="btn-bluechip-signin" id="loginBtn">
+            <button type="submit" class="btn-russels-signin" id="loginBtn">
                 Sign in
             </button>
         </form>
