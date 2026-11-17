@@ -34,20 +34,20 @@
       </div>
 
       <nav class="sidebar-nav">
-        <!-- Exact Bluechip Navigation Links with direct reliable click handlers -->
+        <!-- Exact Workshop Navigation Links with direct reliable click handlers -->
         <a class="nav-link active" data-view="pos" onclick="App.loadView('pos')">Dashboard</a>
         <a class="nav-link" data-view="customers" onclick="App.loadView('customers')">Clients</a>
         <a class="nav-link" data-view="suppliers" onclick="App.loadView('suppliers')">Suppliers</a>
         <a class="nav-link" data-view="inventory" onclick="App.loadView('inventory')">Inventory</a>
-        <a class="nav-link" data-view="quotations" onclick="App.loadView('quotations')">Quotations &amp; BOM</a>
-        <a class="nav-link" data-view="orders" onclick="App.loadView('orders')">Purchase orders &amp; bids</a>
-        <a class="nav-link" data-view="payments" onclick="App.loadView('payments')">Invoices &amp; billing</a>
+        <a class="nav-link" data-view="quotations" onclick="App.loadView('quotations')">Quotations &amp; Cut List</a>
+        <a class="nav-link" data-view="purchase_orders" onclick="App.loadView('purchase_orders')">Purchase Orders</a>
+        <a class="nav-link" data-view="projects" onclick="App.loadView('projects')">Job Orders (Kanban)</a>
+        <a class="nav-link" data-view="invoices" onclick="App.loadView('invoices')">Invoices &amp; Billing</a>
         <a class="nav-link" data-view="payments" onclick="App.loadView('payments')">Payments</a>
-        <a class="nav-link" data-view="reports" onclick="App.loadView('reports')">Serials &amp; warranty</a>
-        <a class="nav-link" data-view="projects" onclick="App.loadView('projects')">Assembly &amp; testing</a>
+        <a class="nav-link" data-view="warranty" onclick="App.loadView('warranty')">Warranty &amp; Installation</a>
         <a class="nav-link" data-view="reports" onclick="App.loadView('reports')">Reports</a>
         <a class="nav-link" data-view="users" onclick="App.loadView('users')">User management</a>
-        <a class="nav-link" data-view="reports" onclick="App.loadView('reports')">Audit trail</a>
+        <a class="nav-link" data-view="audit" onclick="App.loadView('audit')">Audit trail</a>
         <a class="nav-link" data-view="pos_counter" onclick="App.loadView('pos_counter')">Point of Sale (POS)</a>
         <a class="nav-link" data-view="database" onclick="App.loadView('database')">Database</a>
         <a class="nav-link" onclick="App.openEditProfileModal()" style="cursor: pointer;">My account</a>
@@ -113,7 +113,7 @@
             </div>
 
             <!-- Card 2: Pending purchase orders -->
-            <div class="bluechip-metric-card" onclick="App.loadView('orders')" title="Click to view purchase & fabrication orders">
+            <div class="bluechip-metric-card" onclick="App.loadView('purchase_orders')" title="Click to view supplier purchase orders">
               <div class="bluechip-card-label">Pending purchase orders</div>
               <div class="bluechip-card-val" id="bcPendingOrdersCount">0</div>
               <div class="bluechip-card-sub">Draft or submitted</div>
@@ -127,7 +127,7 @@
             </div>
 
             <!-- Card 4: Warranty expiring -->
-            <div class="bluechip-metric-card" onclick="App.loadView('reports')" title="Click to view reports & warranty">
+            <div class="bluechip-metric-card" onclick="App.loadView('warranty')" title="Click to view warranty records">
               <div class="bluechip-card-label">Warranty expiring</div>
               <div class="bluechip-card-val" id="bcWarrantyExpiring">0</div>
               <div class="bluechip-card-sub">Within the next 30 days</div>
@@ -202,7 +202,7 @@
                   <h3 class="bluechip-panel-title">Overdue invoices</h3>
                   <p class="bluechip-panel-sub">Follow up on outstanding balances</p>
                 </div>
-                <a href="javascript:void(0)" onclick="App.loadView('payments')" class="bluechip-link">View all</a>
+                <a href="javascript:void(0)" onclick="App.loadView('invoices')" class="bluechip-link">View all</a>
               </div>
               <div class="bluechip-empty-invoices">
                 <p>No overdue invoices. Great work!</p>
@@ -511,6 +511,45 @@
         </div>
       </section>
 
+      <!-- VIEW: PURCHASE ORDERS (SUPPLIER ORDERS) -->
+      <section id="view-purchase_orders" class="view-container">
+        <div class="table-panel">
+          <div class="table-toolbar">
+            <div style="flex: 1; display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+              <div>
+                <h2 style="font-size: 1.15rem; font-weight: 700;">Purchase Orders (Supplier Orders)</h2>
+                <p style="font-size: 0.75rem; color: var(--text-dim);">Manage material replenishments for Glass, Hardwood, Aluminum, and Stainless Steel</p>
+              </div>
+              <input type="text" id="purchaseOrdersSearchInput" oninput="App.filterPurchaseOrdersTable()" placeholder="Search POs (PO #, supplier)..." style="max-width: 280px; padding: 0.5rem 0.8rem; background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: #fff; font-size: 0.82rem;" />
+              <select id="poStatusFilter" onchange="App.filterPurchaseOrdersTable()" style="padding: 0.5rem 0.8rem; background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: #fff; font-size: 0.82rem;">
+                <option value="all">All PO Statuses</option>
+                <option value="Draft">Draft</option>
+                <option value="Submitted">Submitted</option>
+                <option value="Received">Received</option>
+                <option value="Paid">Paid</option>
+              </select>
+            </div>
+            <button class="btn-primary" onclick="App.openNewPurchaseOrderModal()">+ Create Purchase Order</button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>PO #</th>
+                <th>Supplier Name</th>
+                <th>Category</th>
+                <th>Materials Ordered</th>
+                <th>Order Date</th>
+                <th>Expected Delivery</th>
+                <th>Total Cost</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="purchaseOrdersTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
       <!-- VIEW 2: CUSTOM JOB ESTIMATOR -->
       <section id="view-estimator" class="view-container">
         <div class="estimator-wrapper">
@@ -531,9 +570,9 @@
       <section id="view-projects" class="view-container">
         <div class="jo-board-header">
           <div>
-            <h2 style="font-size: 1.25rem; font-weight: 700;">Workshop Job Orders &amp; Project Tracking</h2>
+            <h2 style="font-size: 1.25rem; font-weight: 700;">Job Orders (Workshop Kanban)</h2>
             <p style="font-size: 0.78rem; color: var(--text-dim);">
-              Monitor fabrication, cutting, assembly, quality control, and on-site installation across Digos City.
+              6 fabrication stages: Queued, Material Cut &amp; Prep, Assembly, Quality Control, Ready, Installed across Digos City.
             </p>
           </div>
           <div class="jo-filters">
@@ -550,42 +589,42 @@
         <div class="kanban-board-container" id="kanbanBoard">
           <div class="kanban-column" data-status="queued">
             <div class="kanban-column-header">
-              <span class="column-title">[1] Queued &amp; Staged</span>
+              <span class="column-title">1. Queued</span>
               <span class="column-counter" id="count-queued">0</span>
             </div>
             <div class="kanban-cards-list" id="col-queued"></div>
           </div>
           <div class="kanban-column" data-status="materials_prepared">
             <div class="kanban-column-header">
-              <span class="column-title">[2] Material Cutting &amp; Prep</span>
+              <span class="column-title">2. Material Cut &amp; Prep</span>
               <span class="column-counter" id="count-materials_prepared">0</span>
             </div>
             <div class="kanban-cards-list" id="col-materials_prepared"></div>
           </div>
           <div class="kanban-column" data-status="in_fabrication">
             <div class="kanban-column-header">
-              <span class="column-title">[3] Fabrication &amp; Assembly</span>
+              <span class="column-title">3. Assembly</span>
               <span class="column-counter" id="count-in_fabrication">0</span>
             </div>
             <div class="kanban-cards-list" id="col-in_fabrication"></div>
           </div>
           <div class="kanban-column" data-status="quality_check">
             <div class="kanban-column-header">
-              <span class="column-title">[4] Quality Inspection</span>
+              <span class="column-title">4. Quality Control</span>
               <span class="column-counter" id="count-quality_check">0</span>
             </div>
             <div class="kanban-cards-list" id="col-quality_check"></div>
           </div>
           <div class="kanban-column" data-status="ready_dispatch">
             <div class="kanban-column-header">
-              <span class="column-title">[5] Ready for Dispatch</span>
+              <span class="column-title">5. Ready</span>
               <span class="column-counter" id="count-ready_dispatch">0</span>
             </div>
             <div class="kanban-cards-list" id="col-ready_dispatch"></div>
           </div>
           <div class="kanban-column" data-status="installed_delivered">
             <div class="kanban-column-header">
-              <span class="column-title">[6] Installed &amp; Delivered</span>
+              <span class="column-title">6. Installed</span>
               <span class="column-counter" id="count-installed_delivered">0</span>
             </div>
             <div class="kanban-cards-list" id="col-installed_delivered"></div>
@@ -867,6 +906,45 @@
         </div>
       </section>
 
+      <!-- VIEW: INVOICES & BILLING -->
+      <section id="view-invoices" class="view-container">
+        <div class="table-panel">
+          <div class="table-toolbar">
+            <div style="flex: 1; display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+              <div>
+                <h2 style="font-size: 1.15rem; font-weight: 700;">Invoices &amp; Billing Records</h2>
+                <p style="font-size: 0.75rem; color: var(--text-dim);">Track customer billing schedules, overdue invoices, and contract balances</p>
+              </div>
+              <input type="text" id="invoicesSearchInput" oninput="App.filterInvoicesTable()" placeholder="Search invoices (invoice #, customer)..." style="max-width: 280px; padding: 0.5rem 0.8rem; background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: #fff; font-size: 0.82rem;" />
+              <select id="invoiceStatusFilter" onchange="App.filterInvoicesTable()" style="padding: 0.5rem 0.8rem; background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: #fff; font-size: 0.82rem;">
+                <option value="all">All Invoices</option>
+                <option value="Overdue">Overdue</option>
+                <option value="Partial">Partial Balance</option>
+                <option value="Paid">Fully Paid</option>
+              </select>
+            </div>
+            <button class="btn-primary" onclick="App.openNewInvoiceModal()">+ Generate Invoice</button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Invoice #</th>
+                <th>Job Order #</th>
+                <th>Customer</th>
+                <th>Trade</th>
+                <th>Issue Date</th>
+                <th>Due Date</th>
+                <th>Total Contract</th>
+                <th>Balance Due</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="invoicesTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
       <!-- VIEW 9: PAYMENTS & RECEIVABLES -->
       <section id="view-payments" class="view-container">
         <div class="inventory-metrics-grid">
@@ -928,6 +1006,44 @@
               </tr>
             </thead>
             <tbody id="paymentsTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- VIEW: WARRANTY & INSTALLATION RECORDS -->
+      <section id="view-warranty" class="view-container">
+        <div class="table-panel">
+          <div class="table-toolbar">
+            <div style="flex: 1; display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+              <div>
+                <h2 style="font-size: 1.15rem; font-weight: 700;">Warranty &amp; Installation Records</h2>
+                <p style="font-size: 0.75rem; color: var(--text-dim);">Official certificates, tempered glass safety warranties, and structural guarantees</p>
+              </div>
+              <input type="text" id="warrantySearchInput" oninput="App.filterWarrantyTable()" placeholder="Search warranty (cert #, customer)..." style="max-width: 280px; padding: 0.5rem 0.8rem; background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: #fff; font-size: 0.82rem;" />
+              <select id="warrantyStatusFilter" onchange="App.filterWarrantyTable()" style="padding: 0.5rem 0.8rem; background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: #fff; font-size: 0.82rem;">
+                <option value="all">All Records</option>
+                <option value="Active">Active</option>
+                <option value="Expiring Soon">Expiring Soon (30d)</option>
+                <option value="Expired">Expired</option>
+              </select>
+            </div>
+            <button class="btn-primary" onclick="App.openNewWarrantyModal()">+ Issue Warranty Certificate</button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Certificate #</th>
+                <th>Job Order #</th>
+                <th>Customer Name</th>
+                <th>Site Address</th>
+                <th>Project Scope</th>
+                <th>Installed Date</th>
+                <th>Warranty Expiry</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="warrantyTableBody"></tbody>
           </table>
         </div>
       </section>
@@ -1101,7 +1217,44 @@
         </div>
       </section>
 
-    
+      <!-- VIEW: AUDIT TRAIL -->
+      <section id="view-audit" class="view-container">
+        <div class="table-panel">
+          <div class="table-toolbar">
+            <div style="flex: 1; display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+              <div>
+                <h2 style="font-size: 1.15rem; font-weight: 700;">Audit Trail &amp; Activity Logs</h2>
+                <p style="font-size: 0.75rem; color: var(--text-dim);">Immutable record of system activities, transactions, inventory adjustments, and operator logins</p>
+              </div>
+              <input type="text" id="auditSearchInput" oninput="App.filterAuditTable()" placeholder="Search logs (action, user, module)..." style="max-width: 280px; padding: 0.5rem 0.8rem; background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: #fff; font-size: 0.82rem;" />
+              <select id="auditActionFilter" onchange="App.filterAuditTable()" style="padding: 0.5rem 0.8rem; background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: #fff; font-size: 0.82rem;">
+                <option value="all">All Actions</option>
+                <option value="LOGIN">Login Activities</option>
+                <option value="PAYMENT_COLLECT">Payment Collections</option>
+                <option value="STAGE_ADVANCE">Job Order Updates</option>
+                <option value="STOCK_RESTOCK">Inventory Adjustments</option>
+                <option value="QUOTATION_CREATE">Quotations Created</option>
+              </select>
+            </div>
+            <button class="btn-secondary" onclick="App.exportAuditCSV()">Export Audit CSV</button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>User / Operator</th>
+                <th>Role</th>
+                <th>Action</th>
+                <th>Module</th>
+                <th>Transaction Details</th>
+                <th>Terminal / IP</th>
+              </tr>
+            </thead>
+            <tbody id="auditTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
       <!-- ====================================================================
            VIEW: DATABASE MANAGEMENT & CLOUD OPERATIONS (11 TABLES & ACTIONS)
            ==================================================================== -->

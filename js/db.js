@@ -12,8 +12,231 @@ const DB_KEYS = {
   PAYMENTS: 'russels_payments_v1',
   SETTINGS: 'russels_settings_v3',
   USERS: 'russels_users',
-  SUPPLIERS: 'russels_suppliers_v1'
+  SUPPLIERS: 'russels_suppliers_v1',
+  PURCHASE_ORDERS: 'russels_purchase_orders_v1',
+  WARRANTY: 'russels_warranty_v1',
+  INVOICES: 'russels_invoices_v1',
+  AUDIT: 'russels_audit_v1'
 };
+
+// Seed Supplier Purchase Orders (Stock replenishment from local vendors)
+const INITIAL_PURCHASE_ORDERS = [
+  {
+    id: 'po-2026-001',
+    poNo: 'PO-2026-0101',
+    supplierId: 'sup-01',
+    supplierName: 'Mindanao Glass Depot (Davao)',
+    category: 'Glass Works',
+    itemsSummary: '6mm Clear Float Glass (450 sq ft), 6mm Bronze Glass (200 sq ft)',
+    orderDate: '2026-11-10',
+    expectedDate: '2026-11-15',
+    totalAmount: 42500,
+    status: 'Received',
+    notes: 'Standard replenishment for high-demand clear float glass'
+  },
+  {
+    id: 'po-2026-002',
+    poNo: 'PO-2026-0102',
+    supplierId: 'sup-02',
+    supplierName: 'Davao Lumber & Hardware Supply',
+    category: 'Wood & Carpentry',
+    itemsSummary: '3/4 Marine Plywood (30 sheets), 2x3 KD Mahogany (50 pcs)',
+    orderDate: '2026-11-12',
+    expectedDate: '2026-11-18',
+    totalAmount: 58400,
+    status: 'Submitted',
+    notes: 'Cabinet carcass stock for ongoing kitchen contracts'
+  },
+  {
+    id: 'po-2026-003',
+    poNo: 'PO-2026-0103',
+    supplierId: 'sup-03',
+    supplierName: 'Apex Stainless Steel & Metal Depot',
+    category: 'Metal Works',
+    itemsSummary: '1.5" Stainless Round Pipe 304 (20 pcs), 304 Flat Bar (15 pcs)',
+    orderDate: '2026-11-14',
+    expectedDate: '2026-11-20',
+    totalAmount: 34200,
+    status: 'Draft',
+    notes: 'Railing fabrication batch for upcoming commercial contract'
+  },
+  {
+    id: 'po-2026-004',
+    poNo: 'PO-2026-0104',
+    supplierId: 'sup-05',
+    supplierName: 'Digos Glass & Aluminum Center',
+    category: 'Aluminum Works',
+    itemsSummary: '798 Sliding Window Aluminum Profiles (Analok 18 sets)',
+    orderDate: '2026-11-05',
+    expectedDate: '2026-11-08',
+    totalAmount: 26800,
+    status: 'Paid',
+    notes: 'Paid in full upon delivery at Roxas Ext. yard'
+  }
+];
+
+// Seed Official Warranty & Installation Certificates
+const INITIAL_WARRANTY_RECORDS = [
+  {
+    id: 'war-001',
+    certNo: 'WC-2026-0081',
+    jobOrderNo: 'JO-2026-0038',
+    customerName: 'Engr. Mateo Alcantara',
+    phone: '0917-889-1234',
+    address: 'Brgy. San Jose, Digos City',
+    projectScope: 'Commercial 12mm Tempered Glass Storefront & Patch Fittings',
+    trade: 'Glass Works',
+    installDate: '2026-08-15',
+    expiryDate: '2027-08-15',
+    warrantyTerm: '1 Year Full Structural & Weather Sealant',
+    status: 'Active'
+  },
+  {
+    id: 'war-002',
+    certNo: 'WC-2026-0082',
+    jobOrderNo: 'JO-2026-0039',
+    customerName: 'Dra. Carmela Sison',
+    phone: '0920-555-7890',
+    address: 'Roxas Ext., Brgy. Zone III, Digos City',
+    projectScope: 'Solid Narra Executive Dining Set & Modular Kitchen Cabinets',
+    trade: 'Wood Works',
+    installDate: '2026-09-01',
+    expiryDate: '2028-09-01',
+    warrantyTerm: '2 Years Wood Treatment & Soft-Close Hardware',
+    status: 'Active'
+  },
+  {
+    id: 'war-003',
+    certNo: 'WC-2026-0083',
+    jobOrderNo: 'JO-2026-0040',
+    customerName: 'Arch. Dennis Tan',
+    phone: '0918-333-4455',
+    address: 'Brgy. Tres de Mayo, Digos City',
+    projectScope: 'Stainless Steel 304 Main Gate & Balcony Railings',
+    trade: 'Metal Works',
+    installDate: '2025-11-20',
+    expiryDate: '2026-11-20',
+    warrantyTerm: '1 Year Anti-Rust & TIG Weld Structural Integrity',
+    status: 'Expiring Soon'
+  },
+  {
+    id: 'war-004',
+    certNo: 'WC-2025-0045',
+    jobOrderNo: 'JO-2025-0022',
+    customerName: 'Barangay Zone II Local Council',
+    phone: '0922-111-2233',
+    address: 'Brgy. Zone II, Digos City',
+    projectScope: 'Galvanized Steel Heavy-Duty Roll-Up Shutter Doors',
+    trade: 'Shutters & Metal',
+    installDate: '2025-05-10',
+    expiryDate: '2026-05-10',
+    warrantyTerm: '1 Year Spring & Motor Mechanical Warranty',
+    status: 'Expired'
+  }
+];
+
+// Seed Customer Invoices
+const INITIAL_INVOICES = [
+  {
+    id: 'inv-001',
+    invoiceNo: 'INV-2026-0201',
+    orderId: 'ord-01',
+    jobOrderNo: 'JO-2026-0038',
+    customerName: 'Engr. Mateo Alcantara',
+    phone: '0917-889-1234',
+    issueDate: '2026-10-25',
+    dueDate: '2026-11-25',
+    totalAmount: 85000,
+    amountPaid: 85000,
+    balanceDue: 0,
+    status: 'Paid',
+    trade: 'Glass Works'
+  },
+  {
+    id: 'inv-002',
+    invoiceNo: 'INV-2026-0202',
+    orderId: 'ord-02',
+    jobOrderNo: 'JO-2026-0039',
+    customerName: 'Dra. Carmela Sison',
+    phone: '0920-555-7890',
+    issueDate: '2026-11-02',
+    dueDate: '2026-12-02',
+    totalAmount: 68000,
+    amountPaid: 35000,
+    balanceDue: 33000,
+    status: 'Partial',
+    trade: 'Wood Works'
+  },
+  {
+    id: 'inv-003',
+    invoiceNo: 'INV-2026-0203',
+    orderId: 'ord-03',
+    jobOrderNo: 'JO-2026-0040',
+    customerName: 'Arch. Dennis Tan',
+    phone: '0918-333-4455',
+    issueDate: '2026-11-08',
+    dueDate: '2026-11-22',
+    totalAmount: 45000,
+    amountPaid: 20000,
+    balanceDue: 25000,
+    status: 'Overdue',
+    trade: 'Metal Works'
+  }
+];
+
+// Seed Audit Trail Activity Logs
+const INITIAL_AUDIT_LOGS = [
+  {
+    id: 'aud-001',
+    timestamp: '2026-11-17 08:30:15',
+    user: 'owner',
+    role: 'Owner / Admin',
+    action: 'LOGIN',
+    module: 'Authentication',
+    details: 'User authenticated from workshop terminal at Roxas Ext., Digos City',
+    ip: '192.168.1.101'
+  },
+  {
+    id: 'aud-002',
+    timestamp: '2026-11-17 09:12:44',
+    user: 'sales',
+    role: 'Sales & Cashier',
+    action: 'PAYMENT_COLLECT',
+    module: 'Payments & Billing',
+    details: 'Collected downpayment ₱15,000 for JO-2026-0041 (Receipt OR-2026-0089)',
+    ip: '192.168.1.102'
+  },
+  {
+    id: 'aud-003',
+    timestamp: '2026-11-17 09:45:00',
+    user: 'workshop',
+    role: 'Lead Fabricator',
+    action: 'STAGE_ADVANCE',
+    module: 'Job Orders (Kanban)',
+    details: 'Advanced JO-2026-0041 from Material Cut & Prep to Assembly',
+    ip: '192.168.1.103'
+  },
+  {
+    id: 'aud-004',
+    timestamp: '2026-11-16 16:20:10',
+    user: 'owner',
+    role: 'Owner / Admin',
+    action: 'STOCK_RESTOCK',
+    module: 'Inventory',
+    details: 'Stock update: GLS-001 (+50 sq ft) verified from Mindanao Glass Depot PO-2026-0101',
+    ip: '192.168.1.101'
+  },
+  {
+    id: 'aud-005',
+    timestamp: '2026-11-16 14:10:05',
+    user: 'sales',
+    role: 'Sales & Cashier',
+    action: 'QUOTATION_CREATE',
+    module: 'Quotations & Cut List',
+    details: 'Generated quote QT-2026-0012 (₱34,500) for Dra. Carmela Sison',
+    ip: '192.168.1.102'
+  }
+];
 
 // Seed Products (Glass, Wood, Metal, Hardware, Ready-Made)
 const INITIAL_PRODUCTS = [
@@ -1101,6 +1324,18 @@ class WorkshopDB {
     if (!localStorage.getItem(DB_KEYS.SUPPLIERS)) {
       this.save(DB_KEYS.SUPPLIERS, INITIAL_SUPPLIERS);
     }
+    if (!localStorage.getItem(DB_KEYS.PURCHASE_ORDERS)) {
+      this.save(DB_KEYS.PURCHASE_ORDERS, INITIAL_PURCHASE_ORDERS);
+    }
+    if (!localStorage.getItem(DB_KEYS.WARRANTY)) {
+      this.save(DB_KEYS.WARRANTY, INITIAL_WARRANTY_RECORDS);
+    }
+    if (!localStorage.getItem(DB_KEYS.INVOICES)) {
+      this.save(DB_KEYS.INVOICES, INITIAL_INVOICES);
+    }
+    if (!localStorage.getItem(DB_KEYS.AUDIT)) {
+      this.save(DB_KEYS.AUDIT, INITIAL_AUDIT_LOGS);
+    }
   }
 
   getSuppliers() {
@@ -1362,6 +1597,92 @@ class WorkshopDB {
     this.save(DB_KEYS.SETTINGS, settings);
   }
 
+  // PURCHASE ORDERS (Supplier Orders)
+  getPurchaseOrders() {
+    const list = this.get(DB_KEYS.PURCHASE_ORDERS);
+    return (list && list.length > 0) ? list : INITIAL_PURCHASE_ORDERS;
+  }
+
+  savePurchaseOrder(po) {
+    const list = this.getPurchaseOrders();
+    if (po.id) {
+      const idx = list.findIndex(p => p.id === po.id);
+      if (idx !== -1) list[idx] = po;
+      else list.push(po);
+    } else {
+      po.id = 'po-' + Date.now();
+      po.poNo = 'PO-2026-0' + (100 + list.length + 1);
+      list.unshift(po);
+    }
+    this.save(DB_KEYS.PURCHASE_ORDERS, list);
+    return po;
+  }
+
+  // WARRANTY & INSTALLATION CERTIFICATES
+  getWarrantyRecords() {
+    const list = this.get(DB_KEYS.WARRANTY);
+    return (list && list.length > 0) ? list : INITIAL_WARRANTY_RECORDS;
+  }
+
+  saveWarrantyRecord(rec) {
+    const list = this.getWarrantyRecords();
+    if (rec.id) {
+      const idx = list.findIndex(w => w.id === rec.id);
+      if (idx !== -1) list[idx] = rec;
+      else list.push(rec);
+    } else {
+      rec.id = 'war-' + Date.now();
+      rec.certNo = 'WC-2026-00' + (80 + list.length + 1);
+      list.unshift(rec);
+    }
+    this.save(DB_KEYS.WARRANTY, list);
+    return rec;
+  }
+
+  // INVOICES & BILLING
+  getInvoices() {
+    const list = this.get(DB_KEYS.INVOICES);
+    return (list && list.length > 0) ? list : INITIAL_INVOICES;
+  }
+
+  saveInvoice(inv) {
+    const list = this.getInvoices();
+    if (inv.id) {
+      const idx = list.findIndex(i => i.id === inv.id);
+      if (idx !== -1) list[idx] = inv;
+      else list.push(inv);
+    } else {
+      inv.id = 'inv-' + Date.now();
+      inv.invoiceNo = 'INV-2026-0' + (200 + list.length + 1);
+      list.unshift(inv);
+    }
+    this.save(DB_KEYS.INVOICES, list);
+    return inv;
+  }
+
+  // AUDIT TRAIL LOGS
+  getAuditLogs() {
+    const list = this.get(DB_KEYS.AUDIT);
+    return (list && list.length > 0) ? list : INITIAL_AUDIT_LOGS;
+  }
+
+  addAuditLog(entry) {
+    const list = this.getAuditLogs();
+    const logItem = {
+      id: 'aud-' + Date.now(),
+      timestamp: new Date().toLocaleString(),
+      user: entry.user || 'system',
+      role: entry.role || 'Staff',
+      action: entry.action || 'TRANSACTION',
+      module: entry.module || 'General',
+      details: entry.details || '',
+      ip: entry.ip || '127.0.0.1'
+    };
+    list.unshift(logItem);
+    this.save(DB_KEYS.AUDIT, list);
+    return logItem;
+  }
+
   // Reset to initial demo database
   resetDatabase() {
     this.save(DB_KEYS.PRODUCTS, INITIAL_PRODUCTS);
@@ -1369,6 +1690,11 @@ class WorkshopDB {
     this.save(DB_KEYS.ORDERS, INITIAL_ORDERS);
     this.save(DB_KEYS.QUOTATIONS, INITIAL_QUOTATIONS);
     this.save(DB_KEYS.SETTINGS, INITIAL_SETTINGS);
+    this.save(DB_KEYS.SUPPLIERS, INITIAL_SUPPLIERS);
+    this.save(DB_KEYS.PURCHASE_ORDERS, INITIAL_PURCHASE_ORDERS);
+    this.save(DB_KEYS.WARRANTY, INITIAL_WARRANTY_RECORDS);
+    this.save(DB_KEYS.INVOICES, INITIAL_INVOICES);
+    this.save(DB_KEYS.AUDIT, INITIAL_AUDIT_LOGS);
     return true;
   }
 }

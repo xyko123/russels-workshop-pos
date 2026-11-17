@@ -426,19 +426,31 @@ class WorkshopApp {
         sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       quotations: {
-        title: 'Quotations & BOM',
+        title: 'Quotations & Cut List',
+        sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
+      },
+      purchase_orders: {
+        title: 'Purchase Orders',
         sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       orders: {
-        title: 'Purchase orders & bids',
-        sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
-      },
-      payments: {
-        title: 'Invoices & billing',
+        title: 'Purchase Orders',
         sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       projects: {
-        title: 'Assembly & testing',
+        title: 'Job Orders (Kanban)',
+        sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
+      },
+      invoices: {
+        title: 'Invoices & Billing',
+        sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
+      },
+      payments: {
+        title: 'Payments',
+        sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
+      },
+      warranty: {
+        title: 'Warranty & Installation Records',
         sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       reports: {
@@ -447,6 +459,10 @@ class WorkshopApp {
       },
       users: {
         title: 'User management',
+        sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
+      },
+      audit: {
+        title: 'Audit trail',
         sub: "RUSSEL'S GLASS, WOODS & METALS • DIGOS CITY"
       },
       database: {
@@ -480,13 +496,22 @@ class WorkshopApp {
         this.populateCustomerDropdowns();
         this.renderPosProducts();
         this.updateCartUI();
-        this.populateCustomerDropdowns();
-        this.renderPosProducts();
-        this.updateCartUI();
         this.updateDashboardMetrics();
         break;
+      case 'purchase_orders':
+        this.renderPurchaseOrdersTable();
+        break;
       case 'orders':
-        this.renderCleanOrdersTable();
+        this.renderPurchaseOrdersTable();
+        break;
+      case 'invoices':
+        this.renderInvoicesTable();
+        break;
+      case 'warranty':
+        this.renderWarrantyTable();
+        break;
+      case 'audit':
+        this.renderAuditTable();
         break;
       case 'estimator':
         this.initEstimatorDefaults();
@@ -1476,43 +1501,83 @@ class WorkshopApp {
   }
 
   // ==========================================================================
-  // VIEW: QUOTATIONS
+  // VIEW: QUOTATIONS & CUT LIST
   // ==========================================================================
 
-  renderQuotationsTable() {
+  filterQuotationsTable() {
+    const q = (document.getElementById('quotationsSearchInput')?.value || '').toLowerCase().trim();
+    this.renderQuotationsTable(q);
+  }
+
+  renderQuotationsTable(filterQuery = '') {
     const tbody = document.getElementById('quotationsTableBody');
     if (!tbody) return;
-    const quotations = db.getQuotations();
 
-    if (quotations.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted);">No quotations on record.</td></tr>`;
-      return;
+    try {
+      let quotations = db.getQuotations ? db.getQuotations() : [];
+      if (filterQuery) {
+        quotations = quotations.filter(q => 
+          (q.quotationNo || '').toLowerCase().includes(filterQuery) ||
+          (q.customerName || '').toLowerCase().includes(filterQuery) ||
+          (q.projectTitle || '').toLowerCase().includes(filterQuery)
+        );
+      }
+
+      if (quotations.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8">
+              <div class="page-empty-state">
+                <span class="page-empty-icon">📝</span>
+                <div class="page-empty-title">No quotations found</div>
+                <div class="page-empty-sub">Draft a new custom glass, wood, or metal quotation or compute cutting lists using the estimator.</div>
+                <div style="display: flex; gap: 0.5rem; justify-content: center; margin-top: 0.75rem;">
+                  <button type="button" class="btn-primary" onclick="App.openCustomFabModal()">+ Create Quotation</button>
+                  <button type="button" class="btn-secondary" onclick="App.openCutOptimizerModal()">⚡ Cut Calculator</button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = quotations.map(q => `
+        <tr>
+          <td><strong style="color: #16a34a; font-family: var(--font-mono);">${q.quotationNo}</strong></td>
+          <td>
+            <div style="font-weight: 700; color: var(--text-dark);">${q.customerName}</div>
+            <small style="color: var(--text-dim);">${q.projectTitle || 'Custom Fabrication'}</small>
+          </td>
+          <td><span class="badge badge-metal">${q.tradeCategory || 'Glass'}</span></td>
+          <td style="color: var(--text-dim);">${q.dateIssued || new Date().toLocaleDateString()}</td>
+          <td style="color: var(--text-dim);">${q.validUntil || '30 days'}</td>
+          <td><strong style="color: var(--text-dark);">₱${(q.totalAmount || 0).toLocaleString()}</strong></td>
+          <td><span class="badge ${q.status === 'Converted to Order' ? 'badge-success' : 'badge-warning'}">${q.status || 'Draft'}</span></td>
+          <td>
+            <div style="display: flex; gap: 0.35rem;">
+              <button class="btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.72rem;" onclick="App.showQuotationPrintModal('${q.id}')">View / Print</button>
+              ${q.status !== 'Converted to Order' ? `
+                <button class="btn-success" style="padding: 0.3rem 0.6rem; font-size: 0.72rem;" onclick="App.convertQuoteToOrderPrompt('${q.id}')">Convert to Order</button>
+              ` : ''}
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    } catch (err) {
+      console.error('Error rendering quotations:', err);
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8">
+            <div class="page-error-state">
+              <div class="page-error-title">⚠️ Failed to load quotations</div>
+              <p>${err.message || 'Check database connection'}</p>
+              <button class="page-error-retry-btn" onclick="App.renderQuotationsTable()">Retry</button>
+            </div>
+          </td>
+        </tr>
+      `;
     }
-
-    tbody.innerHTML = quotations.map(q => `
-      <tr>
-        <td><strong style="color: #0284c7; font-family: var(--font-mono);">${q.quotationNo}</strong></td>
-        <td>
-          <div style="font-weight: 700; color: var(--text-dark);">${q.customerName}</div>
-          <small style="color: var(--text-dim);">${q.projectTitle}</small>
-        </td>
-        <td>
-          <div style="color: var(--text-dark);">${q.customerPhone}</div>
-          <small style="color: var(--text-muted);">${q.deliveryAddress}</small>
-        </td>
-        <td><span class="badge badge-metal">${q.tradeCategory || 'Glass'}</span></td>
-        <td><strong style="color: var(--text-dark);">₱${q.totalAmount.toLocaleString()}</strong></td>
-        <td><span class="badge ${q.status === 'Converted to Order' ? 'badge-success' : 'badge-warning'}">${q.status}</span></td>
-        <td>
-          <div style="display: flex; gap: 0.35rem;">
-            <button class="btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.72rem;" onclick="App.showQuotationPrintModal('${q.id}')">View / Print</button>
-            ${q.status !== 'Converted to Order' ? `
-              <button class="btn-success" style="padding: 0.3rem 0.6rem; font-size: 0.72rem;" onclick="App.convertQuoteToOrderPrompt('${q.id}')">Convert to Order</button>
-            ` : ''}
-          </div>
-        </td>
-      </tr>
-    `).join('');
   }
 
   convertQuoteToOrderPrompt(quotId) {
@@ -1727,29 +1792,74 @@ class WorkshopApp {
   // VIEW: CUSTOMER DIRECTORY
   // ==========================================================================
 
-  renderCustomersTable() {
+  filterCustomersTable() {
+    const q = (document.getElementById('customersSearchInput')?.value || '').toLowerCase().trim();
+    this.renderCustomersTable(q);
+  }
+
+  renderCustomersTable(filterQuery = '') {
     const tbody = document.getElementById('customersTableBody');
     if (!tbody) return;
-    const customers = db.getCustomers();
 
-    tbody.innerHTML = customers.map(c => `
-      <tr>
-        <td><strong style="font-family: var(--font-mono); color: #0284c7;">${c.code}</strong></td>
-        <td>
-          <div style="font-weight: 700; color: var(--text-dark);">${c.name}</div>
-          <small style="color: var(--text-dim);">${c.notes || ''}</small>
-        </td>
-        <td><span class="badge badge-metal">${c.customerType}</span></td>
-        <td style="color: var(--text-dark);">${c.phone}</td>
-        <td style="color: var(--text-dim);">${c.address}</td>
-        <td><strong style="color: #34d399;">₱${(c.totalSpent || 0).toLocaleString()}</strong></td>
-        <td>
-          <button class="btn-primary" style="padding: 0.3rem 0.6rem; font-size: 0.72rem;" onclick="App.startOrderForCustomer('${c.id}')">
-            + New Order
-          </button>
-        </td>
-      </tr>
-    `).join('');
+    try {
+      let customers = db.getCustomers ? db.getCustomers() : [];
+      if (filterQuery) {
+        customers = customers.filter(c =>
+          (c.name || '').toLowerCase().includes(filterQuery) ||
+          (c.code || '').toLowerCase().includes(filterQuery) ||
+          (c.phone || '').toLowerCase().includes(filterQuery) ||
+          (c.address || '').toLowerCase().includes(filterQuery)
+        );
+      }
+
+      if (customers.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7">
+              <div class="page-empty-state">
+                <span class="page-empty-icon">👥</span>
+                <div class="page-empty-title">No clients found</div>
+                <div class="page-empty-sub">No registered homeowners, general contractors, or commercial accounts match your search.</div>
+                <button type="button" class="btn-primary" onclick="App.openNewCustomerModal()" style="margin: 0.75rem auto 0 auto; display: inline-flex;">+ Register Customer</button>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = customers.map(c => `
+        <tr>
+          <td><strong style="font-family: var(--font-mono); color: #16a34a;">${c.code}</strong></td>
+          <td>
+            <div style="font-weight: 700; color: var(--text-dark);">${c.name}</div>
+            <small style="color: var(--text-dim);">${c.notes || ''}</small>
+          </td>
+          <td><span class="badge badge-metal">${c.customerType || 'Homeowner'}</span></td>
+          <td style="color: var(--text-dark);">${c.phone}</td>
+          <td style="color: var(--text-dim);">${c.address}</td>
+          <td><strong style="color: #16a34a;">₱${(c.totalSpent || 0).toLocaleString()}</strong></td>
+          <td>
+            <button class="btn-primary" style="padding: 0.3rem 0.6rem; font-size: 0.72rem;" onclick="App.startOrderForCustomer('${c.id}')">
+              + New Order
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    } catch (err) {
+      console.error('Error rendering customers:', err);
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7">
+            <div class="page-error-state">
+              <div class="page-error-title">⚠️ Failed to load client directory</div>
+              <p>${err.message || 'Check database storage'}</p>
+              <button class="page-error-retry-btn" onclick="App.renderCustomersTable()">Retry</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }
   }
 
   startOrderForCustomer(custId) {
@@ -1796,61 +1906,613 @@ class WorkshopApp {
   // VIEW: BILLING & RECEIVABLES
   // ==========================================================================
 
-  renderPaymentsTable() {
+  filterPaymentsTable() {
+    const q = (document.getElementById('paymentsSearchInput')?.value || '').toLowerCase().trim();
+    this.renderPaymentsTable(q);
+  }
+
+  renderPaymentsTable(filterQuery = '') {
     const tbody = document.getElementById('paymentsTableBody');
     if (!tbody) return;
-    const orders = db.getOrders();
 
-    const totalRev = orders.reduce((sum, o) => sum + (o.downpayment || 0), 0);
-    const receivables = orders.reduce((sum, o) => sum + (o.balanceDue || 0), 0);
-    const settledCount = orders.filter(o => o.balanceDue <= 0).length;
-    const activeCount = orders.filter(o => o.balanceDue > 0).length;
+    try {
+      let orders = db.getOrders ? db.getOrders() : [];
+      if (filterQuery) {
+        orders = orders.filter(o =>
+          (o.jobOrderNo || '').toLowerCase().includes(filterQuery) ||
+          (o.orderNo || '').toLowerCase().includes(filterQuery) ||
+          (o.customerName || '').toLowerCase().includes(filterQuery)
+        );
+      }
 
-    const revEl = document.getElementById('payMetricTotalRevenue');
-    const recEl = document.getElementById('payMetricReceivables');
-    const actEl = document.getElementById('payMetricActiveCount');
-    const setEl = document.getElementById('payMetricSettledCount');
+      const totalRev = orders.reduce((sum, o) => sum + (o.downpayment || 0), 0);
+      const receivables = orders.reduce((sum, o) => sum + (o.balanceDue || 0), 0);
+      const settledCount = orders.filter(o => o.balanceDue <= 0).length;
+      const activeCount = orders.filter(o => o.balanceDue > 0).length;
 
-    if (revEl) revEl.textContent = `₱${totalRev.toLocaleString()}`;
-    if (recEl) recEl.textContent = `₱${receivables.toLocaleString()}`;
-    if (actEl) actEl.textContent = activeCount;
-    if (setEl) setEl.textContent = settledCount;
+      const revEl = document.getElementById('payMetricTotalRevenue');
+      const recEl = document.getElementById('payMetricReceivables');
+      const actEl = document.getElementById('payMetricActiveCount');
+      const setEl = document.getElementById('payMetricSettledCount');
 
-    tbody.innerHTML = orders.map(o => {
-      const isPaid = o.balanceDue <= 0;
-      return `
+      if (revEl) revEl.textContent = `₱${totalRev.toLocaleString()}`;
+      if (recEl) recEl.textContent = `₱${receivables.toLocaleString()}`;
+      if (actEl) actEl.textContent = activeCount;
+      if (setEl) setEl.textContent = settledCount;
+
+      if (orders.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7">
+              <div class="page-empty-state">
+                <span class="page-empty-icon">💳</span>
+                <div class="page-empty-title">No payment records found</div>
+                <div class="page-empty-sub">Recorded downpayments, official receipts, and balance collections will appear here.</div>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = orders.map(o => {
+        const isPaid = o.balanceDue <= 0;
+        return `
+          <tr>
+            <td>
+              <div style="font-weight: 700; color: #16a34a;">${o.jobOrderNo || o.orderNo}</div>
+              <small style="color: var(--text-dim);">${new Date(o.orderDate).toLocaleDateString()}</small>
+            </td>
+            <td>
+              <div style="font-weight: 700; color: var(--text-dark);">${o.customerName}</div>
+              <small style="color: var(--text-muted);">${o.customerPhone}</small>
+            </td>
+            <td style="color: var(--text-dark);">₱${(o.totalAmount || 0).toLocaleString()}</td>
+            <td><strong style="color: #16a34a;">₱${(o.downpayment || 0).toLocaleString()}</strong></td>
+            <td>
+              <strong style="color: ${isPaid ? '#16a34a' : '#d97706'}; font-size: 0.95rem;">
+                ₱${(o.balanceDue || 0).toLocaleString()}
+              </strong>
+            </td>
+            <td>
+              <span class="badge ${isPaid ? 'badge-success' : 'badge-warning'}">
+                ${o.paymentStatus}
+              </span>
+            </td>
+            <td>
+              <div style="display: flex; gap: 0.35rem;">
+                <button class="btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.72rem;" onclick="App.showOrderReceiptModal('${o.id}')">Receipt</button>
+                ${!isPaid ? `
+                  <button class="btn-primary" style="padding: 0.3rem 0.6rem; font-size: 0.72rem;" onclick="App.openPaymentCollectionModal('${o.id}')">Collect Balance</button>
+                ` : ''}
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    } catch (err) {
+      console.error('Error rendering payments:', err);
+      tbody.innerHTML = `
         <tr>
-          <td>
-            <div style="font-weight: 700; color: #0284c7;">${o.jobOrderNo || o.orderNo}</div>
-            <small style="color: var(--text-dim);">${new Date(o.orderDate).toLocaleDateString()}</small>
-          </td>
-          <td>
-            <div style="font-weight: 700; color: var(--text-dark);">${o.customerName}</div>
-            <small style="color: var(--text-muted);">${o.customerPhone}</small>
-          </td>
-          <td style="color: var(--text-dark);">₱${o.totalAmount.toLocaleString()}</td>
-          <td><strong style="color: #16a34a;">₱${(o.downpayment || 0).toLocaleString()}</strong></td>
-          <td>
-            <strong style="color: ${isPaid ? '#16a34a' : '#d97706'}; font-size: 0.95rem;">
-              ₱${(o.balanceDue || 0).toLocaleString()}
-            </strong>
-          </td>
-          <td>
-            <span class="badge ${isPaid ? 'badge-success' : 'badge-warning'}">
-              ${o.paymentStatus}
-            </span>
-          </td>
-          <td>
-            <div style="display: flex; gap: 0.35rem;">
-              <button class="btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.72rem;" onclick="App.showOrderReceiptModal('${o.id}')">Receipt</button>
-              ${!isPaid ? `
-                <button class="btn-primary" style="padding: 0.3rem 0.6rem; font-size: 0.72rem;" onclick="App.openPaymentCollectionModal('${o.id}')">Collect Balance</button>
-              ` : ''}
+          <td colspan="7">
+            <div class="page-error-state">
+              <div class="page-error-title">⚠️ Failed to load payment records</div>
+              <p>${err.message}</p>
+              <button class="page-error-retry-btn" onclick="App.renderPaymentsTable()">Retry</button>
             </div>
           </td>
         </tr>
       `;
-    }).join('');
+    }
+  }
+
+  // ==========================================================================
+  // VIEW: PURCHASE ORDERS (SUPPLIER ORDERS)
+  // ==========================================================================
+
+  filterPurchaseOrdersTable() {
+    const q = (document.getElementById('purchaseOrdersSearchInput')?.value || '').toLowerCase().trim();
+    const st = document.getElementById('poStatusFilter')?.value || 'all';
+    this.renderPurchaseOrdersTable(q, st);
+  }
+
+  renderPurchaseOrdersTable(filterQuery = '', statusFilter = 'all') {
+    const tbody = document.getElementById('purchaseOrdersTableBody');
+    if (!tbody) return;
+
+    try {
+      let pos = db.getPurchaseOrders ? db.getPurchaseOrders() : [];
+      if (filterQuery) {
+        pos = pos.filter(p =>
+          (p.poNo || '').toLowerCase().includes(filterQuery) ||
+          (p.supplierName || '').toLowerCase().includes(filterQuery) ||
+          (p.itemsSummary || '').toLowerCase().includes(filterQuery)
+        );
+      }
+      if (statusFilter && statusFilter !== 'all') {
+        pos = pos.filter(p => (p.status || '').toLowerCase() === statusFilter.toLowerCase());
+      }
+
+      if (pos.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="9">
+              <div class="page-empty-state">
+                <span class="page-empty-icon">📦</span>
+                <div class="page-empty-title">No purchase orders found</div>
+                <div class="page-empty-sub">Keep workshop stock replenished by issuing purchase orders to Mindanao Glass, Davao Lumber, and local vendors.</div>
+                <button type="button" class="btn-primary" onclick="App.openNewPurchaseOrderModal()" style="margin: 0.75rem auto 0 auto; display: inline-flex;">+ Create Purchase Order</button>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = pos.map(p => {
+        let badgeClass = 'badge-warning';
+        if (p.status === 'Received') badgeClass = 'badge-success';
+        else if (p.status === 'Paid') badgeClass = 'badge-metal';
+        else if (p.status === 'Draft') badgeClass = 'badge-metal';
+
+        return `
+          <tr>
+            <td><strong style="font-family: var(--font-mono); color: #16a34a;">${p.poNo}</strong></td>
+            <td>
+              <div style="font-weight: 700; color: var(--text-dark);">${p.supplierName}</div>
+              <small style="color: var(--text-dim);">${p.notes || ''}</small>
+            </td>
+            <td><span class="badge badge-metal">${p.category || 'General'}</span></td>
+            <td style="font-size: 0.8rem; color: var(--text-dark); max-width: 280px;">${p.itemsSummary}</td>
+            <td style="color: var(--text-dim); font-size: 0.8rem;">${p.orderDate}</td>
+            <td style="color: var(--text-dim); font-size: 0.8rem;">${p.expectedDate}</td>
+            <td><strong style="color: var(--text-dark);">₱${(p.totalAmount || 0).toLocaleString()}</strong></td>
+            <td><span class="badge ${badgeClass}">${p.status}</span></td>
+            <td>
+              <div style="display: flex; gap: 0.35rem;">
+                ${p.status !== 'Received' && p.status !== 'Paid' ? `
+                  <button class="btn-primary" style="padding: 0.3rem 0.6rem; font-size: 0.72rem;" onclick="App.markPOReceived('${p.id}')">Receive</button>
+                ` : `
+                  <span style="font-size: 0.72rem; color: #16a34a; font-weight: 700;">✓ Synced</span>
+                `}
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    } catch (err) {
+      console.error('Error rendering purchase orders:', err);
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="9">
+            <div class="page-error-state">
+              <div class="page-error-title">⚠️ Failed to load purchase orders</div>
+              <p>${err.message}</p>
+              <button class="page-error-retry-btn" onclick="App.renderPurchaseOrdersTable()">Retry</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }
+  }
+
+  markPOReceived(poId) {
+    const list = db.getPurchaseOrders();
+    const po = list.find(p => p.id === poId);
+    if (!po) return;
+    po.status = 'Received';
+    db.savePurchaseOrder(po);
+    db.addAuditLog({
+      user: this.currentUser?.username || 'owner',
+      role: this.currentUser?.roleLabel || 'Admin',
+      action: 'PO_RECEIVED',
+      module: 'Purchase Orders',
+      details: `Marked purchase order ${po.poNo} as Received from ${po.supplierName}`
+    });
+    this.renderPurchaseOrdersTable();
+    this.updateDashboardMetrics();
+    this.showToast(`Purchase Order ${po.poNo} marked as Received!`, 'success');
+  }
+
+  createPOForSupplier(supId) {
+    const sup = db.getSuppliers().find(s => s.id === supId);
+    if (!sup) return;
+    const po = db.savePurchaseOrder({
+      supplierId: sup.id,
+      supplierName: sup.name,
+      category: sup.category,
+      itemsSummary: `Standard workshop procurement (${sup.itemsSupplied})`,
+      orderDate: new Date().toISOString().split('T')[0],
+      expectedDate: new Date(Date.now() + 3*86400000).toISOString().split('T')[0],
+      totalAmount: 15000,
+      status: 'Submitted',
+      notes: `Direct PO issued to ${sup.name}`
+    });
+    this.loadView('purchase_orders');
+    this.showToast(`Purchase order ${po.poNo} created for ${sup.name}!`, 'success');
+  }
+
+  openNewPurchaseOrderModal() {
+    const suppliers = db.getSuppliers();
+    const supName = prompt('Enter Supplier Name or select from list:\n' + suppliers.map((s, i) => `${i+1}. ${s.name}`).join('\n'), suppliers[0]?.name || 'Mindanao Glass Depot (Davao)');
+    if (!supName) return;
+
+    const items = prompt('Enter materials to order (e.g. 6mm Clear Glass 100 sq ft):', '6mm Float Glass Sheet Replenishment');
+    if (!items) return;
+
+    const amountStr = prompt('Enter estimated PO total amount (₱):', '25000');
+    const amount = parseFloat(amountStr) || 25000;
+
+    const newPo = db.savePurchaseOrder({
+      supplierName: supName,
+      category: 'Workshop Restock',
+      itemsSummary: items,
+      orderDate: new Date().toISOString().split('T')[0],
+      expectedDate: new Date(Date.now() + 4*86400000).toISOString().split('T')[0],
+      totalAmount: amount,
+      status: 'Submitted',
+      notes: 'New supplier purchase order registered'
+    });
+
+    db.addAuditLog({
+      user: this.currentUser?.username || 'owner',
+      role: this.currentUser?.roleLabel || 'Admin',
+      action: 'PO_CREATED',
+      module: 'Purchase Orders',
+      details: `Created supplier PO ${newPo.poNo} for ${supName} (₱${amount.toLocaleString()})`
+    });
+
+    this.renderPurchaseOrdersTable();
+    this.updateDashboardMetrics();
+    this.showToast(`Purchase Order ${newPo.poNo} created successfully!`, 'success');
+  }
+
+  // ==========================================================================
+  // VIEW: INVOICES & BILLING
+  // ==========================================================================
+
+  filterInvoicesTable() {
+    const q = (document.getElementById('invoicesSearchInput')?.value || '').toLowerCase().trim();
+    const st = document.getElementById('invoiceStatusFilter')?.value || 'all';
+    this.renderInvoicesTable(q, st);
+  }
+
+  renderInvoicesTable(filterQuery = '', statusFilter = 'all') {
+    const tbody = document.getElementById('invoicesTableBody');
+    if (!tbody) return;
+
+    try {
+      let invoices = db.getInvoices ? db.getInvoices() : [];
+      if (filterQuery) {
+        invoices = invoices.filter(inv =>
+          (inv.invoiceNo || '').toLowerCase().includes(filterQuery) ||
+          (inv.customerName || '').toLowerCase().includes(filterQuery) ||
+          (inv.jobOrderNo || '').toLowerCase().includes(filterQuery)
+        );
+      }
+      if (statusFilter && statusFilter !== 'all') {
+        invoices = invoices.filter(inv => (inv.status || '').toLowerCase() === statusFilter.toLowerCase());
+      }
+
+      if (invoices.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="10">
+              <div class="page-empty-state">
+                <span class="page-empty-icon">🧾</span>
+                <div class="page-empty-title">No invoices found</div>
+                <div class="page-empty-sub">Generate customer invoices from active job orders to track billing and collect progress balances.</div>
+                <button type="button" class="btn-primary" onclick="App.openNewInvoiceModal()" style="margin: 0.75rem auto 0 auto; display: inline-flex;">+ Generate Invoice</button>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = invoices.map(inv => {
+        let badgeClass = 'badge-warning';
+        if (inv.status === 'Paid') badgeClass = 'badge-success';
+        else if (inv.status === 'Overdue') badgeClass = 'badge-danger';
+
+        return `
+          <tr>
+            <td><strong style="font-family: var(--font-mono); color: #16a34a;">${inv.invoiceNo}</strong></td>
+            <td><strong style="color: var(--text-dark);">${inv.jobOrderNo}</strong></td>
+            <td>
+              <div style="font-weight: 700; color: var(--text-dark);">${inv.customerName}</div>
+              <small style="color: var(--text-muted);">${inv.phone}</small>
+            </td>
+            <td><span class="badge badge-metal">${inv.trade || 'Custom'}</span></td>
+            <td style="color: var(--text-dim); font-size: 0.8rem;">${inv.issueDate}</td>
+            <td style="color: var(--text-dim); font-size: 0.8rem;">${inv.dueDate}</td>
+            <td><strong style="color: var(--text-dark);">₱${(inv.totalAmount || 0).toLocaleString()}</strong></td>
+            <td><strong style="color: ${inv.balanceDue <= 0 ? '#16a34a' : '#dc2626'};">₱${(inv.balanceDue || 0).toLocaleString()}</strong></td>
+            <td><span class="badge ${badgeClass}">${inv.status}</span></td>
+            <td>
+              <div style="display: flex; gap: 0.35rem;">
+                <button class="btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.72rem;" onclick="App.showInvoiceSlip('${inv.id}')">Print</button>
+                ${inv.balanceDue > 0 ? `
+                  <button class="btn-primary" style="padding: 0.3rem 0.6rem; font-size: 0.72rem;" onclick="App.openPaymentCollectionForInvoice('${inv.id}')">Collect</button>
+                ` : ''}
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    } catch (err) {
+      console.error('Error rendering invoices:', err);
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="10">
+            <div class="page-error-state">
+              <div class="page-error-title">⚠️ Failed to load invoices</div>
+              <p>${err.message}</p>
+              <button class="page-error-retry-btn" onclick="App.renderInvoicesTable()">Retry</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }
+  }
+
+  showInvoiceSlip(invId) {
+    const inv = db.getInvoices().find(i => i.id === invId);
+    if (!inv) return;
+    this.showToast(`Invoice ${inv.invoiceNo} generated and ready for print!`, 'info');
+  }
+
+  openPaymentCollectionForInvoice(invId) {
+    const inv = db.getInvoices().find(i => i.id === invId);
+    if (!inv) return;
+    const amountStr = prompt(`Collect payment for Invoice ${inv.invoiceNo}\nCustomer: ${inv.customerName}\nRemaining Balance: ₱${inv.balanceDue.toLocaleString()}\n\nEnter amount to collect:`, inv.balanceDue);
+    const amount = parseFloat(amountStr);
+    if (!amount || amount <= 0) return;
+
+    inv.amountPaid = (inv.amountPaid || 0) + amount;
+    inv.balanceDue = Math.max(0, inv.totalAmount - inv.amountPaid);
+    if (inv.balanceDue === 0) inv.status = 'Paid';
+    else inv.status = 'Partial';
+
+    db.saveInvoice(inv);
+    db.addAuditLog({
+      user: this.currentUser?.username || 'sales',
+      role: this.currentUser?.roleLabel || 'Cashier',
+      action: 'PAYMENT_COLLECT',
+      module: 'Invoices & Billing',
+      details: `Collected ₱${amount.toLocaleString()} on Invoice ${inv.invoiceNo} (${inv.customerName})`
+    });
+
+    this.renderInvoicesTable();
+    this.updateDashboardMetrics();
+    this.showToast(`Payment of ₱${amount.toLocaleString()} recorded for ${inv.customerName}!`, 'success');
+  }
+
+  openNewInvoiceModal() {
+    const customers = db.getCustomers();
+    const custName = prompt('Enter customer name for invoice:\n' + customers.map((c, i) => `${i+1}. ${c.name}`).join('\n'), customers[0]?.name || 'Engr. Mateo Alcantara');
+    if (!custName) return;
+
+    const amountStr = prompt('Enter total invoice contract amount (₱):', '35000');
+    const amount = parseFloat(amountStr) || 35000;
+
+    const newInv = db.saveInvoice({
+      jobOrderNo: 'JO-2026-0' + (40 + Math.floor(Math.random() * 50)),
+      customerName: custName,
+      phone: '0921-371-0555',
+      trade: 'Workshop Fabrication',
+      issueDate: new Date().toISOString().split('T')[0],
+      dueDate: new Date(Date.now() + 30*86400000).toISOString().split('T')[0],
+      totalAmount: amount,
+      amountPaid: 0,
+      balanceDue: amount,
+      status: 'Partial'
+    });
+
+    db.addAuditLog({
+      user: this.currentUser?.username || 'sales',
+      role: this.currentUser?.roleLabel || 'Cashier',
+      action: 'INVOICE_CREATE',
+      module: 'Invoices & Billing',
+      details: `Issued invoice ${newInv.invoiceNo} for ${custName} (₱${amount.toLocaleString()})`
+    });
+
+    this.renderInvoicesTable();
+    this.updateDashboardMetrics();
+    this.showToast(`Invoice ${newInv.invoiceNo} generated successfully!`, 'success');
+  }
+
+  // ==========================================================================
+  // VIEW: WARRANTY & INSTALLATION RECORDS
+  // ==========================================================================
+
+  filterWarrantyTable() {
+    const q = (document.getElementById('warrantySearchInput')?.value || '').toLowerCase().trim();
+    const st = document.getElementById('warrantyStatusFilter')?.value || 'all';
+    this.renderWarrantyTable(q, st);
+  }
+
+  renderWarrantyTable(filterQuery = '', statusFilter = 'all') {
+    const tbody = document.getElementById('warrantyTableBody');
+    if (!tbody) return;
+
+    try {
+      let records = db.getWarrantyRecords ? db.getWarrantyRecords() : [];
+      if (filterQuery) {
+        records = records.filter(w =>
+          (w.certNo || '').toLowerCase().includes(filterQuery) ||
+          (w.customerName || '').toLowerCase().includes(filterQuery) ||
+          (w.jobOrderNo || '').toLowerCase().includes(filterQuery) ||
+          (w.projectScope || '').toLowerCase().includes(filterQuery)
+        );
+      }
+      if (statusFilter && statusFilter !== 'all') {
+        records = records.filter(w => (w.status || '').toLowerCase() === statusFilter.toLowerCase());
+      }
+
+      if (records.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="9">
+              <div class="page-empty-state">
+                <span class="page-empty-icon">🛡️</span>
+                <div class="page-empty-title">No warranty records found</div>
+                <div class="page-empty-sub">Issue safety temper warranties and installation guarantees for completed Digos City client installations.</div>
+                <button type="button" class="btn-primary" onclick="App.openNewWarrantyModal()" style="margin: 0.75rem auto 0 auto; display: inline-flex;">+ Issue Warranty Certificate</button>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = records.map(w => {
+        let badgeClass = 'badge-success';
+        if (w.status === 'Expiring Soon') badgeClass = 'badge-warning';
+        else if (w.status === 'Expired') badgeClass = 'badge-metal';
+
+        return `
+          <tr>
+            <td><strong style="font-family: var(--font-mono); color: #16a34a;">${w.certNo}</strong></td>
+            <td><strong style="color: var(--text-dark);">${w.jobOrderNo}</strong></td>
+            <td>
+              <div style="font-weight: 700; color: var(--text-dark);">${w.customerName}</div>
+              <small style="color: var(--text-muted);">${w.phone}</small>
+            </td>
+            <td style="color: var(--text-dim); font-size: 0.8rem;">${w.address}</td>
+            <td style="color: var(--text-dark); font-size: 0.82rem; max-width: 250px;">${w.projectScope}</td>
+            <td style="color: var(--text-dim); font-size: 0.8rem;">${w.installDate}</td>
+            <td style="color: var(--text-dim); font-size: 0.8rem;">${w.expiryDate}</td>
+            <td><span class="badge ${badgeClass}">${w.status}</span></td>
+            <td>
+              <button class="btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.72rem;" onclick="App.printWarrantyCertificate('${w.id}')">View Cert</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    } catch (err) {
+      console.error('Error rendering warranty records:', err);
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="9">
+            <div class="page-error-state">
+              <div class="page-error-title">⚠️ Failed to load warranty records</div>
+              <p>${err.message}</p>
+              <button class="page-error-retry-btn" onclick="App.renderWarrantyTable()">Retry</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }
+  }
+
+  printWarrantyCertificate(warId) {
+    const w = db.getWarrantyRecords().find(r => r.id === warId);
+    if (!w) return;
+    alert(`★ RUSSEL'S OFFICIAL WARRANTY CERTIFICATE ★\n\nCertificate No: ${w.certNo}\nJob Order: ${w.jobOrderNo}\nClient: ${w.customerName}\nSite: ${w.address}\nInstalled: ${w.installDate}\nWarranty Valid Until: ${w.expiryDate}\nTerms: ${w.warrantyTerm}\nStatus: ${w.status}\n\nRUSSEL'S GLASS, WOODS & METALS • DIGOS CITY\n"You NAME it, we BUILD it"`);
+  }
+
+  openNewWarrantyModal() {
+    const custName = prompt('Enter customer name for warranty certificate:', 'Engr. Mateo Alcantara');
+    if (!custName) return;
+
+    const scope = prompt('Enter project description (e.g. 10mm Tempered Glass Shower Enclosure):', '12mm Tempered Glass Storefront Installation');
+    if (!scope) return;
+
+    const newWar = db.saveWarrantyRecord({
+      jobOrderNo: 'JO-2026-0041',
+      customerName: custName,
+      phone: '0921-371-0555',
+      address: 'Digos City, Davao del Sur',
+      projectScope: scope,
+      trade: 'Glass Works',
+      installDate: new Date().toISOString().split('T')[0],
+      expiryDate: new Date(Date.now() + 365*86400000).toISOString().split('T')[0],
+      warrantyTerm: '1 Year Full Structural & Sealant Guarantee',
+      status: 'Active'
+    });
+
+    db.addAuditLog({
+      user: this.currentUser?.username || 'owner',
+      role: this.currentUser?.roleLabel || 'Admin',
+      action: 'WARRANTY_ISSUE',
+      module: 'Warranty Records',
+      details: `Issued warranty certificate ${newWar.certNo} for ${custName}`
+    });
+
+    this.renderWarrantyTable();
+    this.updateDashboardMetrics();
+    this.showToast(`Warranty certificate ${newWar.certNo} issued!`, 'success');
+  }
+
+  // ==========================================================================
+  // VIEW: AUDIT TRAIL
+  // ==========================================================================
+
+  filterAuditTable() {
+    const q = (document.getElementById('auditSearchInput')?.value || '').toLowerCase().trim();
+    const act = document.getElementById('auditActionFilter')?.value || 'all';
+    this.renderAuditTable(q, act);
+  }
+
+  renderAuditTable(filterQuery = '', actionFilter = 'all') {
+    const tbody = document.getElementById('auditTableBody');
+    if (!tbody) return;
+
+    try {
+      let logs = db.getAuditLogs ? db.getAuditLogs() : [];
+      if (filterQuery) {
+        logs = logs.filter(l =>
+          (l.action || '').toLowerCase().includes(filterQuery) ||
+          (l.user || '').toLowerCase().includes(filterQuery) ||
+          (l.module || '').toLowerCase().includes(filterQuery) ||
+          (l.details || '').toLowerCase().includes(filterQuery)
+        );
+      }
+      if (actionFilter && actionFilter !== 'all') {
+        logs = logs.filter(l => (l.action || '').toUpperCase() === actionFilter.toUpperCase());
+      }
+
+      if (logs.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7">
+              <div class="page-empty-state">
+                <span class="page-empty-icon">📜</span>
+                <div class="page-empty-title">No audit records found</div>
+                <div class="page-empty-sub">Activity logs and security trails will appear here automatically as operations are performed.</div>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = logs.map(l => `
+        <tr>
+          <td style="font-size: 0.8rem; color: var(--text-dim); font-family: var(--font-mono);">${l.timestamp}</td>
+          <td><strong style="color: var(--text-dark);">${l.user}</strong></td>
+          <td><span class="badge badge-metal">${l.role}</span></td>
+          <td><span class="badge badge-success">${l.action}</span></td>
+          <td style="color: var(--text-dim); font-size: 0.8rem;">${l.module}</td>
+          <td style="color: var(--text-dark); font-size: 0.82rem;">${l.details}</td>
+          <td style="font-family: var(--font-mono); color: var(--text-dim); font-size: 0.75rem;">${l.ip}</td>
+        </tr>
+      `).join('');
+    } catch (err) {
+      console.error('Error rendering audit trail:', err);
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7">
+            <div class="page-error-state">
+              <div class="page-error-title">⚠️ Failed to load audit trail</div>
+              <p>${err.message}</p>
+              <button class="page-error-retry-btn" onclick="App.renderAuditTable()">Retry</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }
   }
 
   openPaymentCollectionModal(orderId) {
