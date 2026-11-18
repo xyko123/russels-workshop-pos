@@ -1371,15 +1371,15 @@ class WorkshopApp {
 
         card.innerHTML = `
           <div class="job-card-header">
-            <span class="job-no">${order.jobOrderNo}</span>
+            <span class="job-no">${order.jobOrderNo || order.orderNo}</span>
             <span class="badge ${tradeClass}">${(order.tradeCategory || 'Glass').toUpperCase()}</span>
           </div>
           <div>
-            <h4 class="job-customer">${order.customerName}</h4>
-            <div class="job-address">${order.deliveryAddress.split(',')[0]}</div>
+            <h4 class="job-customer">${this.escapeHtml(order.customerName)}</h4>
+            <div class="job-address">${this.escapeHtml((order.deliveryAddress || 'Digos City').split(',')[0])}</div>
           </div>
           <div class="job-items-summary">
-            ${order.items.map(i => `• ${i.title} (x${i.quantity})`).slice(0, 2).join('<br>')}
+            ${(order.items || []).map(i => `• ${this.escapeHtml(i.title)} (x${i.quantity})`).slice(0, 2).join('<br>')}
           </div>
           <div class="job-progress-wrapper">
             <div class="job-progress-label">
@@ -1393,8 +1393,19 @@ class WorkshopApp {
           <div class="job-card-footer">
             <span class="job-target-date">Due: ${targetDateFmt}</span>
             <span class="job-balance-due ${isPaid ? 'paid' : ''}">
-              ${isPaid ? '✓ Fully Paid' : `Bal: ₱${order.balanceDue.toLocaleString()}`}
+              ${isPaid ? '✓ Fully Paid' : `Bal: ₱${Number(order.balanceDue || 0).toLocaleString()}`}
             </span>
+          </div>
+          ${order.signature ? `
+            <div style="margin-top: 6px; padding: 2px 6px; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 4px; font-size: 10px; color: #4ade80; display: flex; align-items: center; justify-content: space-between;">
+              <span>✍️ Client Signed</span>
+              <img src="${order.signature}" alt="Sig" style="height: 16px; max-width: 60px; object-fit: contain; background: #fff; border-radius: 2px;" />
+            </div>
+          ` : ''}
+          <div class="job-card-actions" style="display: flex; gap: 4px; margin-top: 8px; padding-top: 6px; border-top: 1px dashed rgba(255,255,255,0.08);" onclick="event.stopPropagation();">
+            <button type="button" class="btn btn-secondary btn-xs" onclick="App.moveJobStage('${order.id}', -1)" title="Move Back Stage" style="padding: 2px 6px; font-size: 11px;">⬅</button>
+            <button type="button" class="btn btn-primary btn-xs" onclick="App.openJobDetailsModal('${order.id}')" title="View / Edit Job Details" style="flex: 1; padding: 2px 6px; font-size: 11px; text-align: center;">Details</button>
+            <button type="button" class="btn btn-success btn-xs" onclick="App.moveJobStage('${order.id}', 1)" title="Advance to Next Stage" style="padding: 2px 8px; font-size: 11px; font-weight: bold; background: #16a34a; border-color: #16a34a; color: #fff;">Advance ➔</button>
           </div>
         `;
 
@@ -1405,6 +1416,50 @@ class WorkshopApp {
         countEl.textContent = parseInt(countEl.textContent || '0') + 1;
       }
     });
+  }
+
+  /* Interactive Stage Advancement on Workshop Kanban (6 Stages) */
+  moveJobStage(orderId, direction) {
+    const stages = [
+      { key: 'queued', label: '1. Queued', pct: 15 },
+      { key: 'materials_prepared', label: '2. Material Cut & Prep', pct: 35 },
+      { key: 'in_fabrication', label: '3. Assembly', pct: 60 },
+      { key: 'quality_check', label: '4. Quality Control', pct: 85 },
+      { key: 'ready_dispatch', label: '5. Ready', pct: 95 },
+      { key: 'installed_delivered', label: '6. Installed', pct: 100 }
+    ];
+
+    const orders = db.getOrders();
+    const order = orders.find(o => o.id === orderId);
+    if (!order) return;
+
+    let currIdx = stages.findIndex(s => s.key === (order.jobStatus || 'queued'));
+    if (currIdx === -1) currIdx = 0;
+
+    const nextIdx = currIdx + direction;
+    if (nextIdx < 0 || nextIdx >= stages.length) {
+      this.showToast(direction > 0 ? 'Job is already at the final stage (6. Installed)!' : 'Job is already at the first stage (1. Queued)!', 'info');
+      return;
+    }
+
+    const nextStage = stages[nextIdx];
+    order.jobStatus = nextStage.key;
+    order.progressPercent = nextStage.pct;
+    db.saveOrder(order);
+
+    if (db.addAuditLog) {
+      db.addAuditLog({
+        user: this.currentUser?.username || 'workshop',
+        role: this.currentUser?.roleLabel || 'Lead Fabricator',
+        action: 'STAGE_ADVANCE',
+        module: 'Job Orders (Kanban)',
+        details: `Stage updated for ${order.jobOrderNo || order.orderNo}: ${nextStage.label} (${nextStage.pct}%)`
+      });
+    }
+
+    this.renderKanbanBoard();
+    this.updateDashboardMetrics();
+    this.showToast(`${order.jobOrderNo || order.orderNo} moved to: ${nextStage.label} (${nextStage.pct}%)`, 'success');
   }
 
   openJobDetailsModal(orderId) {
@@ -4097,6 +4152,50 @@ class WorkshopApp {
     const text = `Dimensions: ${sqFt} (${sqM}) | Perimeter: ${perim}`;
     navigator.clipboard?.writeText(text).catch(() => {});
     this.showToast(`Copied to clipboard: ${sqFt}`, 'success');
+  }
+
+  /* Dimension & Cut Calculator: Inject Computed Square Footage directly into POS Order */
+  useDimensionsInOrder() {
+    const sqFtText = document.getElementById('calcSqFt')?.textContent || '0';
+    const sqFtVal = parseFloat(sqFtText) || 12.0;
+    const materialSelect = document.getElementById('calcMaterialTarget');
+    const selectedProdId = materialSelect?.value || 'prod-gls-01';
+
+    const products = (typeof db !== 'undefined' && db.getProducts) ? db.getProducts() : [];
+    let product = products.find(p => p.id === selectedProdId) || products[0];
+
+    const wVal = parseFloat(document.getElementById('calcWidth')?.value) || 36;
+    const hVal = parseFloat(document.getElementById('calcHeight')?.value) || 48;
+    const unit = document.getElementById('calcUnitSelect')?.value || 'inches';
+
+    const unitPrice = product.sellingPrice || 110;
+    const qty = Math.max(parseFloat(sqFtVal.toFixed(2)), 0.1);
+
+    if (!this.cart) this.cart = [];
+
+    // Check if product already exists in cart, otherwise push new line item
+    const existingIdx = this.cart.findIndex(i => i.id === product.id);
+    if (existingIdx !== -1) {
+      this.cart[existingIdx].quantity = qty;
+      this.cart[existingIdx].subtotal = qty * this.cart[existingIdx].unitPrice;
+      this.cart[existingIdx].specs = `Cut: ${wVal} × ${hVal} ${unit} (${qty} sq ft)`;
+    } else {
+      this.cart.push({
+        id: product.id,
+        name: product.name,
+        code: product.code || 'GLS-001',
+        unitPrice: unitPrice,
+        quantity: qty,
+        unit: 'sq ft',
+        subtotal: qty * unitPrice,
+        specs: `Cut: ${wVal} × ${hVal} ${unit} (${qty} sq ft)`
+      });
+    }
+
+    this.closeModal('modalDimensionCalc');
+    this.updateCartUI();
+    this.loadView('pos_counter');
+    this.showToast(`⚡ Injected ${qty} sq ft (${product.name}) into POS order!`, 'success');
   }
 
   openModal(modalId) {
