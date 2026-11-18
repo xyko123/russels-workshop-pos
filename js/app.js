@@ -2654,7 +2654,7 @@ class WorkshopApp {
     menu.style.display = isHidden ? 'block' : 'none';
   }
 
-  /* Bluechip Minimalist Live Metrics Update (Image 2) */
+  /* Bluechip Minimalist Live Metrics Update (Real Database Queries & ₱0.00 Format) */
   updateBluechipDashboard() {
     // 1. Live Date (both topbar and dash)
     const d = new Date();
@@ -2667,32 +2667,151 @@ class WorkshopApp {
     const topbarDateEl = document.getElementById('topbarLiveDate');
     if (topbarDateEl) topbarDateEl.textContent = dateStr;
 
-    // 2. Low-Stock Count
+    // 2. Card 1: Low-Stock Count (Real query from db.getLowStockProducts())
     const lowEl = document.getElementById('bcLowStockCount');
-    if (lowEl) {
-      const materials = (typeof db !== 'undefined' && db.getMaterials) ? db.getMaterials() : (this.materials || []);
-      const lowCount = materials.filter(m => (m.stock_quantity || 0) <= (m.reorder_level || 5)).length;
-      lowEl.textContent = `${lowCount || 1}`;
+    if (lowEl && typeof db !== 'undefined') {
+      const lowProducts = db.getLowStockProducts ? db.getLowStockProducts() : [];
+      lowEl.textContent = String(lowProducts.length);
     }
 
-    // 3. Pending Purchase / Fabrication Orders
+    // 3. Card 2: Pending Purchase Orders (Real query from db.getPendingPurchaseOrders())
     const pendEl = document.getElementById('bcPendingOrdersCount');
-    if (pendEl) {
-      const orders = (typeof db !== 'undefined' && db.getOrders) ? db.getOrders() : (this.orders || []);
-      const pendingCount = orders.filter(o => o.status === 'pending' || o.status === 'in_progress').length;
-      pendEl.textContent = `${pendingCount || 0}`;
+    if (pendEl && typeof db !== 'undefined') {
+      const pendingPOs = db.getPendingPurchaseOrders ? db.getPendingPurchaseOrders() : [];
+      pendEl.textContent = String(pendingPOs.length);
     }
 
-    // 4. Overdue Receivables
+    // 4. Card 3: Overdue Receivables (Real query from db.getOverdueReceivablesTotal())
     const recEl = document.getElementById('bcOverdueReceivables');
-    if (recEl) {
-      const orders = (typeof db !== 'undefined' && db.getOrders) ? db.getOrders() : (this.orders || []);
-      const overdueSum = orders.reduce((sum, o) => {
-        const bal = (parseFloat(o.total_amount) || 0) - (parseFloat(o.amount_paid) || 0);
-        return bal > 0 ? sum + bal : sum;
-      }, 0);
-      recEl.textContent = overdueSum > 0 ? `₱${overdueSum.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '₱0.00';
+    if (recEl && typeof db !== 'undefined') {
+      const overdueTotal = db.getOverdueReceivablesTotal ? db.getOverdueReceivablesTotal() : 0;
+      recEl.textContent = db.formatCurrency ? db.formatCurrency(overdueTotal) : `₱${Number(overdueTotal || 0).toFixed(2)}`;
     }
+
+    // 5. Card 4: Warranty Expiring (Real query from db.getExpiringWarranties(30))
+    const warEl = document.getElementById('bcWarrantyExpiring');
+    if (warEl && typeof db !== 'undefined') {
+      const expiringWar = db.getExpiringWarranties ? db.getExpiringWarranties(30) : [];
+      warEl.textContent = String(expiringWar.length);
+    }
+
+    // 6. Dynamic Sales Overview Chart (Last 6 Months from Database Invoices)
+    this.renderSalesOverviewChart();
+
+    // 7. Dynamic Overdue Invoices List
+    this.renderOverdueInvoicesPanel();
+
+    // 8. Dynamic Reorder Alerts Table
+    this.renderReorderAlertsTable();
+  }
+
+  /* Render Dynamic Sales Overview SVG Chart based on 6 Months of Historical Invoices */
+  renderSalesOverviewChart() {
+    const chartWrapper = document.getElementById('bcChartWrapper');
+    if (!chartWrapper || typeof db === 'undefined' || !db.getMonthlySales) return;
+
+    const monthlySales = db.getMonthlySales(6);
+    const maxVal = Math.max(...monthlySales.map(m => m.total), 90000);
+    const chartHeight = 140; // Max bar height in pixels
+    const chartBaseY = 188;  // Base baseline Y coordinate in SVG
+
+    const barsSvg = monthlySales.map((item, idx) => {
+      const barX = 75 + idx * 100;
+      const barHeight = Math.max(Math.round((item.total / maxVal) * chartHeight), 12);
+      const barY = chartBaseY - barHeight;
+      const isCurrentMonth = idx === monthlySales.length - 1;
+      const barColor = isCurrentMonth ? '#22c55e' : '#16a34a';
+      const labelColor = isCurrentMonth ? '#4ade80' : '#94a3b8';
+      const formattedTotal = db.formatCurrency(item.total);
+
+      return `
+        <!-- Month ${item.month} -->
+        <g class="chart-bar-group" style="cursor: pointer;">
+          <title>${item.fullName}: ${formattedTotal}</title>
+          <rect x="${barX}" y="${barY}" width="44" height="${barHeight}" rx="4" fill="${barColor}" opacity="0.9" />
+          <text x="${barX + 22}" y="${barY - 8}" fill="${isCurrentMonth ? '#ffffff' : '#94a3b8'}" font-size="10" font-family="monospace" font-weight="${isCurrentMonth ? 'bold' : 'normal'}" text-anchor="middle">₱${Math.round(item.total / 1000)}k</text>
+          <text x="${barX + 22}" y="202" fill="${labelColor}" font-size="11" font-weight="${isCurrentMonth ? '700' : '500'}" text-anchor="middle">${item.month}</text>
+        </g>
+      `;
+    }).join('');
+
+    chartWrapper.innerHTML = `
+      <svg class="bluechip-svg-chart" viewBox="0 0 660 215" preserveAspectRatio="none">
+        <!-- Horizontal Gridlines from 0 to 100k -->
+        <line x1="45" y1="20" x2="650" y2="20" stroke="rgba(255,255,255,0.08)" stroke-dasharray="2 2" />
+        <text x="5" y="24" fill="#64748b" font-size="10">₱100k —</text>
+
+        <line x1="45" y1="62" x2="650" y2="62" stroke="rgba(255,255,255,0.08)" stroke-dasharray="2 2" />
+        <text x="10" y="66" fill="#64748b" font-size="10">₱75k —</text>
+
+        <line x1="45" y1="104" x2="650" y2="104" stroke="rgba(255,255,255,0.08)" stroke-dasharray="2 2" />
+        <text x="10" y="108" fill="#64748b" font-size="10">₱50k —</text>
+
+        <line x1="45" y1="146" x2="650" y2="146" stroke="rgba(255,255,255,0.08)" stroke-dasharray="2 2" />
+        <text x="10" y="150" fill="#64748b" font-size="10">₱25k —</text>
+
+        <line x1="45" y1="188" x2="650" y2="188" stroke="rgba(255,255,255,0.2)" />
+        <text x="25" y="192" fill="#64748b" font-size="10">₱0 —</text>
+
+        <!-- Dynamic Monthly Bars -->
+        ${barsSvg}
+      </svg>
+    `;
+  }
+
+  /* Render Overdue Invoices in Dashboard Panel */
+  renderOverdueInvoicesPanel() {
+    const container = document.getElementById('bcOverdueInvoicesContainer');
+    if (!container || typeof db === 'undefined' || !db.getOverdueInvoices) return;
+
+    const overdueList = db.getOverdueInvoices();
+    if (overdueList.length === 0) {
+      container.className = 'bluechip-empty-invoices';
+      container.innerHTML = '<p>No overdue invoices. Great work!</p>';
+    } else {
+      container.className = 'bluechip-invoices-list';
+      container.innerHTML = overdueList.map(inv => `
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.06);">
+          <div>
+            <div style="font-weight: 600; color: #f8fafc; font-size: 0.9rem;">${this.escapeHtml(inv.customerName)}</div>
+            <div style="font-size: 0.75rem; color: #ef4444; margin-top: 2px;">
+              <span class="font-mono">${this.escapeHtml(inv.invoiceNo)}</span> • Due: ${inv.dueDate || 'Past Due'}
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-family: monospace; font-weight: 700; color: #ef4444; font-size: 0.95rem;">${db.formatCurrency(inv.balanceDue)}</div>
+            <button type="button" class="btn btn-secondary btn-xs" onclick="App.loadView('invoices')" style="margin-top: 4px; padding: 2px 8px; font-size: 0.75rem;">Follow up</button>
+          </div>
+        </div>
+      `).join('');
+    }
+  }
+
+  /* Render Reorder Alerts Table from Real Database Low-Stock Items */
+  renderReorderAlertsTable() {
+    const tbody = document.getElementById('bcReorderAlertsBody');
+    if (!tbody || typeof db === 'undefined' || !db.getLowStockProducts) return;
+
+    const lowItems = db.getLowStockProducts();
+    if (lowItems.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="4" style="text-align: center; padding: 1.5rem; color: #94a3b8;">
+            All materials and products are currently above safety reorder thresholds.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = lowItems.map(item => `
+      <tr>
+        <td class="font-mono" style="color: #ef4444; font-weight: 700;">${this.escapeHtml(item.code || item.sku || 'N/A')}</td>
+        <td class="font-medium" style="color: #f1f5f9;">${this.escapeHtml(item.name)}</td>
+        <td style="color: #f87171; font-weight: 600;">${item.stockQuantity} ${item.unit || ''}</td>
+        <td style="color: #94a3b8;">${item.reorderLevel} ${item.unit || ''}</td>
+      </tr>
+    `).join('');
   }
 
   /* Facebook "My Day" Stories Carousel Smooth & Infinite Scroll */

@@ -5,41 +5,71 @@
  * Workshop Point of Sale & Fabrication Management
  */
 
-// Default Authorized Accounts for Owner, Front Office, and Workshop Personnel
+// Standard SHA-256 Hash helper (Browser SubtleCrypto with synchronous fallback)
+async function sha256Hex(str) {
+  try {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(str);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  } catch (err) {
+    // Basic fallback for non-secure contexts
+    return str;
+  }
+}
+window.sha256Hex = sha256Hex;
+
+// Default Authorized Accounts for Owner, Cashier, and Workshop Personnel with SHA-256 Hashes
 const DEFAULT_USERS = [
   {
     username: 'owner',
     password: 'Admin123!',
-    fullName: 'Russel T. (Proprietor)',
+    passwordHash: '3eb3fe66b31e3b4d10fa70b5cad49c7112294af6ae4e476a1c405155d45aa121',
+    fullName: 'Russel Bajura',
     phone: '0921-371-0555',
     email: 'irisjunetaborbajura@gmail.com',
     role: 'owner',
     roleLabel: 'Proprietor & General Manager',
-    avatar: 'RT'
+    avatar: 'RB'
+  },
+  {
+    username: 'cashier',
+    password: 'Sales123!',
+    passwordHash: '8e2f6790905d0f1f9452d303bceaedc687b927b2a9f30163706f0fbbd390077a',
+    fullName: 'Iris June Tabor',
+    phone: '0929-590-2201',
+    email: 'irisjunetaborbajura@gmail.com',
+    role: 'sales',
+    roleLabel: 'Cashier & Finance Officer',
+    avatar: 'IJ'
   },
   {
     username: 'sales',
     password: 'Sales123!',
-    fullName: 'Iris June Tabor / Office Staff',
+    passwordHash: '8e2f6790905d0f1f9452d303bceaedc687b927b2a9f30163706f0fbbd390077a',
+    fullName: 'Iris June Tabor (Cashier)',
     phone: '0929-590-2201',
     email: 'irisjunetaborbajura@gmail.com',
     role: 'sales',
-    roleLabel: 'Sales & Front Office',
+    roleLabel: 'Cashier & Front Office',
     avatar: 'IJ'
   },
   {
     username: 'workshop',
     password: 'Craft123!',
-    fullName: 'Arnel Mendoza (Lead Fabricator)',
+    passwordHash: 'f2c2c00dc0e3ac7376e5585f489e64bd9bf6a388708faa470320fbf7419cb5f9',
+    fullName: 'Arnel Mendoza',
     phone: '09053602201',
     email: 'fabrication@russelsworkshop.ph',
     role: 'fabricator',
-    roleLabel: 'Workshop & Site Installer',
+    roleLabel: 'Fabrication Lead Foreman',
     avatar: 'AM'
   },
   {
     username: 'demo',
     password: 'DemoUser2026!',
+    passwordHash: 'a5dfb064972f10b2a59e7f41539e083c267865c69286d8442ff9241ff8e329e4',
     fullName: 'Guest Evaluator (Live Demo Mode)',
     phone: '0900-000-0000',
     email: 'demo@russelsworkshop.ph',
@@ -504,7 +534,7 @@ document.addEventListener('DOMContentLoaded', () => {
   getStoredUsers();
 
   if (loginForm) {
-    loginForm.addEventListener('submit', (e) => {
+    loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const username = loginForm.username.value.trim();
@@ -515,9 +545,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      // Compute SHA-256 hash of password for secure verification
+      const passwordHash = await sha256Hex(password);
       const users = getStoredUsers();
+      
       const matchedUser = users.find(
-        (u) => u.username.toLowerCase() === username.toLowerCase() && u.password === password
+        (u) => u.username.toLowerCase() === username.toLowerCase() && 
+               ((u.passwordHash && u.passwordHash === passwordHash) || u.password === password)
       );
 
       if (matchedUser) {

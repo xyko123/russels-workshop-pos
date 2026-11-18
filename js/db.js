@@ -135,17 +135,92 @@ const INITIAL_WARRANTY_RECORDS = [
   }
 ];
 
-// Seed Customer Invoices
+// Seed Customer Invoices (6 Months of Historical Invoices for Sales Overview & Overdue Tracking)
 const INITIAL_INVOICES = [
+  {
+    id: 'inv-2026-06',
+    invoiceNo: 'INV-2026-0112',
+    orderId: 'ord-hist-01',
+    jobOrderNo: 'JO-2026-0020',
+    customerName: 'Brgy. Captain Roland Estrada',
+    phone: '0922-111-2233',
+    issueDate: '2026-06-15',
+    dueDate: '2026-07-15',
+    totalAmount: 38500,
+    amountPaid: 38500,
+    balanceDue: 0,
+    status: 'Paid',
+    trade: 'Shutters & Metal'
+  },
+  {
+    id: 'inv-2026-07',
+    invoiceNo: 'INV-2026-0134',
+    orderId: 'ord-hist-02',
+    jobOrderNo: 'JO-2026-0025',
+    customerName: 'Sinawilan Christian Academy',
+    phone: '0918-990-2345',
+    issueDate: '2026-07-20',
+    dueDate: '2026-08-20',
+    totalAmount: 45200,
+    amountPaid: 45200,
+    balanceDue: 0,
+    status: 'Paid',
+    trade: 'Metal Works'
+  },
+  {
+    id: 'inv-2026-08',
+    invoiceNo: 'INV-2026-0158',
+    orderId: 'ord-hist-03',
+    jobOrderNo: 'JO-2026-0030',
+    customerName: 'Engr. Roberto Villamor',
+    phone: '0917-823-4512',
+    issueDate: '2026-08-18',
+    dueDate: '2026-09-18',
+    totalAmount: 58000,
+    amountPaid: 58000,
+    balanceDue: 0,
+    status: 'Paid',
+    trade: 'Glass Works'
+  },
+  {
+    id: 'inv-2026-09',
+    invoiceNo: 'INV-2026-0180',
+    orderId: 'ord-hist-04',
+    jobOrderNo: 'JO-2026-0034',
+    customerName: 'Davao South Commercial Bakery',
+    phone: '0945-667-8891',
+    issueDate: '2026-09-22',
+    dueDate: '2026-10-22',
+    totalAmount: 62400,
+    amountPaid: 62400,
+    balanceDue: 0,
+    status: 'Paid',
+    trade: 'Glass & Metal'
+  },
+  {
+    id: 'inv-2026-10',
+    invoiceNo: 'INV-2026-0195',
+    orderId: 'ord-hist-05',
+    jobOrderNo: 'JO-2026-0037',
+    customerName: 'Kapatagan Mountain Resort Admin',
+    phone: '0927-778-9900',
+    issueDate: '2026-10-15',
+    dueDate: '2026-11-15',
+    totalAmount: 54800,
+    amountPaid: 54800,
+    balanceDue: 0,
+    status: 'Paid',
+    trade: 'Glass Works'
+  },
   {
     id: 'inv-001',
     invoiceNo: 'INV-2026-0201',
-    orderId: 'ord-01',
-    jobOrderNo: 'JO-2026-0038',
-    customerName: 'Engr. Mateo Alcantara',
-    phone: '0917-889-1234',
-    issueDate: '2026-10-25',
-    dueDate: '2026-11-25',
+    orderId: 'ord-101',
+    jobOrderNo: 'JO-2026-0041',
+    customerName: 'Engr. Roberto Villamor',
+    phone: '0917-823-4512',
+    issueDate: '2026-11-01',
+    dueDate: '2026-12-01',
     totalAmount: 85000,
     amountPaid: 85000,
     balanceDue: 0,
@@ -155,12 +230,12 @@ const INITIAL_INVOICES = [
   {
     id: 'inv-002',
     invoiceNo: 'INV-2026-0202',
-    orderId: 'ord-02',
-    jobOrderNo: 'JO-2026-0039',
+    orderId: 'ord-102',
+    jobOrderNo: 'JO-2026-0042',
     customerName: 'Dra. Carmela Sison',
     phone: '0920-555-7890',
-    issueDate: '2026-11-02',
-    dueDate: '2026-12-02',
+    issueDate: '2026-11-05',
+    dueDate: '2026-12-05',
     totalAmount: 68000,
     amountPaid: 35000,
     balanceDue: 33000,
@@ -170,12 +245,12 @@ const INITIAL_INVOICES = [
   {
     id: 'inv-003',
     invoiceNo: 'INV-2026-0203',
-    orderId: 'ord-03',
-    jobOrderNo: 'JO-2026-0040',
+    orderId: 'ord-103',
+    jobOrderNo: 'JO-2026-0043',
     customerName: 'Arch. Dennis Tan',
     phone: '0918-333-4455',
-    issueDate: '2026-11-08',
-    dueDate: '2026-11-22',
+    issueDate: '2026-11-02',
+    dueDate: '2026-11-15',
     totalAmount: 45000,
     amountPaid: 20000,
     balanceDue: 25000,
@@ -264,7 +339,7 @@ const INITIAL_PRODUCTS = [
     unit: 'sq ft',
     unitCost: 85,
     sellingPrice: 145,
-    stockQuantity: 280,
+    stockQuantity: 279,
     reorderLevel: 80,
     supplier: 'Mindanao Glass Depot (Davao)',
     description: 'Sun-filtering bronze architectural glass for modern residential facades'
@@ -856,7 +931,7 @@ const INITIAL_PRODUCTS = [
   }
 ];
 
-// Seed Customers (Digos City, Davao del Sur)
+// Seed Customers (10 Digos City Barangays, Davao del Sur)
 const INITIAL_CUSTOMERS = [
   {
     id: 'cust-01',
@@ -864,6 +939,8 @@ const INITIAL_CUSTOMERS = [
     name: 'Engr. Roberto Villamor',
     phone: '0917-823-4512',
     address: 'Prk. Mahogany, Tres de Mayo, Digos City',
+    barangay: 'Tres de Mayo',
+    city: 'Digos City',
     customerType: 'Contractor',
     notes: 'General contractor for 2-storey residential villa project',
     totalSpent: 48500,
@@ -875,6 +952,8 @@ const INITIAL_CUSTOMERS = [
     name: 'Atty. Cecilia M. Tan',
     phone: '0928-554-1920',
     address: 'San Jose Highway, Zone 1, Digos City',
+    barangay: 'Zone I',
+    city: 'Digos City',
     customerType: 'Homeowner',
     notes: 'Custom dining set and french glass sliding balcony door',
     totalSpent: 32000,
@@ -886,6 +965,8 @@ const INITIAL_CUSTOMERS = [
     name: 'Davao South Commercial Bakery',
     phone: '0945-667-8891',
     address: 'Rizal Avenue cor. Roxas Ext., Digos City',
+    barangay: 'Zone III',
+    city: 'Digos City',
     customerType: 'Commercial Business',
     notes: 'Glass display showcase counters and stainless bread storage racks',
     totalSpent: 64000,
@@ -897,6 +978,8 @@ const INITIAL_CUSTOMERS = [
     name: 'Mr. & Mrs. Danny Alcantara',
     phone: '0939-112-9043',
     address: 'Purok Mangga, Cogon, Digos City',
+    barangay: 'Cogon',
+    city: 'Digos City',
     customerType: 'Homeowner',
     notes: 'Full house window security grills and front gate repair',
     totalSpent: 26500,
@@ -907,11 +990,78 @@ const INITIAL_CUSTOMERS = [
     code: 'CUST-105',
     name: 'Sinawilan Christian Academy',
     phone: '0918-990-2345',
-    address: 'Sinawilan, Digos City',
+    address: 'National Highway, Sinawilan, Digos City',
+    barangay: 'Sinawilan',
+    city: 'Digos City',
     customerType: 'Commercial Business',
     notes: 'Classroom aluminum awning windows and metal stair railings',
     totalSpent: 52000,
     createdAt: '2026-11-08T08:45:00Z'
+  },
+  {
+    id: 'cust-06',
+    code: 'CUST-106',
+    name: 'Dra. Carmela Sison',
+    phone: '0920-555-7890',
+    address: 'Roxas Ext., Brgy. Zone III, Digos City',
+    barangay: 'Zone III',
+    city: 'Digos City',
+    customerType: 'Homeowner',
+    notes: 'Solid Narra executive dining set and modular kitchen cabinets',
+    totalSpent: 68000,
+    createdAt: '2026-11-02T13:20:00Z'
+  },
+  {
+    id: 'cust-07',
+    code: 'CUST-107',
+    name: 'Arch. Dennis Tan',
+    phone: '0918-333-4455',
+    address: 'Purok Narra, Tres de Mayo, Digos City',
+    barangay: 'Tres de Mayo',
+    city: 'Digos City',
+    customerType: 'Contractor',
+    notes: 'Stainless steel 304 main gate & balcony railings contractor',
+    totalSpent: 45000,
+    createdAt: '2026-11-03T11:15:00Z'
+  },
+  {
+    id: 'cust-08',
+    code: 'CUST-108',
+    name: 'Brgy. Captain Roland Estrada',
+    phone: '0922-111-2233',
+    address: 'Barangay Hall, Zone II, Digos City',
+    barangay: 'Zone II',
+    city: 'Digos City',
+    customerType: 'Commercial Business',
+    notes: 'Barangay multi-purpose hall heavy-duty roll-up shutters',
+    totalSpent: 38500,
+    createdAt: '2026-06-12T09:30:00Z'
+  },
+  {
+    id: 'cust-09',
+    code: 'CUST-109',
+    name: 'Mrs. Elena G. Ramos',
+    phone: '0919-444-5566',
+    address: 'Prk. Sampaguita, Colorado, Digos City',
+    barangay: 'Colorado',
+    city: 'Digos City',
+    customerType: 'Homeowner',
+    notes: 'Residential sliding window replacement with 6mm Bronze Glass',
+    totalSpent: 18500,
+    createdAt: '2026-11-09T15:40:00Z'
+  },
+  {
+    id: 'cust-10',
+    code: 'CUST-110',
+    name: 'Kapatagan Mountain Resort Admin',
+    phone: '0927-778-9900',
+    address: 'Sitio Mainit, Kapatagan, Digos City',
+    barangay: 'Kapatagan',
+    city: 'Digos City',
+    customerType: 'Commercial Business',
+    notes: 'Panoramic glass view deck railings and timber cabins',
+    totalSpent: 95000,
+    createdAt: '2026-10-10T10:00:00Z'
   }
 ];
 
@@ -1306,10 +1456,12 @@ class WorkshopDB {
   }
 
   init() {
-    if (!localStorage.getItem(DB_KEYS.PRODUCTS)) {
+    const existingProducts = localStorage.getItem(DB_KEYS.PRODUCTS);
+    if (!existingProducts || JSON.parse(existingProducts).length < INITIAL_PRODUCTS.length) {
       this.save(DB_KEYS.PRODUCTS, INITIAL_PRODUCTS);
     }
-    if (!localStorage.getItem(DB_KEYS.CUSTOMERS)) {
+    const existingCustomers = localStorage.getItem(DB_KEYS.CUSTOMERS);
+    if (!existingCustomers || JSON.parse(existingCustomers).length < INITIAL_CUSTOMERS.length) {
       this.save(DB_KEYS.CUSTOMERS, INITIAL_CUSTOMERS);
     }
     if (!localStorage.getItem(DB_KEYS.ORDERS)) {
@@ -1330,12 +1482,89 @@ class WorkshopDB {
     if (!localStorage.getItem(DB_KEYS.WARRANTY)) {
       this.save(DB_KEYS.WARRANTY, INITIAL_WARRANTY_RECORDS);
     }
-    if (!localStorage.getItem(DB_KEYS.INVOICES)) {
+    const existingInvoices = localStorage.getItem(DB_KEYS.INVOICES);
+    if (!existingInvoices || JSON.parse(existingInvoices).length < INITIAL_INVOICES.length) {
       this.save(DB_KEYS.INVOICES, INITIAL_INVOICES);
     }
     if (!localStorage.getItem(DB_KEYS.AUDIT)) {
       this.save(DB_KEYS.AUDIT, INITIAL_AUDIT_LOGS);
     }
+  }
+
+  // Currency Formatter Utility: Always ₱0.00 with two decimal places
+  formatCurrency(amount) {
+    const val = Number(amount || 0);
+    return '₱' + val.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  // REAL DATABASE QUERY HELPERS FOR DASHBOARD CARDS & CHARTS
+  getLowStockProducts() {
+    const products = this.getProducts();
+    return products.filter(p => (Number(p.stockQuantity) || 0) <= (Number(p.reorderLevel) || 10));
+  }
+
+  getPendingPurchaseOrders() {
+    const list = this.getPurchaseOrders();
+    return list.filter(po => {
+      const st = (po.status || '').toLowerCase();
+      return st === 'draft' || st === 'submitted' || st === 'pending';
+    });
+  }
+
+  getOverdueInvoices() {
+    const list = this.getInvoices();
+    const today = new Date().toISOString().split('T')[0];
+    return list.filter(inv => {
+      const bal = Number(inv.balanceDue || 0);
+      const isPastDue = inv.dueDate && inv.dueDate < today;
+      const isStatusOverdue = (inv.status || '').toLowerCase() === 'overdue';
+      return bal > 0 && (isPastDue || isStatusOverdue);
+    });
+  }
+
+  getOverdueReceivablesTotal() {
+    const overdue = this.getOverdueInvoices();
+    return overdue.reduce((sum, inv) => sum + (Number(inv.balanceDue) || 0), 0);
+  }
+
+  getExpiringWarranties(days = 30) {
+    const list = this.getWarrantyRecords();
+    const now = new Date();
+    const threshold = new Date(now.getTime() + days * 24 * 60 * 60 * 1000);
+    return list.filter(w => {
+      if ((w.status || '').toLowerCase() === 'expired') return false;
+      if (!w.expiryDate) return false;
+      const exp = new Date(w.expiryDate);
+      return exp >= now && exp <= threshold;
+    });
+  }
+
+  getMonthlySales(monthsCount = 6) {
+    const invoices = this.getInvoices();
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const fullMonthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    
+    // Default last 6 months (June 2026 to November 2026)
+    const result = [
+      { key: '2026-06', month: 'Jun', fullName: 'June 2026', total: 0 },
+      { key: '2026-07', month: 'Jul', fullName: 'July 2026', total: 0 },
+      { key: '2026-08', month: 'Aug', fullName: 'August 2026', total: 0 },
+      { key: '2026-09', month: 'Sep', fullName: 'September 2026', total: 0 },
+      { key: '2026-10', month: 'Oct', fullName: 'October 2026', total: 0 },
+      { key: '2026-11', month: 'Nov', fullName: 'November 2026', total: 0 }
+    ];
+
+    invoices.forEach(inv => {
+      const dateStr = inv.issueDate || inv.createdAt;
+      if (!dateStr) return;
+      const yrMonth = dateStr.substring(0, 7);
+      const match = result.find(r => r.key === yrMonth);
+      if (match) {
+        match.total += Number(inv.totalAmount || 0);
+      }
+    });
+
+    return result;
   }
 
   getSuppliers() {
