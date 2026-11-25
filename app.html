@@ -10,6 +10,15 @@
   <link rel="apple-touch-icon" href="assets/logo.jpg" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/app.css" />
+  <script>
+    // Early stub to prevent ReferenceError before app.js finishes loading
+    window.App = window.App || {
+      loadView: function(v) { window._queuedView = v; },
+      openQrScannerModal: function() {},
+      openConverterModal: function() {},
+      toggleTheme: function() {}
+    };
+  </script>
 </head>
 <body class="app-body">
   <div class="app-container">
